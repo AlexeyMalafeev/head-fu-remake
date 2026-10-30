@@ -6,13 +6,11 @@ Plain HTML5 canvas and JavaScript. No build step, no dependencies. Graphics are 
 
 ## History
 
-*Head-Fu* was a Flash game from the early 2000s, from the era when browser games spread through Flash portals and were passed around between friends. Two disembodied heads bounced around an arena, and the only way to win was to land on your opponent's head.
+*Head-Fu* was a small Flash game I made in the early 2000s, one of the first games I ever wrote. Two disembodied heads bounced around an arena, and the only way to win was to land on your opponent's head.
 
-Like much of that era, the game is now lost. Browsers dropped Flash Player at the end of 2020, the sites that hosted it are gone, and no copy of the original `.swf` file or any trace of it online has turned up so far.
+It never left my computer: there was no repository and no copy online. Around 2010, a move to a new machine went without a proper backup, and the game was lost for good.
 
-This remake rebuilds the game from memory as a new, independent work. Its code, drawings, characters, story and music are all new; nothing is taken from the original. It keeps the core idea, two heads stomping each other, and adds to it: a roster of fighters with special moves, a story mode, computer opponents, gamepad and touch controls, and an Android app.
-
-If you remember *Head-Fu* or know who made it, please open an issue: the history above is incomplete, and finding a surviving copy would be wonderful.
+This remake rebuilds it from memory. The code, drawings, characters, story and music are all new. It keeps the core idea, two heads stomping each other, and adds what the original never had: a roster of fighters with special moves, a story mode, computer opponents, gamepad and touch controls, and an Android app. This time it lives in git.
 
 ## Run it
 

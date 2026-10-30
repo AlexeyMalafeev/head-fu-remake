@@ -1,6 +1,6 @@
 # Head-Fu Remake — The Way of the Noggin
 
-A remake of *Head-Fu*, a lost Flash fighting game from the early 2000s: two
+A remake of *Head-Fu*, the user's own lost Flash game from the early 2000s: two
 comic anime heads with no bodies fight by jumping on each other's heads. Plain
 HTML5 canvas and JavaScript, no build step, no dependencies; graphics are
 drawn in code and all music and sound is synthesised live with the Web Audio
