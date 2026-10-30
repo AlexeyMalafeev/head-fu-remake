@@ -1,0 +1,49 @@
+plugins {
+    id 'com.android.application'
+}
+
+android {
+    namespace 'com.headfucl.game'
+    compileSdk 34
+
+    defaultConfig {
+        applicationId 'com.headfucl.game'
+        minSdk 23
+        targetSdk 34
+        versionCode 1
+        versionName '1.0.0'
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+        }
+    }
+
+    buildFeatures {
+        buildConfig true
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    sourceSets {
+        main {
+            assets.srcDir("$buildDir/generated/webAssets")
+        }
+    }
+}
+
+tasks.register('syncWebAssets', Sync) {
+    from(rootDir.parent) {
+        include 'index.html'
+        include 'js/**'
+    }
+    into("$buildDir/generated/webAssets")
+}
+
+tasks.named('preBuild').configure {
+    dependsOn('syncWebAssets')
+}
