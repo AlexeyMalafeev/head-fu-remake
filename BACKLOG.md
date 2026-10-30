@@ -7,7 +7,14 @@ Fixed or shipped entries move to `CHANGELOG.md` and are pruned from here.
 
 ### Confirmed bugs
 
-None open.
+1. **Translucency in the sprites.** Reported by the user (2026-10-30):
+   something in the drawn characters is see-through when it shouldn't be.
+   Which sprites and in what situation isn't recorded yet; pin that down
+   first. Heads are drawn in code (`js/faces.js`), so a likely cause is
+   overlapping shapes drawn one by one under a `globalAlpha` below 1 (fades,
+   blinking, effects), which lets inner layers show through the outer ones;
+   the usual fix is to draw the sprite opaque to an offscreen canvas and fade
+   that as one image.
 
 ### Unverified / needs a decision
 
@@ -34,6 +41,19 @@ None open.
    how hold-to-charge specials (Bao's Spring Bun, Sensei Fuzz's
    Brow-copter) map to gestures, and where the player picks the scheme
    (Options). Add cases to `tests/input-check.js`.
+3. **Expand the roster to at least 10 fighters.** Today there are six
+   playable heads plus the boss, Emperor Megadome. Every new head needs a
+   unique special, a face in `js/faces.js`, quotes, a place in the story and
+   fighter select (the select screen layout must fit 10 or more), and a
+   balance pass with the simulations.
+4. **Story cycles tied to difficulty.** Beating the story unlocks a second
+   and then a third pass, each a new story arc with its own mechanics
+   changes. Easy gives one cycle and then an ending; normal gives two
+   cycles; hard gives three, with a different mechanic in each, and ends
+   with a "true" ending. Needs decisions on the three mechanics, the new
+   arcs' scripts, how cycle progress is saved (new fields in `HF.unlocks`
+   keep old saves working), and whether a player can start a later cycle
+   directly once it is unlocked.
 
 ## Engineering
 
@@ -56,6 +76,6 @@ None open.
 
 Unprioritised; each needs a design decision before work starts.
 
-- More fighters and stages.
+- More stages.
 - Online or same-device two-player on touchscreens (today two players need
   a keyboard or two gamepads).
