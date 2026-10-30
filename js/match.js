@@ -680,12 +680,17 @@
       if (this.round === 1 && (this.phase === 'intro' || (this.phase === 'fight' && this.phaseT < 4))) {
         const a = this.phase === 'fight' ? U.clamp(4 - this.phaseT, 0, 1) : 1;
         ctx.globalAlpha = a;
-        const lines = HF.Input.touch.enabled && this.solo
+        const touch = HF.Input.touch.enabled;
+        const lines = touch && this.solo
           ? ['HOLD ◀ ▶ TO MOVE   TAP JUMP AND SPECIAL']
-          : this.solo
-            ? ['MOVE  A D / ← →      JUMP  W / ↑ / SPACE      SPECIAL  S / ↓']
-            : ['P1:  A D move   W jump   S special', 'P2:  ← → move   ↑ jump   ↓ special'];
-        lines.forEach((s, k) => U.text(ctx, s, W / 2, H - 46 + k * 24 - (lines.length - 1) * 12, { size: 18, display: false, weight: 700, lw: 5 }));
+          : touch
+            ? ['P1: BUTTONS ON THE LEFT      P2: BUTTONS ON THE RIGHT']
+            : this.solo
+              ? ['MOVE  A D / ← →      JUMP  W / ↑ / SPACE      SPECIAL  S / ↓']
+              : ['P1:  A D move   W jump   S special', 'P2:  ← → move   ↑ jump   ↓ special'];
+        // two-player touch buttons fill the bottom edge, so that hint sits higher
+        const y = touch && !this.solo ? 160 : H - 46;
+        lines.forEach((s, k) => U.text(ctx, s, W / 2, y + k * 24 - (lines.length - 1) * 12, { size: 18, display: false, weight: 700, lw: 5 }));
         ctx.globalAlpha = 1;
       }
     }

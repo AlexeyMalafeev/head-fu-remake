@@ -11,6 +11,10 @@ The first version with a changelog. Everything below already exists; it
 becomes the first release when it is tagged.
 
 ### Added
+- **Two players on one touchscreen**: VS Player 2 no longer needs
+  gamepads on phones and tablets. Each player gets their own set of
+  on-screen buttons, player 1 on the bottom left and player 2 on the bottom
+  right, and players pick their fighters by tapping in turn
 - **Six fighters and an unlockable boss**, each with a special move: Kenji's
   Sky Step, Momo's Zoom Dash, Gonta's Quake Pound, Sensei Fuzz's
   Brow-copter, Yuki's Frost Breath, Bao's Spring Bun, and Emperor

@@ -25,13 +25,24 @@
     },
   ];
   const BLOCK = new Set(['Space', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Backspace', 'Slash', 'Tab']);
-  const TOUCH_BUTTONS = [
-    { action: 'left', x: 66, y: 446, r: 46, label: '◀', color: '#3a86ff' },
-    { action: 'right', x: 172, y: 446, r: 46, label: '▶', color: '#3a86ff' },
-    { action: 'jump', x: 786, y: 446, r: 50, label: 'JUMP', color: '#ffd23f' },
-    { action: 'special', x: 898, y: 446, r: 46, label: 'SPECIAL', color: '#ff4d6d' },
-    { action: 'pause', x: 480, y: 105, r: 23, label: 'II', color: '#d8d0f0' },
+  // Solo fights: one set across the bottom corners. Two-player fights: each player gets a
+  // compact copy of it in their half of the screen (player 1 left, player 2 right).
+  const PAUSE_BUTTON = { action: 'pause', x: 480, y: 105, r: 23, label: 'II', color: '#d8d0f0' };
+  const SOLO_BUTTONS = [
+    { player: 0, action: 'left', x: 66, y: 446, r: 46, label: '◀', color: '#3a86ff' },
+    { player: 0, action: 'right', x: 172, y: 446, r: 46, label: '▶', color: '#3a86ff' },
+    { player: 0, action: 'jump', x: 786, y: 446, r: 50, label: 'JUMP', color: '#ffd23f' },
+    { player: 0, action: 'special', x: 898, y: 446, r: 46, label: 'SPECIAL', color: '#ff4d6d' },
+    PAUSE_BUTTON,
   ];
+  const duoSet = (player, x0) => [
+    { player, action: 'left', x: x0 + 56, y: 458, r: 40, label: '◀', color: '#3a86ff' },
+    { player, action: 'right', x: x0 + 146, y: 458, r: 40, label: '▶', color: '#3a86ff' },
+    { player, action: 'jump', x: x0 + 326, y: 458, r: 44, label: 'JUMP', color: '#ffd23f' },
+    { player, action: 'special', x: x0 + 422, y: 458, r: 40, label: 'SPECIAL', color: '#ff4d6d' },
+  ];
+  const DUO_BUTTONS = [...duoSet(0, 0), ...duoSet(1, 480), PAUSE_BUTTON];
+  const PLAYER_COLORS = ['#3a86ff', '#ff4d6d'];
 
   HF.Input = {
     keys: new Set(),
@@ -41,6 +52,7 @@
     mouse: { x: -1, y: -1, clicked: false, moved: false },
     touch: { enabled: false, down: [new Set(), new Set()], pauseHit: false },
     pointers: new Map(),
+    pointerOwners: new Map(),
     anyHit: false,
 
     init(canvas) {
@@ -65,7 +77,7 @@
         const control = this.touchControlAt(p.x, p.y);
         if (control) {
           e.preventDefault();
-          this.pointers.set(e.pointerId, control.action);
+          this.pointers.set(e.pointerId, control);
           this.refreshTouches();
           if (control.action === 'pause') this.touch.pauseHit = true;
           this.anyHit = true;
@@ -82,10 +94,13 @@
         const p = HF.Game.toLogical(e.clientX, e.clientY);
         if (this.pointers.has(e.pointerId)) {
           e.preventDefault();
+          // A finger may slide between its own player's buttons, never onto the other player's.
           const previous = this.pointers.get(e.pointerId);
+          if (previous && previous.action === 'pause') return;
+          const owner = previous ? previous.player : this.pointerOwners.get(e.pointerId);
           const control = this.touchControlAt(p.x, p.y);
-          const next = previous === 'pause' ? 'pause' : control && control.action !== 'pause' ? control.action : null;
-          this.pointers.set(e.pointerId, next);
+          this.pointers.set(e.pointerId, control && control.player === owner ? control : null);
+          this.pointerOwners.set(e.pointerId, owner);
           this.refreshTouches();
           return;
         }
@@ -97,6 +112,7 @@
         if (!this.pointers.has(e.pointerId)) return;
         e.preventDefault();
         this.pointers.delete(e.pointerId);
+        this.pointerOwners.delete(e.pointerId);
         this.refreshTouches();
       };
       canvas.addEventListener('pointerup', release);
@@ -107,12 +123,16 @@
 
     controlsVisible() {
       const scene = HF.Game && HF.Game.scene;
-      return this.touch.enabled && scene instanceof HF.MatchScene && !scene.demo && scene.solo && !scene.paused && !scene.ended;
+      return this.touch.enabled && scene instanceof HF.MatchScene && !scene.demo && !scene.paused && !scene.ended;
+    },
+
+    touchButtons() {
+      return HF.Game.scene.solo ? SOLO_BUTTONS : DUO_BUTTONS;
     },
 
     touchControlAt(x, y) {
       if (!this.controlsVisible()) return null;
-      for (const b of TOUCH_BUTTONS) {
+      for (const b of this.touchButtons()) {
         const r = b.r + 10;
         if ((x - b.x) ** 2 + (y - b.y) ** 2 <= r * r) return b;
       }
@@ -121,11 +141,13 @@
 
     refreshTouches() {
       this.touch.down[0].clear();
-      for (const action of this.pointers.values()) if (action && action !== 'pause') this.touch.down[0].add(action);
+      this.touch.down[1].clear();
+      for (const b of this.pointers.values()) if (b && b.action !== 'pause') this.touch.down[b.player].add(b.action);
     },
 
     clearTouches() {
       this.pointers.clear();
+      this.pointerOwners.clear();
       this.touch.down[0].clear();
       this.touch.down[1].clear();
       this.touch.pauseHit = false;
@@ -134,8 +156,15 @@
     drawTouchControls(ctx) {
       if (!this.controlsVisible()) return;
       ctx.save();
-      for (const b of TOUCH_BUTTONS) {
-        const pressed = b.action === 'pause' ? this.touch.pauseHit : this.touch.down[0].has(b.action);
+      const buttons = this.touchButtons();
+      if (buttons === DUO_BUTTONS) {
+        for (let p = 0; p < 2; p++) {
+          ctx.globalAlpha = 0.8;
+          HF.U.text(ctx, 'P' + (p + 1), p * 480 + 101, 404, { size: 18, color: PLAYER_COLORS[p], lw: 4 });
+        }
+      }
+      for (const b of buttons) {
+        const pressed = b.action === 'pause' ? this.touch.pauseHit : this.touch.down[b.player].has(b.action);
         ctx.globalAlpha = pressed ? 0.9 : b.action === 'pause' ? 0.5 : 0.62;
         ctx.beginPath();
         ctx.arc(b.x, b.y, b.r, 0, HF.TAU);
@@ -145,7 +174,8 @@
         ctx.strokeStyle = b.color;
         ctx.stroke();
         const size = b.action === 'special' ? 12 : b.action === 'jump' ? 17 : b.action === 'pause' ? 18 : 32;
-        HF.U.text(ctx, b.label, b.x, b.y + 1, { size, color: pressed ? '#1d1830' : '#fff', lw: 3 });
+        const scale = b.action === 'pause' ? 1 : b.r / (b.action === 'jump' ? 50 : 46);
+        HF.U.text(ctx, b.label, b.x, b.y + 1, { size: size * scale, color: pressed ? '#1d1830' : '#fff', lw: 3 });
       }
       ctx.restore();
     },

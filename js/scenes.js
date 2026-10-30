@@ -15,7 +15,7 @@
         [
           { label: 'STORY MODE', action: () => HF.Game.go(new HF.StoryScene()), hint: 'Help Kenji save the hats of the land!' },
           { label: 'VS CPU', action: () => HF.Game.go(new SelectScene({ mode: 'cpu' })), hint: 'You against the computer: easy, normal or hard' },
-          { label: 'VS PLAYER 2', action: () => HF.Game.go(new SelectScene({ mode: '2p' })), hint: HF.Input.touch.enabled ? 'Two players with gamepads' : 'Two players on one keyboard (or two gamepads)' },
+          { label: 'VS PLAYER 2', action: () => HF.Game.go(new SelectScene({ mode: '2p' })), hint: HF.Input.touch.enabled ? 'Two players on one screen, or two gamepads' : 'Two players on one keyboard (or two gamepads)' },
           { label: 'HOW TO PLAY', action: () => HF.Game.go(new HowToScene()) },
           { label: 'OPTIONS', action: () => HF.Game.go(new OptionsScene()) },
         ],
@@ -307,11 +307,11 @@
       if (this.phase === 'pick') {
         U.text(ctx, 'VS', W / 2, 282, { size: 44, color: '#ff4d6d' });
         const lines = HF.Input.touch.enabled
-          ? [this.mode === '2p' ? 'Two gamepads needed to fight' : this.picked[0] == null ? 'Pick your fighter' : 'Now pick your opponent', 'TAP A FIGHTER TO PICK']
+          ? [this.mode === '2p' ? (this.picked[0] == null ? 'Player 1, pick your fighter' : 'Player 2, pick your fighter') : this.picked[0] == null ? 'Pick your fighter' : 'Now pick your opponent', 'TAP A FIGHTER TO PICK']
           : this.mode === '2p'
             ? ['P1:  WASD  +  SPACE to pick', 'P2:  ARROWS  +  ENTER to pick']
             : [this.picked[0] == null ? 'Pick your fighter' : 'Now pick your opponent', 'ARROWS / WASD  +  ENTER'];
-        lines.forEach((s, i) => U.text(ctx, s, W / 2, 345 + i * 28, { size: 19, display: false, weight: 700, lw: 5, color: i === 0 && this.mode !== '2p' ? '#ffe14d' : '#fff' }));
+        lines.forEach((s, i) => U.text(ctx, s, W / 2, 345 + i * 28, { size: 19, display: false, weight: 700, lw: 5, color: i === 0 && (this.mode !== '2p' || HF.Input.touch.enabled) ? '#ffe14d' : '#fff' }));
         U.text(ctx, HF.Input.touch.enabled ? 'BACK to go back' : 'ESC to go back', W / 2, 505, { size: 15, display: false, color: '#cfc6ea', lw: 4 });
       } else if (this.phase === 'difficulty') {
         U.text(ctx, 'CPU DIFFICULTY', W / 2, 305, { size: 28 });
@@ -653,7 +653,7 @@
         U.text(ctx, 'TAP OR HOLD THE BUTTONS', 810, 198, { size: 14, display: false, weight: 700, color: '#d8d0f0' });
         U.text(ctx, 'Use several fingers at once.', 715, 242, { size: 17, display: false, weight: 600 });
         U.text(ctx, 'Tap II or Android Back to pause.', 715, 272, { size: 17, display: false, weight: 600 });
-        U.text(ctx, 'Two-player mode uses gamepads.', 715, 308, { size: 14, display: false, weight: 600, color: '#ffe14d' });
+        U.text(ctx, 'Two players: P1 left buttons, P2 right.', 715, 308, { size: 14, display: false, weight: 600, color: '#ffe14d' });
       } else {
         const K = HF.UI.key;
         U.text(ctx, 'PLAYER 1', 600, 138, { size: 18, color: P_COLORS[0] });

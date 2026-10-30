@@ -24,7 +24,7 @@ The two display fonts load from Google Fonts. Offline, the game falls back to sy
 
 ## Android
 
-The `android/` directory contains a native landscape app that packages the same HTML and JavaScript in a `WebView`. Solo fights have multi-touch controls; Android Back or the on-screen pause button pauses the game, and so does switching away from the app. The volume keys control the game's volume. Local two-player mode uses gamepads.
+The `android/` directory contains a native landscape app that packages the same HTML and JavaScript in a `WebView`. Fights have multi-touch controls: one set of buttons in solo fights, and two sets in two-player fights, so two people can share one phone or tablet (player 1 uses the buttons on the left, player 2 the ones on the right). Android Back or the on-screen pause button pauses the game, and so does switching away from the app. The volume keys control the game's volume. Gamepads work too.
 
 Build the installable debug APK with JDK 17 and the Android SDK (platform 34) installed. Set `ANDROID_HOME` if the SDK is not in Android Studio's default location:
 
@@ -54,13 +54,13 @@ Run that `adb` command from the repository root. The Android build automatically
 | Player 2 | ← / → | ↑ | ↓ |
 | Solo (vs CPU, story) | either set | also Space | also F |
 
-Gamepads work too (first pad is player 1). Esc or P pauses. Menus also work with the mouse. On touchscreens, tap menu items and use the on-screen buttons during solo fights.
+Gamepads work too (first pad is player 1). Esc or P pauses. Menus also work with the mouse. On touchscreens, tap menu items and use the on-screen buttons during fights. In two-player fights each player gets their own set: player 1 the bottom-left buttons (◀ ▶ JUMP SPECIAL), player 2 the bottom-right ones. On the fighter select screen, player 1 taps a fighter first, then player 2.
 
 ## Modes
 
 - **Story mode**: Kenji's quest to overturn the Emperor's ban on hats. Six fights with cutscenes between them, ending with the final boss, Emperor Megadome, who has a spiked helmet you must not stomp and a rage mode at half health. Beating the story unlocks the Emperor for versus play.
 - **VS CPU**: pick both fighters, a stage and a difficulty (easy, normal, hard).
-- **VS Player 2**: two players on one keyboard or two gamepads.
+- **VS Player 2**: two players on one keyboard, one touchscreen (split on-screen buttons) or two gamepads.
 - **Options**: music and sound volume, round time (30–99 s), single round or best of 3/5, fullscreen.
 
 ## Fighters
