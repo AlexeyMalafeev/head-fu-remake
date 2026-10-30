@@ -7,14 +7,11 @@ codename shared by all of its releases.
 
 ## [Unreleased]
 
-The first version with a changelog. Everything below already exists; it
-becomes the first release when it is tagged.
+## [v1.0.0 "Head Start"] — 2026-10-30
+
+The ancient art of Head-Fu, reborn: the first release of the remake.
 
 ### Added
-- **Two players on one touchscreen**: VS Player 2 no longer needs
-  gamepads on phones and tablets. Each player gets their own set of
-  on-screen buttons, player 1 on the bottom left and player 2 on the bottom
-  right, and players pick their fighters by tapping in turn
 - **Six fighters and an unlockable boss**, each with a special move: Kenji's
   Sky Step, Momo's Zoom Dash, Gonta's Quake Pound, Sensei Fuzz's
   Brow-copter, Yuki's Frost Breath, Bao's Spring Bun, and Emperor
@@ -25,8 +22,9 @@ becomes the first release when it is tagged.
 - **Story mode**: Kenji's quest against the Emperor's ban on hats, six
   fights with cutscenes, a final boss with a spiked helmet and a rage mode;
   beating it unlocks the Emperor for versus play
-- **VS CPU** with three difficulties, and **VS Player 2** on one keyboard or
-  two gamepads
+- **VS CPU** with three difficulties, and **VS Player 2** on one keyboard,
+  two gamepads or one touchscreen, where each player gets their own set of
+  on-screen buttons (player 1 bottom left, player 2 bottom right)
 - Six stages, nine synthesised music tracks, comic hit words and effects
 - Keyboard, gamepad, mouse and multi-touch controls
 - **Android app**: a landscape `WebView` build with touch controls, pause on
