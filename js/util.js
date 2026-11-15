@@ -3,6 +3,9 @@
   'use strict';
   const HF = (window.HF = window.HF || {});
 
+  HF.VERSION = '1.0.0';
+  HF.CODENAME = 'Head Start';
+
   // Logical resolution. The canvas is scaled to fit the window.
   HF.W = 960;
   HF.H = 540;

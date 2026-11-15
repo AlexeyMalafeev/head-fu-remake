@@ -81,6 +81,7 @@
       } else {
         this.menu.draw(ctx);
       }
+      U.text(ctx, 'v' + HF.VERSION + (HF.CODENAME ? ' · ' + HF.CODENAME : ''), W - 18, H - 14, { size: 13, display: false, align: 'right', color: '#bfb3e0', lw: 3, maxWidth: 200 });
       U.text(ctx, 'A reincarnation of the lost Flash classic', W / 2, H - 14, { size: 13, display: false, color: '#bfb3e0', lw: 3 });
     }
   }

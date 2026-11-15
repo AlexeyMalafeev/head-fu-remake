@@ -23,8 +23,8 @@ and the roster.
 
 ## Testing
 
-`./tests/run-tests.sh` runs four headless checks with the JavaScriptCore
-shell that ships with macOS (nothing to install, under a second). Run it
+`./tests/run-tests.sh` runs five headless checks with the JavaScriptCore
+shell that ships with macOS (nothing to install). Run it
 after every change to game code:
 
 1. **Music**: every song has whole bars and channels of matching length.
@@ -34,13 +34,25 @@ after every change to game code:
 3. **Translations**: Russian roster, stages and story coverage, saved language,
    message templates, Cyrillic fonts, wrapping and dialogue animation
    (`tests/i18n-check.js`).
-4. **Simulations** (`tests/sim.js`): AI-vs-AI fights that print the
+4. **Engineering**: game version and codename match the latest released
+   changelog entry and Android version; seeded random values repeat.
+5. **Simulations** (`tests/sim.js`): AI-vs-AI fights that print the
    difficulty ladder, each fighter's win rate against the roster at normal,
    and how the story's final boss fares against computer Kenjis of different
    skill. They also throw on a NaN position or a head below the floor.
 
-The simulation uses `Math.random`, so its numbers move a few percent between
-runs; compare trends, not single digits. For anything the player sees or
+The simulation replaces `Math.random` with a test-only seeded generator;
+normal gameplay keeps its usual randomness. Each matchup has its own stream,
+so changing one fighter does not change the samples for unrelated fights.
+The default is seed `20261115`, with 100 fights per matchup and alternating
+sides. Compare the regular-roster table (boss excluded) when balancing the
+six basic fighters. To use another seed or sample size, create a temporary
+JavaScript file with `var SIM_SEED = 8675309; var SIM_N = 200;`, then pass its
+path to `./tests/run-tests.sh /path/to/config.js`. The seed and count appear
+in the output; identical code and settings give identical output.
+GitHub Actions runs the same checks on macOS for pushes and pull requests.
+
+For anything the player sees or
 touches (layout, menus, effects, touch controls), also check it in the
 browser preview, including a phone-sized landscape viewport for touch.
 
@@ -179,9 +191,10 @@ Semantic versioning, `vMAJOR.MINOR.PATCH`:
   releases. The user picks each codename; suggest a few, never choose one.
 
 The version must agree in the changelog heading, the git tag and
-`versionName` in `android/app/build.gradle` (bump `versionCode` by one with
-every release). The game doesn't show its version yet (BACKLOG,
-Engineering 1).
+`versionName` in `android/app/build.gradle`, and `HF.VERSION` in
+`js/util.js` (bump `versionCode` by one with every release). `HF.CODENAME`
+in `js/util.js` holds the user-chosen major-version codename. Both appear
+on the title screen; the engineering check prevents release metadata drift.
 
 Release steps (ask first):
 
@@ -189,7 +202,8 @@ Release steps (ask first):
    `## [vX.Y.Z "Codename"] — YYYY-MM-DD` and add a fresh empty
    `## [Unreleased]` above it. Re-read the section and prune entries that
    describe mid-cycle states that never shipped.
-2. Set `versionName` and bump `versionCode` in `android/app/build.gradle`.
+2. Set `HF.VERSION` and `HF.CODENAME` in `js/util.js`, set the matching
+   `versionName` and bump `versionCode` in `android/app/build.gradle`.
 3. Run the tests, check the game in the browser, and build the APK
    (`cd android && ./gradlew assembleDebug`).
 4. Commit `RELEASE: vX.Y.Z "Codename"`, tag `vX.Y.Z` (annotated), push with

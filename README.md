@@ -16,6 +16,7 @@ This remake rebuilds it from memory. The code, drawings, characters, story and m
 
 Download the source code and open `index.html` in a browser.
 The game uses Google Fonts when online and system fonts when offline.
+The title screen shows the version and release codename in the bottom-right corner.
 
 ## Android
 
@@ -60,5 +61,10 @@ Choose **Options → Language / Язык → Русский** for the full Russi
 | Yuki | Fast | **Frost Breath**: snowflake that freezes the foe; stomp the ice for bonus damage |
 | Bao | Bouncy | **Spring Bun**: hold to charge a mega jump; stomps bounce off him while charging |
 | Emperor Megadome | Biggest head, unlockable | **Royal Rage**: fireball on the ground, ground pound in the air |
+
+The six regular fighters have been tuned for closer matchups: Momo and Yuki
+have less health and stomp damage; Sensei Fuzz has more health, movement
+speed and stomp damage; Bao has more health. Kenji and Gonta keep their
+stats. The Emperor keeps his stronger boss stats.
 
 For development, build and testing instructions, see [AGENTS.md](AGENTS.md).

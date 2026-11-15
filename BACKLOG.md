@@ -16,14 +16,6 @@ Fixed or shipped entries move to `CHANGELOG.md` and are pruned from here.
    the usual fix is to draw the sprite opaque to an offscreen canvas and fade
    that as one image.
 
-### Unverified / needs a decision
-
-1. **Roster balance spread.** At normal vs normal the simulations
-   (2026-10-30) give Yuki 69% and Gonta 63% against the roster, Kenji and
-   Sensei Fuzz 36%. The bots play the same simple way with every fighter, so
-   this may say more about the AI than the fighters. Decide whether to tune
-   stats now or wait for real-player feedback.
-
 ## Features
 
 1. **Combos.** Reward chaining hits without touching the ground: a combo
@@ -57,20 +49,7 @@ Fixed or shipped entries move to `CHANGELOG.md` and are pruned from here.
 
 ## Engineering
 
-1. **Show the version.** The game has no version constant; only
-   `versionName` in `android/app/build.gradle` says 1.0.0. Add
-   `HF.VERSION` (and a codename once the user picks one) to `js/util.js`,
-   show it on the title screen, and have the release steps keep it in sync
-   with the Android build.
-2. **Reproducible simulations.** `U.rand`, `U.pick` and friends call
-   `Math.random`, so simulation numbers drift a few percent between runs,
-   which makes small balance changes hard to measure. A seeded generator for
-   the simulation (the game itself can stay unseeded) would make before and
-   after comparisons exact.
-3. **No CI.** The tests only run by hand on macOS (they need the
-   JavaScriptCore shell). Once the project is on GitHub, a workflow that
-   runs them on every push would catch breakage; GitHub's macOS runners have
-   the same shell.
+No open items.
 
 ## Ideas
 
