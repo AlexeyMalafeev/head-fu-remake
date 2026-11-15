@@ -7,9 +7,11 @@ codename shared by all of its releases.
 
 ## [Unreleased]
 
+## [v1.1.0 "Head Start"] — 2026-11-15
+
 ### Added
 - **Version on the title screen**: the bottom-right corner shows the version
-  and its release codename, currently v1.0.0 “Head Start”.
+  and its release codename.
 - **Repeatable balance checks**: seeded fight simulations, a separate table
   for the six regular fighters, and automated checks on GitHub pushes and
   pull requests. Checks also keep the game and Android release versions in sync.
