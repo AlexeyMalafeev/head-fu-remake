@@ -62,13 +62,24 @@
     ctx.closePath();
   };
 
-  U.font = (size, display = true, weight = 600) =>
-    display ? `${size}px ${HF.FONT_D}` : `${weight} ${size}px ${HF.FONT_B}`;
+  U.font = (size, display = true, weight = 600) => {
+    if (HF.settings.language === 'ru') return display
+      ? `700 ${size}px "Russo One", "Arial Black", sans-serif`
+      : `${weight} ${size}px "Nunito", "Trebuchet MS", sans-serif`;
+    return display ? `${size}px ${HF.FONT_D}` : `${weight} ${size}px ${HF.FONT_B}`;
+  };
 
   // Outlined text: the house style for game text.
   U.text = (ctx, str, x, y, o = {}) => {
-    const size = o.size || 24;
+    str = HF.t ? HF.t(str) : str;
+    let size = o.size || 24;
     ctx.font = o.font || U.font(size, o.display !== false, o.weight);
+    const maxWidth = o.maxWidth || HF.W - 40;
+    const width = ctx.measureText(str).width;
+    if (width > maxWidth && !o.font) {
+      size *= maxWidth / width;
+      ctx.font = U.font(size, o.display !== false, o.weight);
+    }
     ctx.textAlign = o.align || 'center';
     ctx.textBaseline = o.baseline || 'middle';
     if (o.stroke !== false) {
@@ -82,6 +93,7 @@
   };
 
   U.wrap = (ctx, text, maxW) => {
+    text = HF.t ? HF.t(text) : text;
     const lines = [];
     for (const para of String(text).split('\n')) {
       let line = '';
@@ -115,7 +127,7 @@
       }
     },
   };
-  HF.settings = Object.assign({ music: 0.6, sfx: 0.8, time: 60, rounds: 3 }, HF.store.get('settings', {}));
+  HF.settings = Object.assign({ music: 0.6, sfx: 0.8, time: 60, rounds: 3, language: 'en' }, HF.store.get('settings', {}));
   HF.saveSettings = () => HF.store.set('settings', HF.settings);
   HF.unlocks = Object.assign({ emperor: false }, HF.store.get('unlocks', {}));
   HF.saveUnlocks = () => HF.store.set('unlocks', HF.unlocks);

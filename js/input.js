@@ -175,7 +175,7 @@
         ctx.stroke();
         const size = b.action === 'special' ? 12 : b.action === 'jump' ? 17 : b.action === 'pause' ? 18 : 32;
         const scale = b.action === 'pause' ? 1 : b.r / (b.action === 'jump' ? 50 : 46);
-        HF.U.text(ctx, b.label, b.x, b.y + 1, { size: size * scale, color: pressed ? '#1d1830' : '#fff', lw: 3 });
+        HF.U.text(ctx, b.label, b.x, b.y + 1, { maxWidth: b.r * 1.8, size: size * scale, color: pressed ? '#1d1830' : '#fff', lw: 3 });
       }
       ctx.restore();
     },

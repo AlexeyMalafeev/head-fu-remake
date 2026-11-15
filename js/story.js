@@ -241,7 +241,7 @@
     constructor(script, onDone) {
       this.script = script;
       this.onDone = onDone;
-      this.lines = script.lines;
+      this.lines = script.lines.map((line) => Object.assign({}, line, { text: HF.t(line.text) }));
       this.stage = script.bg ? new HF.Stage(script.bg) : null;
       this.slots = { left: script.left || null, right: script.right || null };
       this.slotT = { left: 1, right: 1 };
@@ -379,14 +379,14 @@
       const narr = l.who === 'narrator';
       if (!l.decree) HF.UI.panel(ctx, 40, 392, 880, 134, { fill: narr ? 'rgba(20,14,40,0.92)' : 'rgba(255,255,255,0.96)' });
       if (!narr) {
-        const tagW = Math.max(150, info.name.length * 15 + 40);
+        const tagW = Math.max(150, HF.t(info.name).length * 15 + 40);
         const tx = this.slots.right === l.who ? 900 - tagW : 60;
         HF.UI.panel(ctx, tx, 368, tagW, 40, { fill: info.color, r: 12 });
         U.text(ctx, info.name, tx + tagW / 2, 389, { size: 22 });
       }
-      ctx.font = U.font(23, false, 600);
+      ctx.font = U.font(22, false, 600);
       const lines = U.wrap(ctx, narr && l.decree ? '' : shown, 820);
-      lines.forEach((s, i) => U.text(ctx, s, 66, 436 + i * 31, { size: 23, display: false, weight: 600, align: 'left', color: narr ? '#ffe9a8' : HF.OUTLINE, stroke: false }));
+      lines.forEach((s, i) => U.text(ctx, s, 66, 436 + i * 31, { size: 22, display: false, weight: 600, align: 'left', color: narr ? '#ffe9a8' : HF.OUTLINE, stroke: false }));
       if (!talking && Math.floor(this.t * 3) % 2 === 0) U.text(ctx, '▼', 890, 505, { size: 20, color: '#ff4d6d', stroke: false });
       ctx.restore();
       U.text(ctx, 'ENTER next · ESC skip', W - 16, 16, { size: 13, display: false, weight: 600, align: 'right', lw: 3, color: '#e8e2ff' });
@@ -422,13 +422,13 @@
       ctx.fillRect(0, 0, W, H);
       const opp = HF.FIGHTER[this.c.opp];
       const k = U.easeOutBack(Math.min(1, this.t * 2.5));
-      const label = this.c.boss ? 'FINAL STAGE' : 'STAGE ' + (this.i + 1) + ' / ' + (STORY.chapters.length - 1);
+      const label = this.c.boss ? 'FINAL STAGE' : HF.t('STAGE {n} / {total}', { n: this.i + 1, total: STORY.chapters.length - 1 });
       U.text(ctx, label, W / 2, 90, { size: 54 * k, color: this.c.boss ? '#ff4d4d' : '#ffe14d' });
       HF.drawHead(ctx, 'kenji', { x: 260 - (1 - k) * 300, y: 270, r: 84, facing: 1, expr: 'focus', t: this.t, look: { x: 1, y: 0 } });
       const or = 84 * Math.sqrt(opp.stats.radius / 46);
       HF.drawHead(ctx, opp.id, { x: 700 + (1 - k) * 300, y: 270, r: or, facing: -1, expr: this.c.boss ? 'furious' : 'smug', t: this.t, look: { x: -1, y: 0 } });
       U.text(ctx, 'VS', W / 2, 270, { size: 80 * k, color: '#ff4d6d' });
-      U.text(ctx, opp.name, 700, 400, { size: 30, color: opp.color });
+      U.text(ctx, opp.name, 700, 400, { maxWidth: 430, size: 30, color: opp.color });
       U.text(ctx, opp.title, 700, 430, { size: 18, display: false, weight: 700, lw: 4 });
       U.text(ctx, 'KENJI', 260, 400, { size: 30, color: '#e63946' });
       U.text(ctx, this.stage.def.name.toUpperCase(), W / 2, 490, { size: 24, color: '#fff' });

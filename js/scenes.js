@@ -426,8 +426,8 @@
         blink: (this.t * 0.7 + p * 0.37) % 3 < 0.1 ? 1 : 0,
         t: this.t,
       });
-      U.text(ctx, f.name, cx, 318, { size: f.name.length > 10 ? 24 : 32, color: '#fff' });
-      U.text(ctx, f.title, cx, 344, { size: 16, display: false, weight: 700, color: f.color, lw: 4 });
+      U.text(ctx, f.name, cx, 318, { maxWidth: 274, size: f.name.length > 10 ? 24 : 32, color: '#fff' });
+      U.text(ctx, f.title, cx, 344, { maxWidth: 274, size: 16, display: false, weight: 700, color: f.color, lw: 4 });
       const stats = [['POWER', f.rating.power], ['SPEED', f.rating.speed], ['JUMP', f.rating.jump], ['HEALTH', f.rating.health]];
       stats.forEach(([name, v], i) => {
         const y = 368 + i * 19;
@@ -441,7 +441,7 @@
           ctx.stroke();
         }
       });
-      U.text(ctx, '★ ' + f.abilityName.toUpperCase(), cx, 450, { size: 18, color: '#ffe14d' });
+      U.text(ctx, '★ ' + HF.t(f.abilityName).toUpperCase(), cx, 450, { size: 18, color: '#ffe14d' });
       ctx.font = U.font(14, false, 600);
       const lines = U.wrap(ctx, f.abilityDesc, 260);
       lines.forEach((s, i) => U.text(ctx, s, cx, 472 + i * 17, { size: 14, display: false, weight: 600, lw: 3, color: '#e8e2ff' }));
@@ -497,7 +497,7 @@
       const wdef = HF.FIGHTER[wid];
       let title;
       if (this.solo) title = this.playerWon ? 'YOU WIN!' : 'YOU LOSE...';
-      else title = 'PLAYER ' + (this.w + 1) + ' WINS!';
+      else title = HF.t('PLAYER {n} WINS!', { n: this.w + 1 });
       U.text(ctx, title, W / 2, 62, { size: 64, color: this.playerWon || !this.solo ? '#ffe14d' : '#9aa0c8' });
       U.text(ctx, this.o.res.wins.join(' – '), W / 2, 112, { size: 26, color: '#fff' });
       // winner
@@ -508,7 +508,7 @@
       HF.drawHead(ctx, lid, { x: 690, y: 300, r: 58 * Math.sqrt(HF.FIGHTER[lid].stats.radius / 46), facing: -1, expr: 'cry', t: this.t, rot: 0.15 });
       // speech bubble
       ctx.font = U.font(19, false, 700);
-      const lines = U.wrap(ctx, '“' + this.quote + '”', 250);
+      const lines = U.wrap(ctx, '“' + HF.t(this.quote) + '”', 250);
       const bx = 430, by = 150, bw = 290, bh = 30 + lines.length * 24;
       U.roundRect(ctx, bx, by, bw, bh, 18);
       ctx.fillStyle = '#fff';
@@ -550,6 +550,7 @@
           save();
         },
       });
+      const changeLanguage = () => HF.setLanguage(S.language === 'ru' ? 'en' : 'ru');
       const times = [30, 45, 60, 90, 99];
       const rounds = [1, 3, 5];
       const cycle = (key, list) => ({
@@ -565,14 +566,18 @@
       });
       this.menu = new HF.UI.Menu(
         [
+          {
+            label: 'LANGUAGE / ЯЗЫК', value: () => S.language === 'ru' ? 'Русский' : 'English',
+            left: () => changeLanguage(), right: () => changeLanguage(), action: () => changeLanguage(),
+          },
           Object.assign({ label: 'MUSIC' }, vol('music')),
           Object.assign({ label: 'SOUND FX' }, vol('sfx')),
-          Object.assign({ label: 'ROUND TIME', value: () => S.time + ' SEC' }, cycle('time', times)),
-          Object.assign({ label: 'ROUNDS', value: () => (S.rounds === 1 ? 'SINGLE' : 'BEST OF ' + S.rounds) }, cycle('rounds', rounds)),
+          Object.assign({ label: 'ROUND TIME', value: () => HF.t('{n} SEC', { n: S.time }) }, cycle('time', times)),
+          Object.assign({ label: 'ROUNDS', value: () => (S.rounds === 1 ? 'SINGLE' : HF.t('BEST OF {n}', { n: HF.settings.language === 'ru' ? Math.ceil(S.rounds / 2) : S.rounds })) }, cycle('rounds', rounds)),
           { label: 'FULLSCREEN', value: () => (document.fullscreenElement ? 'ON' : 'OFF'), left: () => toggleFull(), right: () => toggleFull(), action: () => toggleFull() },
           { label: 'BACK', action: () => HF.Game.go(new TitleScene()) },
         ],
-        { y: 170, gap: 54, size: 32, width: 560, row: true, onBack: () => HF.Game.go(new TitleScene()) }
+        { y: 157, gap: 47, size: 30, width: 560, row: true, onBack: () => HF.Game.go(new TitleScene()) }
       );
     }
 
@@ -590,7 +595,7 @@
     draw(ctx) {
       HF.UI.backdrop(ctx, this.t);
       U.text(ctx, 'OPTIONS', W / 2, 80, { size: 56, color: '#ffe14d' });
-      HF.UI.panel(ctx, W / 2 - 310, 130, 620, 340);
+      HF.UI.panel(ctx, W / 2 - 310, 130, 620, 364);
       this.menu.draw(ctx);
       U.text(ctx, HF.Input.touch.enabled ? 'TAP AN ITEM TO CHANGE    BACK TO RETURN' : '↑ ↓ choose    ← → change    ESC back', W / 2, 505, { size: 16, display: false, color: '#cfc6ea', lw: 4 });
     }
@@ -637,12 +642,12 @@
         'When time runs out, the lower',
         '   health bar loses. Tie? Sudden death!',
       ];
-      rules.forEach((s, i) => U.text(ctx, s, 44, 136 + i * 26, { size: 17, display: false, weight: 600, align: 'left', lw: 4 }));
+      rules.forEach((s, i) => U.text(ctx, s, 44, 136 + i * 26, { maxWidth: 350, size: 17, display: false, weight: 600, align: 'left', lw: 4 }));
       // little demo: one head stomping another
       const k = (this.t % 1.6) / 1.6;
       const jy = 290 - Math.sin(k * Math.PI) * 60;
-      HF.drawHead(ctx, 'kenji', { x: 400 - 30 + k * 30, y: Math.min(jy, 262), r: 20, facing: 1, expr: k > 0.5 ? 'attack' : 'jump', t: this.t });
-      HF.drawHead(ctx, 'momo', { x: 410, y: 300, r: 18, facing: -1, expr: k > 0.85 ? 'hurt' : 'fear', t: this.t, sy: k > 0.85 ? 0.7 : 1 });
+      HF.drawHead(ctx, 'kenji', { x: 430 - 10 + k * 10, y: Math.min(jy, 262), r: 20, facing: 1, expr: k > 0.5 ? 'attack' : 'jump', t: this.t });
+      HF.drawHead(ctx, 'momo', { x: 440, y: 300, r: 18, facing: -1, expr: k > 0.85 ? 'hurt' : 'fear', t: this.t, sy: k > 0.85 ? 0.7 : 1 });
 
       // controls panel
       HF.UI.panel(ctx, 490, 80, 450, 250);
@@ -668,7 +673,7 @@
         K(ctx, '↓', 830, 208);
         K(ctx, '→', 866, 208);
         [['move', 'A D  /  ← →'], ['jump', 'W  /  ↑   (solo: SPACE too)'], ['special', 'S  /  ↓   (solo: F too)'], ['pause', 'ESC or P']].forEach(([a, b], i) =>
-          U.text(ctx, a.toUpperCase() + ':  ' + b, 510, 248 + i * 20, { size: 15, display: false, weight: 600, align: 'left', lw: 4 })
+          U.text(ctx, HF.t(a.toUpperCase()) + ':  ' + HF.t(b), 510, 248 + i * 20, { size: 15, display: false, weight: 600, align: 'left', lw: 4 })
         );
         U.text(ctx, 'Gamepads work too!', 920, 308, { size: 14, display: false, weight: 600, align: 'right', lw: 4, color: '#ffe14d' });
       }
@@ -681,9 +686,9 @@
         const col = i % 3, row = Math.floor(i / 3);
         const x = 60 + col * 300, y = 404 + row * 40;
         HF.drawHead(ctx, f.id, { x, y, r: 15, facing: 1, expr: 'happy', t: this.t + i });
-        U.text(ctx, f.name.split(' ')[0] + ': ' + f.abilityName, x + 24, y - 6, { size: 15, display: false, weight: 700, align: 'left', lw: 4, color: f.color });
+        U.text(ctx, HF.t(f.name).split(' ')[0] + ': ' + HF.t(f.abilityName), x + 24, y - 6, { maxWidth: 256, size: 15, display: false, weight: 700, align: 'left', lw: 4, color: f.color });
         const short = { airjump: 'jump again in the air', dash: 'untouchable side dash', pound: 'ground pound + shockwave', glide: 'hold to hover', frost: 'freezing snowflake', spring: 'hold & release: mega jump', royal: 'fireball / ground pound' }[f.ability];
-        U.text(ctx, short, x + 24, y + 11, { size: 13, display: false, weight: 600, align: 'left', lw: 3 });
+        U.text(ctx, short, x + 24, y + 11, { maxWidth: 256, size: 13, display: false, weight: 600, align: 'left', lw: 3 });
       });
       U.text(ctx, HF.Input.touch.enabled ? 'tap anywhere to go back' : 'press any key to go back', W / 2, 524, { size: 15, display: false, color: '#cfc6ea', lw: 4 });
     }

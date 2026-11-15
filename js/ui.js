@@ -92,14 +92,14 @@
         const y = o.y + k * o.gap;
         const size = sel ? o.size * (1.08 + this.pulse * 0.08) : o.size;
         const color = it.disabled ? '#8a83a0' : sel ? '#ffe14d' : '#fff';
-        const label = typeof it.label === 'function' ? it.label() : it.label;
+        const label = HF.t(typeof it.label === 'function' ? it.label() : it.label);
         if (o.row) {
           const lx = o.x - o.width / 2 + 10;
-          U.text(ctx, label, lx, y, { size: o.size * 0.8, color, align: 'left' });
+          U.text(ctx, label, lx, y, { maxWidth: o.width * 0.55, size: o.size * 0.8, color, align: 'left' });
           if (it.value) {
             const vx = o.x + o.width / 2 - 30;
-            const val = it.value();
-            U.text(ctx, val, vx - 20, y, { size: o.size * 0.8, color, align: 'right' });
+            const val = HF.t(it.value());
+            U.text(ctx, val, vx - 20, y, { maxWidth: o.width * 0.35, size: o.size * 0.8, color, align: 'right' });
             if (sel) {
               ctx.font = U.font(o.size * 0.8);
               const vw = ctx.measureText(val).width;

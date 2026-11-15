@@ -14,7 +14,7 @@ and the roster.
   http://127.0.0.1:8731 (or open `index.html` directly).
 - In the Claude desktop app, `.claude/launch.json` has the preview server
   `head-fu` on 8731.
-- The two display fonts come from Google Fonts; offline the game falls back
+- The English and Russian fonts come from Google Fonts; offline the game falls back
   to system fonts, so a layout that looks right offline may not online.
 - Saved data lives in `localStorage` under `headfu.*` (`settings`,
   `unlocks`, `difficulty`), through `HF.store` in `js/util.js`. The preview
@@ -23,7 +23,7 @@ and the roster.
 
 ## Testing
 
-`./tests/run-tests.sh` runs three headless checks with the JavaScriptCore
+`./tests/run-tests.sh` runs four headless checks with the JavaScriptCore
 shell that ships with macOS (nothing to install, under a second). Run it
 after every change to game code:
 
@@ -31,7 +31,10 @@ after every change to game code:
 2. **Input**: multi-touch, pointer cancellation, pause, mouse, keyboard and
    the audio unlock (`tests/input-check.js` with a fake DOM in
    `tests/input-prelude.js`).
-3. **Simulations** (`tests/sim.js`): AI-vs-AI fights that print the
+3. **Translations**: Russian roster, stages and story coverage, saved language,
+   message templates, Cyrillic fonts, wrapping and dialogue animation
+   (`tests/i18n-check.js`).
+4. **Simulations** (`tests/sim.js`): AI-vs-AI fights that print the
    difficulty ladder, each fighter's win rate against the roster at normal,
    and how the story's final boss fares against computer Kenjis of different
    skill. They also throw on a NaN position or a head below the floor.
@@ -49,6 +52,7 @@ When adding a script file, add it to `index.html` in load order, and to
 ```
 index.html        page shell; loads the scripts below in order
 js/util.js        HF namespace, constants, math and drawing helpers, HF.store, settings
+js/i18n.js        Russian translation catalog, language selection and message formatting
 js/input.js       keyboard, gamepad, pointer and multi-touch controls
 js/audio.js       Web Audio synth voices and all sound effects
 js/music.js       the soundtrack (9 tracks in a text notation) and its sequencer

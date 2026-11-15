@@ -88,7 +88,7 @@
       this.lastRatio = [1, 1];
       this.roundWinner = null;
       const final = this.need > 1 && this.wins[0] === this.need - 1 && this.wins[1] === this.need - 1;
-      const text = this.cfg.title || (final ? 'FINAL ROUND' : this.need > 1 ? 'ROUND ' + this.round : 'READY?');
+      const text = this.cfg.title || (final ? 'FINAL ROUND' : this.need > 1 ? HF.t('ROUND {n}', { n: this.round }) : 'READY?');
       this.banner(text, { dur: 0.95, color: '#fff' });
       if (!this.demo) HF.Audio.play('round');
     }
@@ -239,7 +239,7 @@
       this.wins[w]++;
       if (this.wins[w] >= this.need) this.matchWinner = w;
       const perfect = win.hp >= win.maxHp;
-      const name = this.labels[w] === 'YOU' ? 'YOU WIN!' : win.def.name + ' WINS';
+      const name = this.labels[w] === 'YOU' ? 'YOU WIN!' : HF.t('{name} WINS', { name: HF.t(win.def.name) });
       this.banner(name, { dur: 2.3, color: w === 0 ? '#8ecbff' : '#ff9eb0', size: name.length > 12 ? 58 : 72, sub: perfect ? 'PERFECT!' : how === 'time' ? 'on time' : how === 'sudden' ? 'sudden death' : null });
       if (!this.demo) HF.Audio.play('cheer');
       this.fx.confetti(perfect ? 90 : 40);
@@ -635,7 +635,7 @@
         }
         ctx.closePath();
         ctx.stroke();
-        U.text(ctx, f.def.name, L ? bx + 2 : bx + bw - 2, by + bh + 17, { size: 21, align: L ? 'left' : 'right' });
+        U.text(ctx, f.def.name, L ? bx + 2 : bx + bw - 2, by + bh + 17, { maxWidth: 300, size: 21, align: L ? 'left' : 'right' });
 
         // ability meter
         const m = f.meter();

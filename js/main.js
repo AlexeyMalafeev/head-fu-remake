@@ -15,6 +15,7 @@
     init() {
       this.canvas = document.getElementById('game');
       this.ctx = this.canvas.getContext('2d');
+      HF.setLanguage(HF.settings.language);
       this.resize();
       window.addEventListener('resize', () => this.resize());
       HF.Input.init(this.canvas);

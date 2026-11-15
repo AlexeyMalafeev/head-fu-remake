@@ -7,6 +7,12 @@ codename shared by all of its releases.
 
 ## [Unreleased]
 
+### Added
+- **Russian language**: choose English or Русский in Options. Menus, controls,
+  fighter names and moves, story dialogue, battle messages and credits are
+  translated, with Cyrillic fonts and a saved language preference.
+- Translation checks cover the roster, stages, story, saved language and text layout.
+
 ### Changed
 - **Head-Fu Rebound** is the new name, shown on the title screen, in the
   credits, in the browser tab and on the Android app.

@@ -20,7 +20,7 @@ Open `index.html` in a browser. Or serve the folder and open http://localhost:87
 python3 -m http.server 8731
 ```
 
-The two display fonts load from Google Fonts. Offline, the game falls back to system fonts.
+The English and Russian fonts load from Google Fonts. Offline, the game falls back to system fonts.
 
 ## Android
 
@@ -61,7 +61,9 @@ Gamepads work too (first pad is player 1). Esc or P pauses. Menus also work with
 - **Story mode**: Kenji's quest to overturn the Emperor's ban on hats. Six fights with cutscenes between them, ending with the final boss, Emperor Megadome, who has a spiked helmet you must not stomp and a rage mode at half health. Beating the story unlocks the Emperor for versus play.
 - **VS CPU**: pick both fighters, a stage and a difficulty (easy, normal, hard).
 - **VS Player 2**: two players on one keyboard, one touchscreen (split on-screen buttons) or two gamepads.
-- **Options**: music and sound volume, round time (30–99 s), single round or best of 3/5, fullscreen.
+- **Options**: language (English or Русский), music and sound volume, round time (30–99 s), single round or best of 3/5, fullscreen.
+
+Choose **Options → Language / Язык → Русский** for the full Russian translation: menus, controls, fighters and their moves, story dialogue, battle messages and credits. The language changes immediately and is saved with your settings. English is the default; existing settings and fighter unlocks are preserved.
 
 ## Fighters
 
@@ -80,6 +82,7 @@ Gamepads work too (first pad is player 1). Esc or P pauses. Menus also work with
 ```
 index.html        loads the scripts below in order
 js/util.js        constants, math and drawing helpers, saved settings
+js/i18n.js        Russian translation catalog, language selection and message formatting
 js/input.js       keyboard, gamepad, pointer and multi-touch controls
 js/audio.js       Web Audio synth voices and all sound effects
 js/music.js       the soundtrack (9 original tracks in a text notation) and its sequencer
@@ -105,6 +108,7 @@ On macOS, `./tests/run-tests.sh` runs headless checks with the built-in JavaScri
 
 1. every song has whole bars and channels of matching length;
 2. multi-touch, pointer cancellation, pause, mouse and keyboard input;
-3. AI-vs-AI simulations that report how each difficulty fares against the others, each fighter's win rate against the roster, and how the final boss fares against computer Kenjis of different skill.
+3. Russian translation coverage, saved language, message formatting, fonts and translation before text wrapping and dialogue animation;
+4. AI-vs-AI simulations that report how each difficulty fares against the others, each fighter's win rate against the roster, and how the final boss fares against computer Kenjis of different skill.
 
 Use these numbers when changing stats in `js/fighters.js` or AI settings in `js/ai.js`.
