@@ -478,7 +478,7 @@
 
   // ----------------------------- credits -----------------------------
   const CREDITS = [
-    ['HEAD-FU', 64, '#ffe14d'],
+    ['HEAD-FU REBOUND', 64, '#ffe14d'],
     ['The Way of the Noggin', 26, '#ffd6f0'],
     ['', 30],
     ['STARRING', 30, '#7bdff2'],

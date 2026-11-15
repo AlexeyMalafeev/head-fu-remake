@@ -73,7 +73,8 @@
       ctx.fillStyle = g;
       ctx.fillRect(0, 0, W, H);
       HF.UI.logo(ctx, W / 2, 130, 118, this.t);
-      U.text(ctx, '~ THE WAY OF THE NOGGIN ~', W / 2, 212, { size: 24, color: '#ffd6f0', lw: 5 });
+      U.text(ctx, 'REBOUND', W / 2, 191, { size: 48, color: '#ffe14d', lw: 8 });
+      U.text(ctx, '~ THE WAY OF THE NOGGIN ~', W / 2, 235, { size: 22, color: '#ffd6f0', lw: 5 });
       if (!this.ready) {
         if (Math.floor(this.t * 2) % 2 === 0) U.text(ctx, HF.Input.touch.enabled ? 'TAP TO START' : 'PRESS ANY KEY', W / 2, 360, { size: 40, color: '#fff' });
         U.text(ctx, 'sound on for the full experience', W / 2, 410, { size: 18, display: false, color: '#d8d0f0', lw: 4 });

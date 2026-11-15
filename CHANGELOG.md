@@ -1,11 +1,15 @@
 # Changelog
 
-All notable changes to Head-Fu Remake are documented here. Format loosely follows
+All notable changes to Head-Fu Rebound are documented here. Format loosely follows
 [Keep a Changelog](https://keepachangelog.com/); versions follow
 [semantic versioning](https://semver.org/), and every major version has a
 codename shared by all of its releases.
 
 ## [Unreleased]
+
+### Changed
+- **Head-Fu Rebound** is the new name, shown on the title screen, in the
+  credits, in the browser tab and on the Android app.
 
 ## [v1.0.0 "Head Start"] — 2026-10-30
 

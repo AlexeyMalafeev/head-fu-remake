@@ -1,4 +1,4 @@
-# Head-Fu Remake Backlog
+# Head-Fu Rebound Backlog
 
 Open work, ordered roughly by priority within each section (higher first).
 Fixed or shipped entries move to `CHANGELOG.md` and are pruned from here.

@@ -1,4 +1,4 @@
-# Head-Fu Remake — The Way of the Noggin
+# Head-Fu Rebound — The Way of the Noggin
 
 A remake of the lost Flash game *Head-Fu*: two comic anime heads with no bodies, fighting by jumping on each other's heads.
 
