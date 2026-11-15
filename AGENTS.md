@@ -47,6 +47,30 @@ browser preview, including a phone-sized landscape viewport for touch.
 When adding a script file, add it to `index.html` in load order, and to
 `tests/run-tests.sh` if the headless checks need it.
 
+## Building and installing the Android app
+
+`README.md` is for players: direct them to release APKs and explain how to
+play. Keep SDK setup, shell commands, project layout and testing details in
+this file rather than adding them to the README.
+
+Build with JDK 17 and Android SDK platform 34. Set `ANDROID_HOME` if the SDK
+is outside Android Studio's default location:
+
+```bash
+cd android
+./gradlew assembleDebug
+```
+
+The APK is written to `android/app/build/outputs/apk/debug/app-debug.apk`.
+From the repository root, install it on a connected test device with:
+
+```bash
+"${ANDROID_HOME:-$HOME/Library/Android/sdk}/platform-tools/adb" install -r android/app/build/outputs/apk/debug/app-debug.apk
+```
+
+The Gradle build syncs `index.html` and `js/` into the APK automatically;
+never copy web files into `android/` by hand.
+
 ## Android tools on the development Mac
 
 Verified on 2026-11-15: the Android SDK, `adb` (Android Debug Bridge) and

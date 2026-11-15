@@ -2,7 +2,7 @@
 
 A remake of the lost Flash game *Head-Fu*: two comic anime heads with no bodies, fighting by jumping on each other's heads.
 
-Plain HTML5 canvas and JavaScript. No build step, no dependencies. Graphics are drawn in code, and all music and sound effects are synthesized live with the Web Audio API.
+Play in a browser or on Android, with keyboard, gamepad or touch controls.
 
 ## History
 
@@ -12,49 +12,18 @@ It never left my computer: there was no repository and no copy online. Around 20
 
 This remake rebuilds it from memory. The code, drawings, characters, story and music are all new. It keeps the core idea, two heads stomping each other, and adds what the original never had: a roster of fighters with special moves, a story mode, computer opponents, gamepad and touch controls, and an Android app. This time it lives in git.
 
-## Run it
+## Play in a browser
 
-Open `index.html` in a browser. Or serve the folder and open http://localhost:8731:
-
-```bash
-python3 -m http.server 8731
-```
-
-The English and Russian fonts load from Google Fonts. Offline, the game falls back to system fonts.
+Download the source code and open `index.html` in a browser.
+The game uses Google Fonts when online and system fonts when offline.
 
 ## Android
 
-The `android/` directory contains a native landscape app that packages the same HTML and JavaScript in a `WebView`. Fights have multi-touch controls: one set of buttons in solo fights, and two sets in two-player fights, so two people can share one phone or tablet (player 1 uses the buttons on the left, player 2 the ones on the right). Android Back or the on-screen pause button pauses the game, and so does switching away from the app. The volume keys control the game's volume. Gamepads work too.
+Download the `.apk` file attached to a [GitHub release](https://github.com/AlexeyMalafeev/head-fu-remake/releases), open it on your Android phone or tablet, and follow the installation prompts. If Android asks, allow installation from the browser or file manager you used to open the APK.
 
-Build the installable debug APK with JDK 17 and the Android SDK (platform 34) installed. Set `ANDROID_HOME` if the SDK is not in Android Studio's default location:
+The app plays in landscape with on-screen touch controls. Two people can share one phone or tablet: player 1 uses the buttons on the left, and player 2 uses the buttons on the right. Gamepads work too.
 
-```bash
-cd android
-./gradlew assembleDebug
-```
-
-The APK is written to `android/app/build/outputs/apk/debug/app-debug.apk`. To install it on a connected device with USB debugging enabled:
-
-```bash
-adb install -r android/app/build/outputs/apk/debug/app-debug.apk
-```
-
-Run that `adb` command from the repository root. The Android build automatically syncs `index.html` and `js/`, so no duplicate web assets need to be edited.
-
-On macOS, if `adb` is not found, check Android Studio's default SDK location
-before installing anything or changing permissions:
-
-```bash
-"${ANDROID_HOME:-$HOME/Library/Android/sdk}/platform-tools/adb" devices -l
-```
-
-You can use the same full path in place of `adb` in the installation command.
-An empty device list means no phone or running emulator is visible. For a
-phone, enable **Settings → Developer options → USB debugging** and accept
-its debugging authorization prompt after connecting by USB. For an
-emulator, open **Android Studio → Tools → Device Manager** and start a
-virtual device. Standard ADB connections require no additional macOS
-configuration. See the [Android device setup guide](https://developer.android.com/studio/run/device).
+Press Android Back or the on-screen pause button to pause. The game also pauses when you switch to another app. Use the volume keys to adjust the volume.
 
 ## How to play
 
@@ -92,38 +61,4 @@ Choose **Options → Language / Язык → Русский** for the full Russi
 | Bao | Bouncy | **Spring Bun**: hold to charge a mega jump; stomps bounce off him while charging |
 | Emperor Megadome | Biggest head, unlockable | **Royal Rage**: fireball on the ground, ground pound in the air |
 
-## Project layout
-
-```
-index.html        loads the scripts below in order
-js/util.js        constants, math and drawing helpers, saved settings
-js/i18n.js        Russian translation catalog, language selection and message formatting
-js/input.js       keyboard, gamepad, pointer and multi-touch controls
-js/audio.js       Web Audio synth voices and all sound effects
-js/music.js       the soundtrack (9 original tracks in a text notation) and its sequencer
-js/fighters.js    roster: stats, abilities, quotes
-js/faces.js       head drawing for every character and the facial-expression library
-js/fx.js          particles, comic hit words, screen shake
-js/stages.js      six stage backgrounds and their ambient particles
-js/fighter.js     one fighter's physics, abilities and mood
-js/battle.js      a fight's simulation: collisions, stomps, clashes, projectiles
-js/ai.js          computer opponent (reaction delay and skill set by difficulty)
-js/ui.js          menus, panels, logo
-js/match.js       fight scene: rounds, timer, HUD, effects, pause
-js/scenes.js      title, fighter select, results, options, how-to-play
-js/story.js       story script, cutscenes, continue screen, credits
-js/main.js        canvas scaling, main loop, scene transitions
-android/          native Android WebView app and Gradle build
-tests/            headless checks (see below)
-```
-
-## Tests
-
-On macOS, `./tests/run-tests.sh` runs headless checks with the built-in JavaScriptCore shell (nothing to install):
-
-1. every song has whole bars and channels of matching length;
-2. multi-touch, pointer cancellation, pause, mouse and keyboard input;
-3. Russian translation coverage, saved language, message formatting, fonts and translation before text wrapping and dialogue animation;
-4. AI-vs-AI simulations that report how each difficulty fares against the others, each fighter's win rate against the roster, and how the final boss fares against computer Kenjis of different skill.
-
-Use these numbers when changing stats in `js/fighters.js` or AI settings in `js/ai.js`.
+For development, build and testing instructions, see [AGENTS.md](AGENTS.md).
