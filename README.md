@@ -41,6 +41,21 @@ adb install -r android/app/build/outputs/apk/debug/app-debug.apk
 
 Run that `adb` command from the repository root. The Android build automatically syncs `index.html` and `js/`, so no duplicate web assets need to be edited.
 
+On macOS, if `adb` is not found, check Android Studio's default SDK location
+before installing anything or changing permissions:
+
+```bash
+"${ANDROID_HOME:-$HOME/Library/Android/sdk}/platform-tools/adb" devices -l
+```
+
+You can use the same full path in place of `adb` in the installation command.
+An empty device list means no phone or running emulator is visible. For a
+phone, enable **Settings → Developer options → USB debugging** and accept
+its debugging authorization prompt after connecting by USB. For an
+emulator, open **Android Studio → Tools → Device Manager** and start a
+virtual device. Standard ADB connections require no additional macOS
+configuration. See the [Android device setup guide](https://developer.android.com/studio/run/device).
+
 ## How to play
 
 - Land on the other head to damage it. Falling from higher hits harder.

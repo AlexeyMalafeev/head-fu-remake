@@ -47,6 +47,35 @@ browser preview, including a phone-sized landscape viewport for touch.
 When adding a script file, add it to `index.html` in load order, and to
 `tests/run-tests.sh` if the headless checks need it.
 
+## Android tools on the development Mac
+
+Verified on 2026-11-15: the Android SDK, `adb` (Android Debug Bridge) and
+emulator executable are installed under `$HOME/Library/Android/sdk`. `adb`
+was not on the shell's `PATH`; a failed `command -v adb` does not mean the
+tool is missing or that macOS access was denied.
+
+Before reporting that Android testing is blocked, check `ANDROID_HOME` and
+Android Studio's default SDK location. Use the installed tools directly:
+
+```bash
+"${ANDROID_HOME:-$HOME/Library/Android/sdk}/platform-tools/adb" devices -l
+"${ANDROID_HOME:-$HOME/Library/Android/sdk}/emulator/emulator" -list-avds
+```
+
+An empty device list means no phone or running emulator is visible to ADB;
+it is not evidence of a missing Mac permission. An installed emulator
+executable also does not guarantee that a virtual device is configured.
+Recheck these conditions each session rather than assuming the last result
+still applies.
+
+For a physical phone, connect it by USB, enable **Settings → Developer
+options → USB debugging** on the phone, and have the user accept the phone's
+debugging authorization prompt. For an emulator, use **Android Studio →
+Tools → Device Manager** to create or start a virtual device. macOS needs
+no additional configuration for the standard ADB device connection; do not
+request broad Mac permissions to fix a missing command path. See the
+[official Android device setup guide](https://developer.android.com/studio/run/device).
+
 ## Layout
 
 ```
