@@ -22,6 +22,8 @@ The title screen shows the version and release codename in the bottom-right corn
 
 Download the `.apk` file attached to a [GitHub release](https://github.com/AlexeyMalafeev/head-fu-remake/releases), open it on your Android phone or tablet, and follow the installation prompts. If Android asks, allow installation from the browser or file manager you used to open the APK.
 
+The Android app icon shows red-headband Kenji landing a stomp on pink-haired Momo.
+
 The app plays in landscape with on-screen touch controls. Two people can share one phone or tablet: player 1 uses the buttons on the left, and player 2 uses the buttons on the right. Gamepads work too.
 
 Press Android Back or the on-screen pause button to pause. The game also pauses when you switch to another app. Use the volume keys to adjust the volume.

@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <group
+        android:pivotX="54"
+        android:pivotY="54"
+        android:scaleX="0.87"
+        android:scaleY="0.87">
+        <!-- Momo recoils underneath Kenji. -->
+        <group
+            android:pivotX="61"
+            android:pivotY="68"
+            android:rotation="12">
+            <path
+                android:fillColor="#D5489A"
+                android:strokeColor="#231637"
+                android:strokeWidth="2.5"
+                android:pathData="M46,65C39,64 39,55 45,53C50,51 54,55 52,60ZM70,60C68,54 76,51 80,55C85,60 80,66 75,66Z" />
+            <path
+                android:fillColor="#FFBEC4"
+                android:strokeColor="#231637"
+                android:strokeWidth="2.5"
+                android:pathData="M45,65C48,57 56,55 63,56C73,56 80,62 79,70C78,79 70,83 61,83C51,83 43,78 43,71C43,69 44,67 45,65Z" />
+            <path
+                android:fillColor="#F47F9E"
+                android:pathData="M44.5,72C47,77 52,80 61,80C69,80 74,77 77.5,73C76,78 70,81.8 61,81.8C51,81.8 45,77.5 44.5,72Z" />
+            <path
+                android:fillColor="#F36BB0"
+                android:strokeColor="#231637"
+                android:strokeLineJoin="round"
+                android:strokeWidth="1.8"
+                android:pathData="M45,68C44,61 51,55 61,55C70,54.8 78,58 79,67L74,65L72,68L67,63L62,68L58,63L52,68L51,65L45,70Z" />
+            <path
+                android:strokeColor="#231637"
+                android:strokeLineCap="round"
+                android:strokeLineJoin="round"
+                android:strokeWidth="2"
+                android:pathData="M51,70L55,72L51,74M71,70L67,72L71,74" />
+            <path
+                android:fillColor="#231637"
+                android:pathData="M58,75Q61,71 64,75Q65,79 61,79Q57,79 58,75Z" />
+        </group>
+
+        <!-- Kenji leads with the chin, with the headband trailing behind. -->
+        <group
+            android:pivotX="50"
+            android:pivotY="41"
+            android:rotation="14">
+            <path
+                android:fillColor="#D9465E"
+                android:strokeColor="#231637"
+                android:strokeLineJoin="round"
+                android:strokeWidth="2.1"
+                android:pathData="M36,39C25,42 20,36 21,31C28,36 30,31 38,34L37,38C28,39 25,48 19,45C23,44 23,38 29,37Z" />
+            <path
+                android:fillColor="#FFD59B"
+                android:strokeColor="#231637"
+                android:strokeWidth="2.6"
+                android:pathData="M34,41C34,31 41,26 50,26C61,25 69,31 69,41C69,50 62,57 52,58C42,58 34,52 34,41Z" />
+            <path
+                android:fillColor="#F3A46F"
+                android:pathData="M35.4,42C37,49 43,54 52,54C59,54 64,51 67,46C65,52 60,56.6 52,56.7C43,56.7 36,51 35.4,42Z" />
+            <path
+                android:fillColor="#363054"
+                android:strokeColor="#231637"
+                android:strokeLineJoin="round"
+                android:strokeWidth="2.2"
+                android:pathData="M34,38L29,29L36,30L33,21L43,25L46,18L52,24L59,19L61,25L69,23L67,30L73,32L68,39Z" />
+            <path
+                android:fillColor="#645478"
+                android:pathData="M37,26L44,28L46.5,23L50,28L56,26L52,31L40,33Z" />
+            <path
+                android:fillColor="#F65769"
+                android:strokeColor="#231637"
+                android:strokeLineJoin="round"
+                android:strokeWidth="1.8"
+                android:pathData="M34,34Q50,29 68,32L70,38Q53,36 35,41Z" />
+            <path
+                android:fillColor="#FFF1C9"
+                android:pathData="M58,33L60,34.5L58,36.5L56,35Z" />
+            <path
+                android:fillColor="#231637"
+                android:pathData="M41,42L49,44Q47,49 44,48Q42,47 41,42ZM54,44L63,40Q63,46 59,47Q57,48 54,44ZM49,51Q55,52 59,48Q58,55 52,54Z" />
+        </group>
+
+        <path
+            android:fillColor="#FFC764"
+            android:strokeColor="#231637"
+            android:strokeLineJoin="round"
+            android:strokeWidth="1.5"
+            android:pathData="M44,52L47,56L52,56L49,60L50,65L45,63L40,66L41,60L37,57L42,56Z" />
+        <path
+            android:fillColor="#FFF1C9"
+            android:pathData="M44.5,56L46,58.5L48,59L46,60L45.5,62L44,60.5L42,61L43,59Z" />
+        <path
+            android:strokeColor="#FFC764"
+            android:strokeLineCap="round"
+            android:strokeWidth="1.8"
+            android:pathData="M34,60L31,61M38,67L36,70M77,47L80,43" />
+    </group>
+</vector>

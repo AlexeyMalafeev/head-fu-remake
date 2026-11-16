@@ -7,6 +7,11 @@ codename shared by all of its releases.
 
 ## [Unreleased]
 
+### Changed
+
+- **New Android app icon** showing Kenji landing a stomp on Momo. The icon
+  also follows your launcher’s shape and supports themed colors.
+
 ## [v1.1.0 "Head Start"] — 2026-11-15
 
 ### Added
