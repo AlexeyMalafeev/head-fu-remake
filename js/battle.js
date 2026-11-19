@@ -6,6 +6,8 @@
   const U = HF.U;
 
   const STOMP_WORDS = ['BONK!', 'WHAM!', 'POW!', 'SQUISH!', 'BOP!', 'THWOMP!'];
+  const HAT_ARM = 0.32;
+  const HAT_LIFE = 3.2;
 
   class Battle {
     // cfg: { defs: [defA, defB], boss: [bool, bool], hp: [num?, num?], armor: [num?, num?] }
@@ -30,6 +32,7 @@
       this.f[0].reset(HF.W * 0.27, 1);
       this.f[1].reset(HF.W * 0.73, -1);
       this.proj = [];
+      this.hats = [null, null];
       this.events.length = 0;
     }
 
@@ -47,6 +50,32 @@
       this.f[1].update(dt, inputs[1], this);
       this.updateProj(dt);
       this.collide();
+      this.updateHats(dt);
+    }
+
+    plantHat(f) {
+      const x = U.clamp(f.x + f.facing * (f.r + 15), HF.ARENA_L + 24, HF.ARENA_R - 24);
+      this.hats[f.side] = { x, age: 0, armed: false, life: HAT_LIFE };
+      this.emit('hatPlant', { f, x, y: HF.GROUND });
+    }
+
+    updateHats(dt) {
+      for (const owner of this.f) {
+        const hat = this.hats[owner.side];
+        if (!hat) continue;
+        hat.age += dt;
+        const target = this.other(owner);
+        if (!this.active || hat.age >= hat.life || owner.ko || target.ko) {
+          this.hats[owner.side] = null;
+        } else if (hat.age >= HAT_ARM) {
+          hat.armed = true;
+          if (target.onGround && target.canAct() && target.invulnT <= 0 && Math.abs(target.x - hat.x) < 25 + target.r * 0.4) {
+            this.hats[owner.side] = null;
+            target.popFromHat();
+            this.emit('hatPop', { f: target, x: hat.x, y: HF.GROUND });
+          }
+        }
+      }
     }
 
     // ---------- projectiles ----------

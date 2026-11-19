@@ -33,8 +33,8 @@ Fixed or shipped entries move to `CHANGELOG.md` and are pruned from here.
    how hold-to-charge specials (Bao's Spring Bun, Sensei Fuzz's
    Brow-copter) map to gestures, and where the player picks the scheme
    (Options). Add cases to `tests/input-check.js`.
-3. **Expand the roster to at least 10 fighters.** Today there are six
-   playable heads plus the boss, Emperor Megadome. Every new head needs a
+3. **Expand the roster to at least 10 fighters.** Today there are seven
+   regular fighters plus the boss, Emperor Megadome. Every new head needs a
    unique special, a face in `js/faces.js`, quotes, a place in the story and
    fighter select (the select screen layout must fit 10 or more), and a
    balance pass with the simulations.

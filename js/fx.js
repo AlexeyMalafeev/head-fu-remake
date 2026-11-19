@@ -180,6 +180,13 @@
           ctx.rotate(p.rot);
           ctx.fillRect(-p.r, -p.r * 0.4, p.r * 2, p.r * 0.8);
           ctx.restore();
+        } else if (p.kind === 'hat') {
+          ctx.save();
+          ctx.translate(p.x, p.y);
+          ctx.rotate(p.rot);
+          ctx.translate(0, p.r * 0.75);
+          HF.drawNoriHat(ctx, p.r);
+          ctx.restore();
         } else if (p.kind === 'ghost') {
           ctx.globalAlpha = 0.35 * (1 - k);
           ctx.beginPath();

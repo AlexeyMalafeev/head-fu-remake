@@ -5,7 +5,7 @@
   const U = HF.U;
   const NONE = { left: false, right: false, jump: false, special: false };
 
-  const COOLDOWN = { dash: 1.0, pound: 1.8, frost: 2.0, royal: 2.2 };
+  const COOLDOWN = { dash: 1.0, pound: 1.8, frost: 2.0, hat: 4.2, royal: 2.2 };
   const POUND_SPEED = 1650;
   const DASH_SPEED = 820;
 
@@ -37,6 +37,7 @@
       this.ko = false;
       this.result = null;
       this.hurtT = this.stunT = this.frozenT = this.invulnT = 0;
+      this.hatPopped = false;
       this.cool = 0;
       this.dashT = 0;
       this.dashDir = 1;
@@ -72,7 +73,7 @@
     }
 
     canAct() {
-      return !this.ko && !this.result && this.hurtT <= 0 && this.stunT <= 0 && this.frozenT <= 0;
+      return !this.ko && !this.result && !this.hatPopped && this.hurtT <= 0 && this.stunT <= 0 && this.frozenT <= 0;
     }
 
     setEmote(name, dur) {
@@ -264,6 +265,12 @@
             b.spawnProj(this, 'frost');
           }
           break;
+        case 'hat':
+          if (act && sp && onG && this.cool <= 0 && b.active) {
+            b.plantHat(this);
+            this.cool = COOLDOWN.hat;
+          }
+          break;
         case 'spring':
           if (this.state === 'charge') {
             if (!act || !onG) {
@@ -370,6 +377,17 @@
       b.emit('poundStart', { f: this });
     }
 
+    popFromHat() {
+      this.hatPopped = true;
+      this.onGround = false;
+      this.jumpCut = true;
+      this.jumpBuf = this.coyote = this.vx = 0;
+      this.vy = -280;
+      this.state = 'idle';
+      this.charge = 0;
+      this.queuedPound = false;
+    }
+
     land(b) {
       const impact = this.vy;
       if (this.ko && impact > 260) {
@@ -386,6 +404,11 @@
       this.jumpCut = false;
       this.gliding = false;
       this.spinT = 0;
+      if (this.hatPopped) {
+        this.hatPopped = false;
+        this.stunT = Math.max(this.stunT, 1);
+        b.emit('hatStun', { f: this, x: this.x, y: this.y });
+      }
       const amt = U.clamp(impact / 2600, 0.05, 0.38);
       this.sy = 1 - amt;
       this.sx = 1 + amt * 0.8;
@@ -398,6 +421,7 @@
     // Take damage. Returns false if the hit was ignored (invulnerable, KO'd or round over).
     hit(dmg, o, b) {
       if (this.ko || this.result || this.invulnT > 0) return false;
+      this.hatPopped = false;
       this.hp = Math.max(0, this.hp - dmg);
       this.hurtT = o.hurt != null ? o.hurt : 0.32;
       this.invulnT = o.invuln != null ? o.invuln : 0.85;
@@ -488,6 +512,7 @@
       if (this.result === 'draw') return 'shock';
       if (this.frozenT > 0) return 'frozen';
       if (this.stunT > 0) return 'stun';
+      if (this.hatPopped) return 'shock';
       if (this.hurtT > 0) return 'hurt';
       if (this.emoteT > 0 && this.emote) return this.emote;
       if (this.state === 'charge') return 'charge';

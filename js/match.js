@@ -382,6 +382,20 @@
             fx.stars(e.x, e.y, 3);
             A.play('spring', 0.4);
             break;
+          case 'hatPlant':
+            fx.dust(e.x, e.y, 4);
+            A.play('bump');
+            break;
+          case 'hatPop':
+            fx.add({ kind: 'hat', x: e.x, y: e.y - 10, vx: 85, vy: -190, g: 560, vr: 14, r: 20, life: 0.43 });
+            fx.ring(e.x, e.y - 8, '#b9e27f', 54, 0.3);
+            fx.stars(e.x, e.y - 20, 5);
+            fx.word(e.x, e.f.y - e.f.r - 20, 'POP!', { color: '#b9e27f', size: 32 });
+            A.play('spring', 0.55);
+            break;
+          case 'hatStun':
+            fx.word(e.x, e.y - e.f.r - 26, 'DIZZY!', { color: '#ffe14d', size: 25, burst: false });
+            break;
           case 'glide':
             A.play('flap', null, 0.1);
             break;
@@ -433,6 +447,9 @@
         ctx.ellipse(f.x, HF.GROUND + 3, f.r * 0.95 * s, f.r * 0.2 * s, 0, 0, TAU);
         ctx.fill();
       }
+      this.battle.hats.forEach((hat, side) => {
+        if (hat) this.drawHat(ctx, hat, P_COLORS[side]);
+      });
       for (const p of this.battle.proj) this.drawProj(ctx, p);
       const order = fs.slice().sort((a, b) => b.y - a.y);
       for (const f of order) this.drawFighter(ctx, f);
@@ -451,6 +468,36 @@
       }
       if (this.paused) this.drawPause(ctx);
       HF.Input.drawTouchControls(ctx);
+    }
+
+    drawHat(ctx, hat, color) {
+      const x = hat.x, y = HF.GROUND;
+      ctx.save();
+      ctx.translate(x, y);
+      ctx.globalAlpha = Math.min(1, (hat.life - hat.age) / 0.35);
+      ctx.beginPath();
+      ctx.ellipse(0, 0, 30, 8, 0, 0, TAU);
+      ctx.fillStyle = hat.armed ? 'rgba(185,226,127,0.57)' : 'rgba(30,20,35,0.45)';
+      ctx.fill();
+      ctx.strokeStyle = color;
+      ctx.lineWidth = 2;
+      ctx.stroke();
+      // Keep the warning above the on-screen buttons, which can cover the floor.
+      ctx.beginPath();
+      ctx.moveTo(-8, -82);
+      ctx.lineTo(0, -74);
+      ctx.lineTo(8, -82);
+      ctx.lineJoin = ctx.lineCap = 'round';
+      ctx.strokeStyle = HF.OUTLINE;
+      ctx.lineWidth = 6;
+      ctx.stroke();
+      ctx.strokeStyle = hat.armed ? '#b9e27f' : '#e8bb61';
+      ctx.lineWidth = 3;
+      ctx.stroke();
+      ctx.translate(0, 4);
+      if (!hat.armed) ctx.rotate(Math.sin(hat.age * 65) * 0.13);
+      HF.drawNoriHat(ctx, 22);
+      ctx.restore();
     }
 
     drawFighter(ctx, f) {

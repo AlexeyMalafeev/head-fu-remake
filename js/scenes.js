@@ -87,8 +87,8 @@
   }
 
   // ======================= FIGHTER SELECT =======================
-  const COLS = 4;
-  const CARD = 66;
+  const COLS = 5;
+  const CARD = 54;
 
   function cardPos(k) {
     const col = k % COLS, row = Math.floor(k / COLS);
@@ -307,13 +307,14 @@
       this.drawSide(ctx, 1);
 
       if (this.phase === 'pick') {
-        U.text(ctx, 'VS', W / 2, 282, { size: 44, color: '#ff4d6d' });
+        const shift = Math.max(0, Math.ceil(this.n / COLS) - 2) * (CARD + 12);
+        U.text(ctx, 'VS', W / 2, 282 + shift, { size: 44, color: '#ff4d6d' });
         const lines = HF.Input.touch.enabled
           ? [this.mode === '2p' ? (this.picked[0] == null ? 'Player 1, pick your fighter' : 'Player 2, pick your fighter') : this.picked[0] == null ? 'Pick your fighter' : 'Now pick your opponent', 'TAP A FIGHTER TO PICK']
           : this.mode === '2p'
             ? ['P1:  WASD  +  SPACE to pick', 'P2:  ARROWS  +  ENTER to pick']
             : [this.picked[0] == null ? 'Pick your fighter' : 'Now pick your opponent', 'ARROWS / WASD  +  ENTER'];
-        lines.forEach((s, i) => U.text(ctx, s, W / 2, 345 + i * 28, { size: 19, display: false, weight: 700, lw: 5, color: i === 0 && (this.mode !== '2p' || HF.Input.touch.enabled) ? '#ffe14d' : '#fff' }));
+        lines.forEach((s, i) => U.text(ctx, s, W / 2, 345 + shift + i * 28, { size: 19, display: false, weight: 700, lw: 5, color: i === 0 && (this.mode !== '2p' || HF.Input.touch.enabled) ? '#ffe14d' : '#fff' }));
         U.text(ctx, HF.Input.touch.enabled ? 'BACK to go back' : 'ESC to go back', W / 2, 505, { size: 15, display: false, color: '#cfc6ea', lw: 4 });
       } else if (this.phase === 'difficulty') {
         U.text(ctx, 'CPU DIFFICULTY', W / 2, 305, { size: 28 });
@@ -368,10 +369,10 @@
       if (isRandom) U.text(ctx, '?', c.x, c.y + 3, { size: 46, color: '#ffe14d' });
       else if (open) {
         const hover = this.cur[0] === k || this.cur[1] === k;
-        const r = 24 * Math.sqrt(46 / f.stats.radius);
+        const r = 19 * Math.sqrt(46 / f.stats.radius);
         HF.drawHead(ctx, f.id, { x: c.x, y: c.y + 8, r, facing: 1, expr: hover ? 'happy' : 'idle', t: this.t + k });
       } else {
-        HF.drawHead(ctx, f.id, { x: c.x, y: c.y + 8, r: 22, facing: 1, expr: 'smug', t: this.t, alpha: 0.25 });
+        HF.drawHead(ctx, f.id, { x: c.x, y: c.y + 8, r: 19, facing: 1, expr: 'smug', t: this.t, alpha: 0.25 });
         U.text(ctx, '?', c.x, c.y + 4, { size: 40, color: '#8a83a0' });
       }
       ctx.restore();
@@ -688,7 +689,7 @@
         const x = 60 + col * 300, y = 404 + row * 40;
         HF.drawHead(ctx, f.id, { x, y, r: 15, facing: 1, expr: 'happy', t: this.t + i });
         U.text(ctx, HF.t(f.name).split(' ')[0] + ': ' + HF.t(f.abilityName), x + 24, y - 6, { maxWidth: 256, size: 15, display: false, weight: 700, align: 'left', lw: 4, color: f.color });
-        const short = { airjump: 'jump again in the air', dash: 'untouchable side dash', pound: 'ground pound + shockwave', glide: 'hold to hover', frost: 'freezing snowflake', spring: 'hold & release: mega jump', royal: 'fireball / ground pound' }[f.ability];
+        const short = { airjump: 'jump again in the air', dash: 'untouchable side dash', pound: 'ground pound + shockwave', glide: 'hold to hover', frost: 'freezing snowflake', spring: 'hold & release: mega jump', hat: 'plant a hat that stuns on landing', royal: 'fireball / ground pound' }[f.ability];
         U.text(ctx, short, x + 24, y + 11, { maxWidth: 256, size: 13, display: false, weight: 600, align: 'left', lw: 3 });
       });
       U.text(ctx, HF.Input.touch.enabled ? 'tap anywhere to go back' : 'press any key to go back', W / 2, 524, { size: 15, display: false, color: '#cfc6ea', lw: 4 });

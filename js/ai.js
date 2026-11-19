@@ -71,6 +71,7 @@
     // What the AI "sees": the opponent as it was `reaction` seconds ago.
     observe() {
       const o = this.b.other(this.me);
+      const hat = this.b.hats[o.side];
       this.hist.push({
         t: this.now,
         x: o.x,
@@ -82,6 +83,8 @@
         onGround: o.onGround,
         invuln: o.invulnT > 0.1 && o.state !== 'dash',
         helpless: o.frozenT > 0 || o.stunT > 0,
+        hat: hat && hat.x,
+        hatPopped: o.hatPopped,
         spikes: o.spikeT > 0 || !!o.spikeWarn,
         ko: o.ko,
       });
@@ -224,7 +227,18 @@
           this.groundAbility(o, adx, dir, true);
           return;
         }
+        if (o.hat != null && Math.abs(o.hat - me.x) < 115 && (o.hat - me.x) * dx > 0 && U.chance(p.dodge)) {
+          this.jump(0.37);
+          this.targetX = o.hat + dir * (me.r + 48);
+          return;
+        }
         const win = this.jumpWindow(o);
+        if (me.ability === 'hat' && (o.hatPopped || o.helpless) && win && adx < win.max && !o.invuln) {
+          this.jump(0.45);
+          this.noise = U.rand(-p.aim * 0.5, p.aim * 0.5);
+          this.targetX = o.x;
+          return;
+        }
         const aggr = o.helpless ? 1 : p.aggr;
         const canStrike = o.onGround || o.y > me.y - 30;
         if (canStrike && win && adx > win.min * 0.9 - (1 - p.range) * 40 && adx < win.max * p.range && !o.invuln && U.chance(aggr)) {
@@ -263,6 +277,18 @@
             return true;
           }
           break;
+        case 'hat': {
+          const distance = me.r + o.r;
+          const landing = this.landingX(o, HF.GROUND);
+          const closing = o.vx * dir < -50;
+          if (!defensive && me.cool <= 0 && !o.helpless && !o.invuln && adx < 250 &&
+              (closing || Math.abs(landing - me.x - dir * (me.r + 15)) < 80)) {
+            this.tapSpecial();
+            this.targetX = me.x - dir * distance;
+            return true;
+          }
+          break;
+        }
         case 'royal':
           if (me.cool <= 0 && !o.invuln && level < 90 && adx > 160) {
             this.tapSpecial();

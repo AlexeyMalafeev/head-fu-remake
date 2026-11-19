@@ -23,7 +23,7 @@ and the roster.
 
 ## Testing
 
-`./tests/run-tests.sh` runs five headless checks with the JavaScriptCore
+`./tests/run-tests.sh` runs six headless checks with the JavaScriptCore
 shell that ships with macOS (nothing to install). Run it
 after every change to game code:
 
@@ -36,7 +36,9 @@ after every change to game code:
    (`tests/i18n-check.js`).
 4. **Engineering**: game version and codename match the latest released
    changelog entry and Android version; seeded random values repeat.
-5. **Simulations** (`tests/sim.js`): AI-vs-AI fights that print the
+5. **Pop-Up Hat** (`tests/hat-check.js`): wind-up, contact, landing stun,
+   follow-up stomp and round reset for both player sides.
+6. **Simulations** (`tests/sim.js`): AI-vs-AI fights that print the
    difficulty ladder, each fighter's win rate against the roster at normal,
    and how the story's final boss fares against computer Kenjis of different
    skill. They also throw on a NaN position or a head below the floor.

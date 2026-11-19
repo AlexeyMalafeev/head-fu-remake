@@ -26,6 +26,7 @@
       {
         opp: 'momo',
         stage: 'dojo',
+        rank: 0,
         pre: [
           { who: 'momo', face: 'happy', text: "Halt! I'm Momo, the Emperor's fastest messenger!" },
           { who: 'momo', face: 'sparkle', text: "And his number one fan! I have his poster on my... um. I have a head." },
@@ -40,6 +41,7 @@
       {
         opp: 'bao',
         stage: 'market',
+        rank: 1,
         pre: [
           { who: 'bao', face: 'happy', text: "Welcome to the Lantern Market! I'm Bao. The Emperor's favorite snack." },
           { who: 'kenji', face: 'shock', text: "...You're a bun." },
@@ -50,11 +52,32 @@
           { who: 'bao', face: 'cry', text: "Ow... I'm just a little steamed." },
           { who: 'kenji', face: 'happy', text: "No hard feelings. You're very fluffy." },
           { who: 'bao', face: 'blush', text: '...Thank you.' },
+          { who: 'bao', face: 'smug', text: 'Need a way past the patrol? Ask Nori if he has anything in your soup size.' },
+        ],
+      },
+      {
+        opp: 'nori',
+        stage: 'market',
+        rank: 1.5,
+        pre: [
+          { who: 'kenji', face: 'think', text: 'Bao sent me. Do you have anything in my soup size?' },
+          { who: 'nori', face: 'smug', text: 'Welcome to Decorative Bowls. Try one on. I mean, try one out.' },
+          { who: 'kenji', face: 'shock', text: 'These are hats! You kept selling them after the ban?' },
+          { who: 'nori', face: 'worried', text: 'Shh! I used to sell hats. Now I sell bowls that look terrific upside down.' },
+          { who: 'kenji', face: 'focus', text: 'I’m taking that ban to the Emperor. Can you show me a way past his patrol?' },
+          { who: 'nori', face: 'smug', text: 'Show me you can handle a spring hat, and I’ll show you the back lane.' },
+          { who: 'narrator', text: 'Tip: jump clear of Nori’s floor hat. If it catches you, you’ll be dizzy when you land.' },
+        ],
+        post: [
+          { who: 'nori', face: 'stun', text: 'Free fitting. Some bouncing may occur.' },
+          { who: 'nori', face: 'happy', text: 'Take the back lane to the bamboo grove. And when hats are legal again, send me your grandma.' },
+          { who: 'kenji', face: 'smug', text: 'Deal. She’ll want to see your bowls.' },
         ],
       },
       {
         opp: 'sensei',
         stage: 'bamboo',
+        rank: 2,
         pre: [
           { who: 'sensei', face: 'calm', text: 'Kenji. My foolish student.' },
           { who: 'kenji', face: 'shock', text: 'Sensei Fuzz?! What are you doing here?' },
@@ -71,6 +94,7 @@
       {
         opp: 'yuki',
         stage: 'snow',
+        rank: 3,
         pre: [
           { who: 'yuki', face: 'focus', text: 'The palace lies beyond this pass. You will not reach it.' },
           { who: 'kenji', face: 'smug', text: 'Let me guess. The Emperor promised you something.' },
@@ -86,6 +110,7 @@
       {
         opp: 'gonta',
         stage: 'gate',
+        rank: 4,
         pre: [
           { who: 'gonta', face: 'focus', text: 'GONTA GUARD GATE.' },
           { who: 'kenji', face: 'worried', text: 'Gonta, please. I just need to talk to the Emperor.' },
@@ -158,8 +183,8 @@
       const c = STORY.chapters[this.ch];
       const base = HF.AI_LEVELS[this.diff];
       // Later opponents are a little sharper than early ones. The boss already has spikes,
-      // rage and a big health bar, so its reflexes are toned down (tuned with tests/run-sim.sh).
-      const skill = c.boss ? base - (this.diff === 'hard' ? 0.12 : 0.05) : U.clamp(base + (this.ch - 2.5) * 0.04, 0.05, 0.97);
+      // rage and a big health bar, so its reflexes are toned down.
+      const skill = c.boss ? base - (this.diff === 'hard' ? 0.12 : 0.05) : U.clamp(base + (c.rank - 2.5) * 0.04, 0.05, 0.97);
       HF.Game.go(
         new HF.MatchScene({
           mode: 'story',
@@ -485,6 +510,7 @@
     ['Kenji  -  The Hothead', 22],
     ['Momo  -  The Pink Blur', 22],
     ['Bao  -  The Steamed Bun', 22],
+    ['Nori  -  The Hat Smuggler', 22],
     ['Sensei Fuzz  -  The Ancient Eyebrows', 22],
     ['Yuki  -  The Frost Ninja', 22],
     ['Gonta  -  The Mountain', 22],

@@ -81,7 +81,71 @@
     [0.14, -0.26], [-0.08, -0.5], [-0.3, -0.28], [-0.54, -0.5], [-0.78, -0.3],
   ];
 
+  // Draw the same straw hat on Nori and as a separate prop on the arena floor.
+  HF.drawNoriHat = function (ctx, r, f = 1) {
+    ctx.save();
+    ctx.scale(r * f, r);
+    ctx.lineJoin = ctx.lineCap = 'round';
+    ctx.beginPath();
+    ctx.moveTo(-1.22, -0.36);
+    ctx.quadraticCurveTo(-1.12, -0.56, -0.86, -0.7);
+    ctx.quadraticCurveTo(-0.52, -1.2, -0.11, -1.37);
+    ctx.quadraticCurveTo(0.01, -1.43, 0.13, -1.33);
+    ctx.quadraticCurveTo(0.59, -1.06, 0.94, -0.72);
+    ctx.quadraticCurveTo(1.18, -0.64, 1.22, -0.51);
+    ctx.quadraticCurveTo(1.1, -0.42, 0.92, -0.45);
+    ctx.quadraticCurveTo(0.08, -0.6, -0.93, -0.31);
+    ctx.quadraticCurveTo(-1.18, -0.24, -1.22, -0.36);
+    ctx.closePath();
+    fillStroke(ctx, '#e8bb61', 0.075);
+    ctx.beginPath();
+    ctx.moveTo(-0.77, -0.73);
+    ctx.quadraticCurveTo(-0.45, -1.15, -0.10, -1.29);
+    ctx.strokeStyle = '#f8db90';
+    ctx.lineWidth = 0.05;
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(-1.03, -0.47);
+    ctx.quadraticCurveTo(0.13, -0.78, 1.04, -0.58);
+    ctx.strokeStyle = '#408457';
+    ctx.lineWidth = 0.12;
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(-0.70, -0.55);
+    ctx.quadraticCurveTo(-0.97, -0.62, -1.07, -1.02);
+    ctx.quadraticCurveTo(-0.64, -0.91, -0.56, -0.63);
+    ctx.closePath();
+    fillStroke(ctx, '#6bb44f', 0.05);
+    ctx.beginPath();
+    ctx.moveTo(-0.93, -0.87);
+    ctx.lineTo(-0.67, -0.63);
+    ctx.strokeStyle = '#d2e988';
+    ctx.lineWidth = 0.03;
+    ctx.stroke();
+    ctx.restore();
+  };
+
   const LOOKS = (HF.LOOKS = {
+    nori: {
+      skin: '#e9ac79', shade: '#ba7455', iris: '#496a25', brow: '#38452e',
+      eyeScale: 0.94, nose: true,
+      moods: { idle: HF.EXPR.smug },
+      front(ctx, r, o, f) {
+        poly(ctx, [[-0.96, -0.45], [0.76, -0.52], [0.9, -0.26], [0.54, -0.38], [-0.65, -0.31],
+          [-0.65, -0.08], [-0.85, -0.18], [-0.79, 0.2], [-0.99, 0.02]], r, f);
+        fillStroke(ctx, '#334638', r * 0.06);
+        HF.drawNoriHat(ctx, r, f);
+      },
+      over(ctx, r, o, f) {
+        ctx.fillStyle = '#945644';
+        for (const [x, y, size] of [[-0.62, 0.31, 0.041], [-0.52, 0.34, 0.032], [-0.57, 0.41, 0.03]]) {
+          ctx.beginPath();
+          ctx.arc(x * r * f, y * r, size * r, 0, TAU);
+          ctx.fill();
+        }
+      },
+    },
+
     kenji: {
       skin: '#ffd7b0', shade: '#eeb085', hair: '#2a2638', iris: '#7a4a24', brow: '#2a2638',
       back(ctx, r, o, f, t) {

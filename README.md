@@ -45,7 +45,7 @@ Gamepads work too (first pad is player 1). Esc or P pauses. Menus also work with
 
 ## Modes
 
-- **Story mode**: Kenji's quest to overturn the Emperor's ban on hats. Six fights with cutscenes between them, ending with the final boss, Emperor Megadome, who has a spiked helmet you must not stomp and a rage mode at half health. Beating the story unlocks the Emperor for versus play.
+- **Story mode**: Kenji's quest to overturn the Emperor's ban on hats. Seven fights with cutscenes between them, including a visit to Nori's hat stall at the Lantern Market. The final boss, Emperor Megadome, has a spiked helmet you must not stomp and a rage mode at half health. Beating the story unlocks the Emperor for versus play.
 - **VS CPU**: pick both fighters, a stage and a difficulty (easy, normal, hard).
 - **VS Player 2**: two players on one keyboard, one touchscreen (split on-screen buttons) or two gamepads.
 - **Options**: language (English or Русский), music and sound volume, round time (30–99 s), single round or best of 3/5, fullscreen.
@@ -62,9 +62,10 @@ Choose **Options → Language / Язык → Русский** for the full Russi
 | Sensei Fuzz | Floaty | **Brow-copter**: hold special in the air to hover on flapping eyebrows |
 | Yuki | Fast | **Frost Breath**: snowflake that freezes the foe; stomp the ice for bonus damage |
 | Bao | Bouncy | **Spring Bun**: hold to charge a mega jump; stomps bounce off him while charging |
+| Nori | Quick on the ground, modest jump, light stomps | **Pop-Up Hat**: plant a spring hat that gives a rival a short hop and stuns them for one second after landing. The hat deals no damage. Jump clear or wait for it to expire. |
 | Emperor Megadome | Biggest head, unlockable | **Royal Rage**: fireball on the ground, ground pound in the air |
 
-The six regular fighters have been tuned for closer matchups: Momo and Yuki
+The original six regular fighters have been tuned for closer matchups: Momo and Yuki
 have less health and stomp damage; Sensei Fuzz has more health, movement
 speed and stomp damage; Bao has more health. Kenji and Gonta keep their
 stats. The Emperor keeps his stronger boss stats.

@@ -7,6 +7,15 @@ codename shared by all of its releases.
 
 ## [Unreleased]
 
+### Added
+
+- **Nori the Hat Smuggler.** Play Nori in versus or meet him at the Lantern
+  Market in Kenji's story. His Pop-Up Hat briefly launches rivals and stuns
+  them when they land, setting up a stomp without dealing damage itself.
+  Nori starts with 110 health, 340 pixels per second of movement speed,
+  a jump speed of 880 pixels per second and 11 base stomp damage. He won
+  50% of 600 normal bot fights against the other six regular fighters.
+
 ### Changed
 
 - **New Android app icon** showing Kenji landing a stomp on Momo. The icon
