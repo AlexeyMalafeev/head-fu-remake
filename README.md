@@ -41,7 +41,7 @@ Press Android Back or the on-screen pause button to pause. The game also pauses 
 | Player 2 | ← / → | ↑ | ↓ |
 | Solo (vs CPU, story) | either set | also Space | also F |
 
-Gamepads work too (first pad is player 1). Esc or P pauses. Menus also work with the mouse. On touchscreens, tap menu items and use the on-screen buttons during fights. In two-player fights each player gets their own set: player 1 the bottom-left buttons (◀ ▶ JUMP SPECIAL), player 2 the bottom-right ones. On the fighter select screen, player 1 taps a fighter first, then player 2.
+Gamepads work too (first pad is player 1). Esc or P pauses. Menus also work with the mouse. On touchscreens, tap menu items and use the on-screen buttons during fights. In two-player fights each player gets their own set: player 1 the bottom-left buttons (◀ ▶ JUMP SPECIAL), player 2 the bottom-right ones. On the fighter select screen, the nine regular fighters fill a 3 × 3 grid, with Emperor Megadome and Random in a row below. On touchscreens, player 1 taps a fighter first, then player 2.
 
 ## Modes
 

@@ -87,12 +87,20 @@
   }
 
   // ======================= FIGHTER SELECT =======================
-  const COLS = 4;
+  const COLS = 3;
   const CARD = 54;
+  const SELECT_OPTIONS_Y = 365;
+  const DIFFICULTY_Y = 390;
 
-  function cardPos(k) {
-    const col = k % COLS, row = Math.floor(k / COLS);
-    return { x: W / 2 + (col - (COLS - 1) / 2) * (CARD + 8), y: 128 + row * (CARD + 12) };
+  function cardPos(k, n) {
+    // The last fighter is the boss. Give the boss and Random their own row.
+    const regular = n - 2;
+    const extra = k >= regular;
+    const row = extra ? Math.ceil(regular / COLS) : Math.floor(k / COLS);
+    const col = extra ? k - regular : k % COLS;
+    const count = extra ? 2 : Math.min(COLS, regular - row * COLS);
+    const step = extra ? 88 : 78;
+    return { row, x: W / 2 + (col - (count - 1) / 2) * step, y: 108 + row * 65 + (extra ? 10 : 0) };
   }
 
   class SelectScene {
@@ -102,6 +110,7 @@
       this.t = 0;
       this.roster = HF.FIGHTERS;
       this.n = this.roster.length + 1; // last card is RANDOM
+      this.cards = Array.from({ length: this.n }, (_, k) => cardPos(k, this.n));
       this.cur = o.keep ? o.keep.cur.slice() : [0, 1];
       this.picked = [null, null];
       this.phase = 'pick';
@@ -135,8 +144,17 @@
       };
       if (inp.left) step(-1);
       if (inp.right) step(1);
-      if (inp.up && c - COLS >= 0 && this.available(c - COLS)) c -= COLS;
-      if (inp.down && c + COLS < this.n && this.available(c + COLS)) c += COLS;
+      if (inp.up || inp.down) {
+        const from = this.cards[c];
+        const row = from.row + (inp.up ? -1 : 1);
+        let nearest = Infinity;
+        for (const [k, card] of this.cards.entries()) {
+          const distance = Math.abs(card.x - from.x);
+          if (card.row !== row || distance >= nearest || !this.available(k)) continue;
+          c = k;
+          nearest = distance;
+        }
+      }
       if (c !== this.cur[p]) {
         this.cur[p] = c;
         this.sideT[p] = 0;
@@ -183,7 +201,7 @@
         const mp = this.mode === '2p' ? (this.picked[0] == null ? 0 : this.picked[1] == null ? 1 : null) : this.chooser();
         if (mp != null && (m.moved || m.clicked)) {
           for (let k = 0; k < this.n; k++) {
-            const c = cardPos(k);
+            const c = this.cards[k];
             if (!this.available(k) || Math.abs(m.x - c.x) > CARD / 2 || Math.abs(m.y - c.y) > CARD / 2) continue;
             if (this.cur[mp] !== k) {
               this.cur[mp] = k;
@@ -206,7 +224,7 @@
         if (inp.right) i = Math.min(2, i + 1);
         if (m.moved || m.clicked) {
           for (let k = 0; k < 3; k++) {
-            if (HF.UI.inRect(m, { x: W / 2 - 100 + k * 100 - 46, y: 330, w: 92, h: 44 })) {
+            if (HF.UI.inRect(m, { x: W / 2 - 100 + k * 100 - 46, y: DIFFICULTY_Y, w: 92, h: 44 })) {
               i = k;
               if (m.clicked) inp.ok = true;
             }
@@ -233,10 +251,10 @@
         let s = this.stageIdx;
         if (inp.left) s = s <= -1 ? n - 1 : s - 1;
         if (inp.right) s = s >= n - 1 ? -1 : s + 1;
-        if (m.clicked) {
-          if (m.x < W / 2 - 150 && m.y > 300) s = s <= -1 ? n - 1 : s - 1;
-          else if (m.x > W / 2 + 150 && m.y > 300) s = s >= n - 1 ? -1 : s + 1;
-          else if (m.y > 300) inp.ok = true;
+        if (m.clicked && m.y >= SELECT_OPTIONS_Y) {
+          if (m.x < W / 2 - 134) s = s <= -1 ? n - 1 : s - 1;
+          else if (m.x > W / 2 + 134) s = s >= n - 1 ? -1 : s + 1;
+          else inp.ok = true;
         }
         if (s !== this.stageIdx) {
           this.stageIdx = s;
@@ -262,7 +280,10 @@
       this.picked[p] = this.resolvePick(this.cur[p]);
       this.sideT[p] = 0;
       HF.Audio.play('select');
-      if (this.mode === 'cpu' && p === 0 && this.cur[1] === this.cur[0]) this.cur[1] = (this.cur[0] + 1) % (this.n - 1);
+      if (this.mode === 'cpu' && p === 0 && this.cur[1] === this.cur[0]) {
+        const next = (this.cur[0] + 1) % (this.n - 1);
+        this.cur[1] = this.available(next) ? next : this.n - 1;
+      }
     }
 
     unpick(p) {
@@ -301,46 +322,45 @@
     // ------- drawing -------
     draw(ctx) {
       HF.UI.backdrop(ctx, this.t);
-      U.text(ctx, 'CHOOSE YOUR NOGGIN!', W / 2, 52, { size: 40, color: '#ffe14d' });
+      U.text(ctx, 'CHOOSE YOUR NOGGIN!', W / 2, 43, { size: 40, color: '#ffe14d' });
       for (let k = 0; k < this.n; k++) this.drawCard(ctx, k);
       this.drawSide(ctx, 0);
       this.drawSide(ctx, 1);
 
       if (this.phase === 'pick') {
-        const shift = Math.max(0, Math.ceil(this.n / COLS) - 2) * (CARD + 12);
-        U.text(ctx, 'VS', W / 2, 282 + shift, { size: 44, color: '#ff4d6d' });
+        U.text(ctx, 'VS', W / 2, 381, { size: 44, color: '#ff4d6d' });
         const lines = HF.Input.touch.enabled
           ? [this.mode === '2p' ? (this.picked[0] == null ? 'Player 1, pick your fighter' : 'Player 2, pick your fighter') : this.picked[0] == null ? 'Pick your fighter' : 'Now pick your opponent', 'TAP A FIGHTER TO PICK']
           : this.mode === '2p'
             ? ['P1:  WASD  +  SPACE to pick', 'P2:  ARROWS  +  ENTER to pick']
             : [this.picked[0] == null ? 'Pick your fighter' : 'Now pick your opponent', 'ARROWS / WASD  +  ENTER'];
-        lines.forEach((s, i) => U.text(ctx, s, W / 2, 345 + shift + i * 28, { size: 19, display: false, weight: 700, lw: 5, color: i === 0 && (this.mode !== '2p' || HF.Input.touch.enabled) ? '#ffe14d' : '#fff' }));
+        lines.forEach((s, i) => U.text(ctx, s, W / 2, 431 + i * 28, { size: 19, display: false, weight: 700, lw: 5, color: i === 0 && (this.mode !== '2p' || HF.Input.touch.enabled) ? '#ffe14d' : '#fff' }));
         U.text(ctx, HF.Input.touch.enabled ? 'BACK to go back' : 'ESC to go back', W / 2, 505, { size: 15, display: false, color: '#cfc6ea', lw: 4 });
       } else if (this.phase === 'difficulty') {
-        U.text(ctx, 'CPU DIFFICULTY', W / 2, 305, { size: 28 });
+        U.text(ctx, 'CPU DIFFICULTY', W / 2, SELECT_OPTIONS_Y, { size: 28 });
         ['easy', 'normal', 'hard'].forEach((d, k) => {
           const x = W / 2 - 100 + k * 100, sel = d === this.diff;
-          HF.UI.panel(ctx, x - 46, 330, 92, 44, { r: 12, fill: sel ? ['#4caf50', '#ff9f1c', '#e63946'][k] : 'rgba(40,28,70,0.9)', lw: sel ? 4 : 3 });
-          U.text(ctx, d.toUpperCase(), x, 353, { size: 20, color: sel ? '#fff' : '#bdb5d6' });
+          HF.UI.panel(ctx, x - 46, DIFFICULTY_Y, 92, 44, { r: 12, fill: sel ? ['#4caf50', '#ff9f1c', '#e63946'][k] : 'rgba(40,28,70,0.9)', lw: sel ? 4 : 3 });
+          U.text(ctx, d.toUpperCase(), x, DIFFICULTY_Y + 23, { size: 20, color: sel ? '#fff' : '#bdb5d6' });
         });
         const blurb = { easy: 'Slow and sleepy. Great for learning.', normal: 'A fair fight.', hard: 'Fast reflexes. Dodges and counters.' }[this.diff];
-        U.text(ctx, blurb, W / 2, 400, { size: 17, display: false, weight: 600, lw: 4 });
+        U.text(ctx, blurb, W / 2, 462, { size: 17, display: false, weight: 600, lw: 4 });
         U.text(ctx, HF.Input.touch.enabled ? 'TAP A DIFFICULTY' : '← →  then ENTER', W / 2, 505, { size: 15, display: false, color: '#cfc6ea', lw: 4 });
       } else if (this.phase === 'stage') {
         const def = this.stageIdx < 0 ? null : HF.STAGES[this.stageIdx];
-        U.text(ctx, 'STAGE', W / 2, 300, { size: 26 });
-        if (def) HF.Stage.thumb(ctx, def, W / 2 - 128, 320, 256, 144);
+        U.text(ctx, 'STAGE', W / 2, SELECT_OPTIONS_Y, { size: 26 });
+        if (def) HF.Stage.thumb(ctx, def, W / 2 - 96, 381, 192, 108);
         else {
-          HF.UI.panel(ctx, W / 2 - 128, 320, 256, 144, { r: 10 });
-          U.text(ctx, '?', W / 2, 392, { size: 80, color: '#ffe14d' });
+          HF.UI.panel(ctx, W / 2 - 96, 381, 192, 108, { r: 10 });
+          U.text(ctx, '?', W / 2, 435, { size: 68, color: '#ffe14d' });
         }
-        U.text(ctx, def ? def.name.toUpperCase() : 'RANDOM', W / 2, 486, { size: 24, color: '#ffe14d' });
+        U.text(ctx, def ? def.name.toUpperCase() : 'RANDOM', W / 2, 502, { size: 21, color: '#ffe14d' });
         const bob = Math.sin(this.t * 6) * 3;
         for (const s of [-1, 1]) {
           ctx.beginPath();
-          ctx.moveTo(W / 2 + s * (150 + bob), 392);
-          ctx.lineTo(W / 2 + s * (138 + bob), 378);
-          ctx.lineTo(W / 2 + s * (138 + bob), 406);
+          ctx.moveTo(W / 2 + s * (158 + bob), 435);
+          ctx.lineTo(W / 2 + s * (146 + bob), 421);
+          ctx.lineTo(W / 2 + s * (146 + bob), 449);
           ctx.closePath();
           ctx.fillStyle = '#ffe14d';
           ctx.fill();
@@ -348,12 +368,12 @@
           ctx.strokeStyle = HF.OUTLINE;
           ctx.stroke();
         }
-        U.text(ctx, HF.Input.touch.enabled ? 'TAP STAGE TO FIGHT!' : 'ENTER to fight!', W / 2, 518, { size: 15, display: false, color: '#cfc6ea', lw: 4 });
+        U.text(ctx, HF.Input.touch.enabled ? 'TAP STAGE TO FIGHT!' : 'ENTER to fight!', W / 2, 525, { size: 15, display: false, color: '#cfc6ea', lw: 4 });
       }
     }
 
     drawCard(ctx, k) {
-      const c = cardPos(k);
+      const c = this.cards[k];
       const isRandom = k === this.n - 1;
       const f = this.roster[k];
       const open = this.available(k);

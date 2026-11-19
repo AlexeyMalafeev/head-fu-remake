@@ -32,6 +32,9 @@ codename shared by all of its releases.
 
 ### Changed
 
+- **Fighter select layout.** The nine regular fighters fill a 3 × 3 grid.
+  Emperor Megadome and Random sit together in a separate row underneath.
+
 - **New Android app icon** showing Kenji landing a stomp on Momo. The icon
   also follows your launcher’s shape and supports themed colors.
 
