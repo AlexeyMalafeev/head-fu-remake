@@ -7,6 +7,8 @@ codename shared by all of its releases.
 
 ## [Unreleased]
 
+## [v1.3.0 "Head Start"] — 2026-11-19
+
 ### Added
 
 - **A home arena and theme for every fighter.** Meet Momo on Courier Bridge,
