@@ -689,7 +689,7 @@
         const x = 60 + col * 300, y = 404 + row * 40;
         HF.drawHead(ctx, f.id, { x, y, r: 15, facing: 1, expr: 'happy', t: this.t + i });
         U.text(ctx, HF.t(f.name).split(' ')[0] + ': ' + HF.t(f.abilityName), x + 24, y - 6, { maxWidth: 256, size: 15, display: false, weight: 700, align: 'left', lw: 4, color: f.color });
-        const short = { airjump: 'jump again in the air', dash: 'untouchable side dash', pound: 'ground pound + shockwave', glide: 'hold to hover', frost: 'freezing snowflake', spring: 'hold & release: mega jump', hat: 'plant a hat that stuns on landing', royal: 'fireball / ground pound' }[f.ability];
+        const short = { airjump: 'jump again in the air', dash: 'untouchable side dash', pound: 'ground pound + shockwave', glide: 'hold to hover', frost: 'freezing snowflake', spring: 'hold & release: mega jump', hat: 'plant a hat that stuns on landing', recall: 'tap to mark, tap again to return', royal: 'fireball / ground pound' }[f.ability];
         U.text(ctx, short, x + 24, y + 11, { maxWidth: 256, size: 13, display: false, weight: 600, align: 'left', lw: 3 });
       });
       U.text(ctx, HF.Input.touch.enabled ? 'tap anywhere to go back' : 'press any key to go back', W / 2, 524, { size: 15, display: false, color: '#cfc6ea', lw: 4 });

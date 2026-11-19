@@ -9,6 +9,13 @@ codename shared by all of its releases.
 
 ### Added
 
+- **Sumi the Runaway Doodle.** Play Sumi in versus or meet her by the
+  palace portraits in Kenji's story. Ink Recall marks a spot on the ground
+  or in the air and lets her return within two seconds if the spot is clear.
+  Sumi starts with 94 health, a movement speed of 340 pixels per second,
+  a jump speed of 945 pixels per second and 12 base stomp damage. She
+  scored 53% across 700 normal bot fights against the other regular fighters.
+
 - **Nori the Hat Smuggler.** Play Nori in versus or meet him at the Lantern
   Market in Kenji's story. His Pop-Up Hat briefly launches rivals and stuns
   them when they land, setting up a stomp without dealing damage itself.

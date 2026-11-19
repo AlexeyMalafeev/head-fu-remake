@@ -202,6 +202,8 @@
       const oTop = o.y - o.r;
       const threat = this.threat(o);
 
+      if (me.ability === 'recall' && this.recallAbility(o, threat)) return;
+
       if (me.onGround) {
         if (me.state === 'charge') return; // keep charging
         if (threat && U.chance(p.dodge)) {
@@ -264,6 +266,29 @@
         this.targetX = o.x - dir * (me.r + o.r) * 1.6;
       }
       this.airAbility(o, t, dir, threat);
+    }
+
+    recallAbility(o, threat) {
+      const me = this.me, p = this.p;
+      if (me.cool > 0 || !me.canAct()) return false;
+      const mark = me.inkMark;
+      const gap = me.r + o.r;
+      if (!mark) {
+        if (!me.onGround && Math.abs(me.vy) < 200 && me.y + gap + 25 < o.y &&
+            Math.abs(me.x - o.x) < 200 && !threat && !o.spikes && U.chance(p.special)) this.tapSpecial();
+        return false;
+      }
+      if (Math.hypot(mark.x - me.x, mark.y - me.y) < 65 ||
+          Math.hypot(mark.x - o.x, mark.y - o.y) < gap + 15) return false;
+      const g = HF.GRAV * me.st.gravity;
+      const drop = timeToY(mark.y, 0, g, o.y - gap);
+      const escape = threat && (mark.y < me.y - 45 || Math.abs(mark.x - threat.landX) > gap * 1.4);
+      const canDrop = drop != null && !o.spikes && !o.invuln && me.y > mark.y + 65 &&
+        Math.abs(mark.x - (o.x + o.vx * drop * p.predict)) < 0.75 * o.r + me.st.speed * drop * 0.7;
+      if ((!escape && !canDrop) || !U.chance(p.special)) return false;
+      this.tapSpecial();
+      this.targetX = o.x;
+      return true;
     }
 
     groundAbility(o, adx, dir, defensive) {

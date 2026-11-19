@@ -182,6 +182,14 @@
       N({ type: 'bandpass', f: 700, f2: 3500, q: 1.5, dur: 0.2, vol: 0.3 });
       T({ wave: 'pulse12', f: 400, f2: 950, dur: 0.1, vol: 0.12 });
     },
+    inkMark() {
+      T({ wave: 'triangle', f: 510, f2: 265, dur: 0.12, vol: 0.19 });
+    },
+    inkRecall() {
+      N({ type: 'bandpass', f: 2100, f2: 520, q: 1.6, dur: 0.16, vol: 0.18 });
+      T({ wave: 'sine', f: 320, f2: 890, dur: 0.11, vol: 0.19 });
+      T({ wave: 'triangle', f: 760, f2: 360, dur: 0.12, vol: 0.16, at: 0.07 });
+    },
     hit() {
       T({ wave: 'square', f: 520, f2: 140, dur: 0.15, vol: 0.2 });
       N({ f: 2000, f2: 400, dur: 0.1, vol: 0.2 });

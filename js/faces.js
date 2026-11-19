@@ -146,6 +146,73 @@
       },
     },
 
+    sumi: {
+      skin: '#eadcfa', shade: '#bd9ada', hair: '#362746', iris: '#a04f91', brow: '#4e365e',
+      eyeScale: 1.1, browThick: 0.82, lashes: true, mouthY: 0.5,
+      front(ctx, r, o, f) {
+        ctx.save();
+        ctx.scale(r * f, r);
+        ctx.lineJoin = ctx.lineCap = 'round';
+        ctx.beginPath();
+        ctx.moveTo(-0.89, 0.29);
+        ctx.bezierCurveTo(-1.19, 0.01, -1.05, -0.86, -0.6, -1.06);
+        ctx.bezierCurveTo(-0.25, -1.21, -0.03, -1.32, 0.18, -1.49);
+        ctx.bezierCurveTo(0.14, -1.33, 0.36, -1.32, 0.57, -1.26);
+        ctx.bezierCurveTo(1.1, -1.1, 1.22, -0.7, 0.94, -0.41);
+        ctx.bezierCurveTo(0.8, -0.65, 0.61, -0.27, 0.25, -0.47);
+        ctx.quadraticCurveTo(-0.01, -0.65, -0.27, -0.46);
+        ctx.quadraticCurveTo(-0.51, -0.33, -0.66, -0.44);
+        ctx.quadraticCurveTo(-0.72, 0.09, -0.89, 0.29);
+        ctx.closePath();
+        fillStroke(ctx, this.hair, 0.067);
+        ctx.beginPath();
+        ctx.moveTo(-0.79, -0.61);
+        ctx.quadraticCurveTo(-0.61, -0.94, -0.25, -1.05);
+        ctx.quadraticCurveTo(-0.02, -1.17, 0.08, -1.32);
+        ctx.moveTo(0.42, -1.16);
+        ctx.quadraticCurveTo(0.79, -1.07, 0.89, -0.87);
+        ctx.strokeStyle = '#8b6ea4';
+        ctx.lineWidth = 0.055;
+        ctx.stroke();
+        // Coral hair clips follow the curve of the fringe.
+        ctx.beginPath();
+        ctx.moveTo(-0.85, -0.57);
+        ctx.lineTo(-0.69, -0.52);
+        ctx.moveTo(-0.88, -0.46);
+        ctx.lineTo(-0.72, -0.41);
+        ctx.strokeStyle = '#f592ac';
+        ctx.lineWidth = 0.046;
+        ctx.stroke();
+        ctx.restore();
+      },
+      over(ctx, r, o, f) {
+        ctx.save();
+        ctx.scale(r * f, r);
+        ctx.fillStyle = '#73548b';
+        for (const [x, y, w, h] of [[-0.62, 0.42, 0.09, 0.055], [-0.77, 0.33, 0.039, 0.03], [-0.68, 0.54, 0.034, 0.028]]) {
+          ctx.beginPath();
+          ctx.ellipse(x, y, w, h, 0.45, 0, TAU);
+          ctx.fill();
+        }
+        ctx.translate(0.68, 0.43);
+        ctx.rotate(0.23);
+        ctx.fillStyle = '#ca4f69';
+        U.roundRect(ctx, -0.105, -0.1, 0.21, 0.2, 0.027);
+        ctx.fill();
+        ctx.beginPath();
+        ctx.moveTo(-0.049, -0.045);
+        ctx.lineTo(0.044, -0.045);
+        ctx.lineTo(0.044, 0.045);
+        ctx.lineTo(-0.03, 0.045);
+        ctx.moveTo(-0.046, 0);
+        ctx.lineTo(0.044, 0);
+        ctx.strokeStyle = '#ffe5eb';
+        ctx.lineWidth = 0.022;
+        ctx.stroke();
+        ctx.restore();
+      },
+    },
+
     kenji: {
       skin: '#ffd7b0', shade: '#eeb085', hair: '#2a2638', iris: '#7a4a24', brow: '#2a2638',
       back(ctx, r, o, f, t) {
@@ -441,7 +508,7 @@
         ctx.ellipse(-f * r * 0.32, -r * 0.6, r * 0.3, r * 0.13, -0.5 * f, 0, TAU);
         ctx.fill();
         if (o.spikes) drawHelmet(ctx, r, o.spikes, t);
-        else if (o.hat !== 'beanie') drawCrown(ctx, r, f);
+        else if (!o.hat) drawCrown(ctx, r, f);
       },
       over(ctx, r, o, f, t, fx) {
         // twirly mustache and goatee
@@ -737,6 +804,15 @@
       ctx.lineTo(inx, y + lidInner * eh);
       ctx.stroke();
     }
+    if (L.lashes) {
+      const outer = x + side * ew * (lidOuter === null ? 0.85 : 1.1);
+      const lashY = y + eh * (lidOuter === null ? -0.5 : lidOuter);
+      ctx.beginPath();
+      ctx.moveTo(outer, lashY);
+      ctx.quadraticCurveTo(outer + side * ew * 0.28, lashY - eh * 0.03, outer + side * ew * 0.37, lashY - eh * 0.24);
+      ctx.lineWidth = lw * 0.71;
+      ctx.stroke();
+    }
   }
 
   function brows(ctx, L, kind, eyes, w, h, r, o) {
@@ -1005,7 +1081,7 @@
   }
 
   // Draw a head. o: {x, y, r, facing, sx, sy, rot, expr, look:{x,y}, blink, talk, t, flash, alpha,
-  //                  hat, spikes, rage, flap, charge}
+  //                  hat ('beanie' or 'straw'), spikes, rage, flap, charge}
   HF.drawHead = function (ctx, id, o) {
     const L = LOOKS[id] || LOOKS.kenji;
     const r = o.r;
@@ -1044,6 +1120,7 @@
 
     if (L.front) L.front(ctx, r, o, f, t);
     if (o.hat === 'beanie') drawBeanie(ctx, r);
+    else if (o.hat === 'straw') HF.drawNoriHat(ctx, r, f);
 
     // face layout (shifted toward the facing side for a 3/4 look)
     const fx = f * r * 0.13;

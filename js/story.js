@@ -108,6 +108,27 @@
         ],
       },
       {
+        opp: 'sumi',
+        stage: 'gate',
+        rank: 3.5,
+        portrait: true,
+        pre: [
+          { who: 'kenji', face: 'think', text: 'Since when does the Emperor wear a sunhat in his official portrait?' },
+          { who: 'sumi', face: 'wink', text: 'Since I ran out of room in the margins. Hi, I’m Sumi!' },
+          { who: 'kenji', face: 'shock', text: 'You lived in the margins?' },
+          { who: 'sumi', face: 'smug', text: 'Of the hat decree. The clerk tried to blot me out, so I hopped off the page.' },
+          { who: 'sumi', face: 'focus', text: 'Wait. Did he send you? The last head he sent had an eraser twice your size.' },
+          { who: 'kenji', face: 'worried', text: 'I’m here about the ban! Look, this headband is all I’ve got.' },
+          { who: 'sumi', face: 'happy', text: 'Then let’s have a friendly bout. Try to keep track of where I leave my ink!' },
+          { who: 'narrator', text: 'Tip: Sumi can blink back to her ink mark. Cover the mark to block her return.' },
+        ],
+        post: [
+          { who: 'sumi', face: 'stun', text: 'Okay. Definitely a headband. An eraser would’ve felt softer.' },
+          { who: 'kenji', face: 'happy', text: 'When the ban is over, you can show the Emperor what he looks like in a hat for real.' },
+          { who: 'sumi', face: 'sparkle', text: 'I’ve got twelve sketches ready. Go on, Gonta’s just past the portraits.' },
+        ],
+      },
+      {
         opp: 'gonta',
         stage: 'gate',
         rank: 4,
@@ -155,6 +176,7 @@
         { who: 'emperor', face: 'shock', hat: { emperor: 'beanie' }, text: 'It... it fits. IT FITS!' },
         { who: 'emperor', face: 'joy', text: 'By royal decree: hats are UN-BANNED! And Granny is the new Royal Knitter!' },
         { who: 'granny', face: 'wink', text: "I'll need a raise. And a pair of hands." },
+        { who: 'sumi', left: 'sumi', face: 'wink', text: 'Hold that pose, Your Majesty. This one’s going in the official portrait!' },
         { who: 'kenji', left: 'kenji', face: 'win', text: 'Thanks, Grandma. Head-fu forever!' },
         { who: 'narrator', text: 'And so, peace returned to the Valley of Noggins. Everyone wore hats again.' },
         { who: 'narrator', text: 'Except Gonta, who wore a rice ball.' },
@@ -177,7 +199,7 @@
     },
     chapter() {
       const c = STORY.chapters[this.ch];
-      HF.Game.go(new CardScene(c, this.ch, () => HF.Game.go(new DialogScene({ bg: c.stage, left: 'kenji', right: c.opp, lines: c.pre }, () => this.fight()))));
+      HF.Game.go(new CardScene(c, this.ch, () => HF.Game.go(new DialogScene({ bg: c.stage, left: 'kenji', right: c.opp, lines: c.pre, portrait: c.portrait }, () => this.fight()))));
     },
     fight() {
       const c = STORY.chapters[this.ch];
@@ -212,7 +234,7 @@
         if (this.ch >= STORY.chapters.length) this.ending();
         else this.chapter();
       };
-      if (c.post.length) HF.Game.go(new DialogScene({ bg: c.stage, left: 'kenji', right: c.opp, lines: c.post }, next));
+      if (c.post.length) HF.Game.go(new DialogScene({ bg: c.stage, left: 'kenji', right: c.opp, lines: c.post, portrait: c.portrait }, next));
       else next();
     },
     lost() {
@@ -351,6 +373,7 @@
         ctx.fillStyle = 'rgba(15,8,30,0.35)';
         ctx.fillRect(-10, -10, W + 20, H + 20);
       } else HF.UI.backdrop(ctx, this.t, '#2a2050', '#33285e');
+      if (this.script.portrait) this.drawPortrait(ctx);
       if (this.done) {
         ctx.restore();
         return;
@@ -415,6 +438,20 @@
       if (!talking && Math.floor(this.t * 3) % 2 === 0) U.text(ctx, '▼', 890, 505, { size: 20, color: '#ff4d6d', stroke: false });
       ctx.restore();
       U.text(ctx, 'ENTER next · ESC skip', W - 16, 16, { size: 13, display: false, weight: 600, align: 'right', lw: 3, color: '#e8e2ff' });
+    }
+
+    drawPortrait(ctx) {
+      ctx.save();
+      ctx.translate(W / 2, 196);
+      ctx.rotate(-0.06);
+      HF.UI.panel(ctx, -77, -86, 154, 172, { fill: '#ac7251', r: 7, lw: 4 });
+      HF.UI.panel(ctx, -67, -76, 134, 152, { fill: '#f5e2b6', r: 3, lw: 2 });
+      HF.drawHead(ctx, 'emperor', { x: 0, y: 6, r: 41, facing: 1, expr: 'proud', hat: 'straw' });
+      ctx.translate(50, 59);
+      ctx.rotate(0.14);
+      ctx.fillStyle = '#c35b6c';
+      ctx.fillRect(-5, -5, 10, 10);
+      ctx.restore();
     }
   }
 
@@ -513,6 +550,7 @@
     ['Nori  -  The Hat Smuggler', 22],
     ['Sensei Fuzz  -  The Ancient Eyebrows', 22],
     ['Yuki  -  The Frost Ninja', 22],
+    ['Sumi  -  The Runaway Doodle', 22],
     ['Gonta  -  The Mountain', 22],
     ['Emperor Megadome  -  The Biggest Head', 22],
     ['and Granny as herself', 22],
@@ -526,6 +564,7 @@
     ['', 40],
     ['THANK YOU FOR PLAYING!', 40, '#ffe14d'],
   ];
+  const CREDIT_HEADS = ['kenji', ...STORY.chapters.map((c) => c.opp), 'granny'];
 
   class CreditsScene {
     constructor() {
@@ -570,9 +609,8 @@
         y += size * 1.5;
       }
       // a parade of heads along the bottom
-      const ids = ['kenji', 'momo', 'bao', 'sensei', 'yuki', 'gonta', 'emperor', 'granny'];
-      ids.forEach((id, i) => {
-        const x = ((i * 130 + this.t * 60) % (W + 200)) - 100;
+      CREDIT_HEADS.forEach((id, i) => {
+        const x = ((i * (W + 200) / CREDIT_HEADS.length + this.t * 60) % (W + 200)) - 100;
         const hop = Math.abs(Math.sin(this.t * 4 + i)) * 20;
         HF.drawHead(ctx, id, { x, y: 495 - hop, r: id === 'emperor' ? 34 : 26, facing: 1, expr: i % 2 ? 'happy' : 'win', t: this.t + i, hat: id === 'emperor' ? 'beanie' : null });
       });

@@ -23,7 +23,7 @@ and the roster.
 
 ## Testing
 
-`./tests/run-tests.sh` runs six headless checks with the JavaScriptCore
+`./tests/run-tests.sh` runs seven headless checks with the JavaScriptCore
 shell that ships with macOS (nothing to install). Run it
 after every change to game code:
 
@@ -38,7 +38,9 @@ after every change to game code:
    changelog entry and Android version; seeded random values repeat.
 5. **Pop-Up Hat** (`tests/hat-check.js`): wind-up, contact, landing stun,
    follow-up stomp and round reset for both player sides.
-6. **Simulations** (`tests/sim.js`): AI-vs-AI fights that print the
+6. **Ink Recall** (`tests/ink-check.js`): ground and air returns, occupied
+   marks, expiration, round reset and simultaneous mirror recalls.
+7. **Simulations** (`tests/sim.js`): AI-vs-AI fights that print the
    difficulty ladder, each fighter's win rate against the roster at normal,
    and how the story's final boss fares against computer Kenjis of different
    skill. They also throw on a NaN position or a head below the floor.
@@ -48,7 +50,7 @@ normal gameplay keeps its usual randomness. Each matchup has its own stream,
 so changing one fighter does not change the samples for unrelated fights.
 The default is seed `20261115`, with 100 fights per matchup and alternating
 sides. Compare the regular-roster table (boss excluded) when balancing the
-six basic fighters. To use another seed or sample size, create a temporary
+regular fighters. To use another seed or sample size, create a temporary
 JavaScript file with `var SIM_SEED = 8675309; var SIM_N = 200;`, then pass its
 path to `./tests/run-tests.sh /path/to/config.js`. The seed and count appear
 in the output; identical code and settings give identical output.

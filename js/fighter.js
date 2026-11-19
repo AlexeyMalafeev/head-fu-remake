@@ -5,7 +5,8 @@
   const U = HF.U;
   const NONE = { left: false, right: false, jump: false, special: false };
 
-  const COOLDOWN = { dash: 1.0, pound: 1.8, frost: 2.0, hat: 4.2, royal: 2.2 };
+  const COOLDOWN = { dash: 1.0, pound: 1.8, frost: 2.0, hat: 4.2, recall: 2.8, royal: 2.2 };
+  const INK_WINDOW = 2;
   const POUND_SPEED = 1650;
   const DASH_SPEED = 820;
 
@@ -38,6 +39,8 @@
       this.result = null;
       this.hurtT = this.stunT = this.frozenT = this.invulnT = 0;
       this.hatPopped = false;
+      this.inkMark = null;
+      this.inkRequest = false;
       this.cool = 0;
       this.dashT = 0;
       this.dashDir = 1;
@@ -94,9 +97,11 @@
           return this.fuel;
         case 'spring':
           return this.state === 'charge' ? this.charge : 1;
-        default:
-          return 1 - U.clamp(this.cool / this.coolMax(), 0, 1);
+        case 'recall':
+          if (this.inkMark) return this.inkMark.left / INK_WINDOW;
+          break;
       }
+      return 1 - U.clamp(this.cool / this.coolMax(), 0, 1);
     }
 
     update(dt, input, b) {
@@ -271,6 +276,14 @@
             this.cool = COOLDOWN.hat;
           }
           break;
+        case 'recall':
+          if (this.inkMark) {
+            this.inkMark.left -= dt;
+            if (!b.active || this.ko) this.inkMark = null;
+            else if (this.inkMark.left <= 0) this.finishInk();
+          }
+          this.inkRequest = act && sp && b.active && this.cool <= 0;
+          break;
         case 'spring':
           if (this.state === 'charge') {
             if (!act || !onG) {
@@ -386,6 +399,32 @@
       this.state = 'idle';
       this.charge = 0;
       this.queuedPound = false;
+    }
+
+    markInk(b) {
+      this.inkMark = { x: this.x, y: this.y, left: INK_WINDOW };
+      b.emit('inkMark', { f: this, x: this.x, y: this.y });
+    }
+
+    finishInk() {
+      this.inkMark = null;
+      this.cool = COOLDOWN.recall;
+    }
+
+    recallInk(b, blocked) {
+      const mark = this.inkMark;
+      this.finishInk();
+      if (blocked) {
+        b.emit('inkBlocked', { f: this, x: mark.x, y: mark.y });
+        return;
+      }
+      b.emit('inkRecall', { f: this, x: mark.x, y: mark.y, fromX: this.x, fromY: this.y });
+      this.x = mark.x;
+      this.y = mark.y;
+      this.onGround = this.y === HF.GROUND - this.r;
+      this.vx = this.vy = this.coyote = this.jumpBuf = 0;
+      this.jumpCut = true;
+      this.setEmote('smug', 0.4);
     }
 
     land(b) {

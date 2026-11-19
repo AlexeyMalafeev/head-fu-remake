@@ -396,6 +396,22 @@
           case 'hatStun':
             fx.word(e.x, e.y - e.f.r - 26, 'DIZZY!', { color: '#ffe14d', size: 25, burst: false });
             break;
+          case 'inkMark':
+            fx.ring(e.x, e.y, e.f.def.color, 34, 0.8);
+            A.play('inkMark');
+            break;
+          case 'inkRecall':
+            for (const [x, y] of [[e.fromX, e.fromY], [e.x, e.y]]) {
+              fx.puff(x, y, 8, '#5c3178', 1.5);
+              fx.ring(x, y, e.f.def.color, 56, 0.9);
+            }
+            A.play('inkRecall');
+            break;
+          case 'inkBlocked':
+            fx.word(e.x, e.y - e.f.r - 22, 'BLOCKED!', { color: e.f.def.color, size: 26, burst: false });
+            fx.puff(e.x, e.y, 5, '#5c3178');
+            A.play('bump');
+            break;
           case 'glide':
             A.play('flap', null, 0.1);
             break;
@@ -450,6 +466,9 @@
       this.battle.hats.forEach((hat, side) => {
         if (hat) this.drawHat(ctx, hat, P_COLORS[side]);
       });
+      if (this.battle.active) {
+        for (const f of fs) if (f.inkMark && !f.ko) this.drawInkMark(ctx, f);
+      }
       for (const p of this.battle.proj) this.drawProj(ctx, p);
       const order = fs.slice().sort((a, b) => b.y - a.y);
       for (const f of order) this.drawFighter(ctx, f);
@@ -497,6 +516,39 @@
       ctx.translate(0, 4);
       if (!hat.armed) ctx.rotate(Math.sin(hat.age * 65) * 0.13);
       HF.drawNoriHat(ctx, 22);
+      ctx.restore();
+    }
+
+    drawInkMark(ctx, f) {
+      const { x, y, left } = f.inkMark;
+      ctx.save();
+      ctx.translate(x, y);
+      const pulse = 1 + 0.07 * Math.sin(left * (left < 0.5 ? 28 : 12));
+      ctx.scale(pulse, pulse);
+      ctx.globalAlpha = 0.73 + 0.27 * Math.min(1, left / 0.35);
+      ctx.beginPath();
+      ctx.arc(0, 0, f.r * 0.83, 0, TAU);
+      ctx.fillStyle = 'rgba(54,26,72,0.52)';
+      ctx.fill();
+      ctx.setLineDash([5, 5]);
+      ctx.lineWidth = 5;
+      ctx.strokeStyle = HF.OUTLINE;
+      ctx.stroke();
+      ctx.lineWidth = 2.5;
+      ctx.strokeStyle = P_COLORS[f.side];
+      ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.beginPath();
+      ctx.moveTo(-1, -18);
+      ctx.bezierCurveTo(0, -7, 15, -3, 13, 7);
+      ctx.bezierCurveTo(11, 21, -13, 18, -14, 7);
+      ctx.bezierCurveTo(-15, -4, -3, -8, -1, -18);
+      ctx.closePath();
+      ctx.fillStyle = '#5c3178';
+      ctx.fill();
+      ctx.lineWidth = 2.5;
+      ctx.strokeStyle = f.def.color;
+      ctx.stroke();
       ctx.restore();
     }
 
@@ -685,6 +737,7 @@
         U.text(ctx, f.def.name, L ? bx + 2 : bx + bw - 2, by + bh + 17, { maxWidth: 300, size: 21, align: L ? 'left' : 'right' });
 
         // ability meter
+        const marked = this.battle.active && !!f.inkMark && !f.ko;
         const m = f.meter();
         const mw = 92, mx = L ? bx + 2 : bx + bw - 2 - mw, my = by + bh + 34;
         U.roundRect(ctx, mx, my, mw, 9, 4);
@@ -692,14 +745,14 @@
         ctx.fill();
         if (m > 0) {
           U.roundRect(ctx, L ? mx : mx + mw - mw * m, my, mw * m, 9, 4);
-          ctx.fillStyle = m >= 1 ? f.def.color : '#8f86a8';
+          ctx.fillStyle = marked || m >= 1 ? f.def.color : '#8f86a8';
           ctx.fill();
         }
         U.roundRect(ctx, mx, my, mw, 9, 4);
         ctx.lineWidth = 2.5;
         ctx.strokeStyle = HF.OUTLINE;
         ctx.stroke();
-        U.text(ctx, f.def.abilityName.toUpperCase(), L ? mx + mw + 8 : mx - 8, my + 5, { size: 13, display: false, weight: 700, align: L ? 'left' : 'right', lw: 3, color: m >= 1 ? '#fff' : '#bdb5d6' });
+        U.text(ctx, marked ? 'RECALL NOW' : f.def.abilityName.toUpperCase(), L ? mx + mw + 8 : mx - 8, my + 5, { size: 13, display: false, weight: 700, align: L ? 'left' : 'right', lw: 3, color: marked || m >= 1 ? '#fff' : '#bdb5d6' });
 
         // round wins
         for (let k = 0; k < this.need && this.need > 1; k++) {

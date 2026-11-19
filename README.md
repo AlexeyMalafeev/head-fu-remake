@@ -45,7 +45,7 @@ Gamepads work too (first pad is player 1). Esc or P pauses. Menus also work with
 
 ## Modes
 
-- **Story mode**: Kenji's quest to overturn the Emperor's ban on hats. Seven fights with cutscenes between them, including a visit to Nori's hat stall at the Lantern Market. The final boss, Emperor Megadome, has a spiked helmet you must not stomp and a rage mode at half health. Beating the story unlocks the Emperor for versus play.
+- **Story mode**: Kenji's quest to overturn the Emperor's ban on hats. Eight fights with cutscenes between them, including Nori's hat stall at the Lantern Market and Sumi's encounter by the palace portraits. The final boss, Emperor Megadome, has a spiked helmet you must not stomp and a rage mode at half health. Beating the story unlocks the Emperor for versus play.
 - **VS CPU**: pick both fighters, a stage and a difficulty (easy, normal, hard).
 - **VS Player 2**: two players on one keyboard, one touchscreen (split on-screen buttons) or two gamepads.
 - **Options**: language (English or Русский), music and sound volume, round time (30–99 s), single round or best of 3/5, fullscreen.
@@ -63,6 +63,7 @@ Choose **Options → Language / Язык → Русский** for the full Russi
 | Yuki | Fast | **Frost Breath**: snowflake that freezes the foe; stomp the ice for bonus damage |
 | Bao | Bouncy | **Spring Bun**: hold to charge a mega jump; stomps bounce off him while charging |
 | Nori | Quick on the ground, modest jump, light stomps | **Pop-Up Hat**: plant a spring hat that gives a rival a short hop and stuns them for one second after landing. The hat deals no damage. Jump clear or wait for it to expire. |
+| Sumi | Small and fragile, with precise air control | **Ink Recall**: tap Special to mark your position on the ground or in the air. Tap again within two seconds to return. A rival covering the mark blocks the return. |
 | Emperor Megadome | Biggest head, unlockable | **Royal Rage**: fireball on the ground, ground pound in the air |
 
 The original six regular fighters have been tuned for closer matchups: Momo and Yuki

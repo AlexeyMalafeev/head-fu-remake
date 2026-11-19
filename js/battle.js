@@ -48,9 +48,30 @@
       this.time += dt;
       this.f[0].update(dt, inputs[0], this);
       this.f[1].update(dt, inputs[1], this);
+      if (this.f[0].inkRequest || this.f[1].inkRequest) this.useInk();
       this.updateProj(dt);
       this.collide();
       this.updateHats(dt);
+    }
+
+    useInk() {
+      const [a, b] = this.f;
+      const markA = a.inkRequest && a.inkMark;
+      const markB = b.inkRequest && b.inkMark;
+      const gap = a.r + b.r;
+      const overlaps = (p, q) => Math.hypot(p.x - q.x, p.y - q.y) < gap;
+      const blockedA = markA && overlaps(markA, b);
+      const blockedB = markB && overlaps(markB, a);
+      // Judge both returns before moving either fighter so mirrors have no side advantage.
+      const conflict = markA && markB && !blockedA && !blockedB && overlaps(markA, markB);
+      if (a.inkRequest) {
+        if (markA) a.recallInk(this, blockedA || conflict);
+        else a.markInk(this);
+      }
+      if (b.inkRequest) {
+        if (markB) b.recallInk(this, blockedB || conflict);
+        else b.markInk(this);
+      }
     }
 
     plantHat(f) {
