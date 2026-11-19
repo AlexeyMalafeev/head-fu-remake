@@ -24,6 +24,8 @@ Download the `.apk` file attached to a [GitHub release](https://github.com/Alexe
 
 The Android app icon shows red-headband Kenji landing a stomp on pink-haired Momo.
 
+Tap the opening artwork to enter the main menu and start the music.
+
 The app plays in landscape with on-screen touch controls. Two people can share one phone or tablet: player 1 uses the buttons on the left, and player 2 uses the buttons on the right. Gamepads work too.
 
 Press Android Back or the on-screen pause button to pause. The game also pauses when you switch to another app. Use the volume keys to adjust the volume.

@@ -48,7 +48,7 @@ public class MainActivity extends Activity {
 
         WebView.setWebContentsDebuggingEnabled(BuildConfig.DEBUG);
         setContentView(webView);
-        webView.loadUrl("file:///android_asset/index.html");
+        webView.loadUrl("file:///android_asset/index.html?android");
     }
 
     private void hideSystemUi() {

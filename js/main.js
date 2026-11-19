@@ -18,7 +18,6 @@
       HF.setLanguage(HF.settings.language);
       this.resize();
       window.addEventListener('resize', () => this.resize());
-      HF.Input.init(this.canvas);
       document.addEventListener('visibilitychange', () => {
         if (document.hidden) {
           // Fingers lifted while the app was in the background never send pointerup.
@@ -31,10 +30,33 @@
         if (document.hidden) ac.suspend();
         else ac.resume();
       });
-      this.canvas.focus();
-      this.go(new HF.TitleScene(), false);
       // Redraw cached stage art once the display font has arrived.
       if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => HF.STAGES.forEach((s) => (s._cache = null)));
+      if (new URLSearchParams(window.location.search).has('android')) this.showStartupSplash();
+      else this.start();
+    },
+
+    showStartupSplash() {
+      const splash = document.createElement('button');
+      splash.type = 'button';
+      splash.className = 'startup-splash';
+      const label = document.createElement('span');
+      label.textContent = HF.t('TAP TO START');
+      splash.appendChild(label);
+      document.body.appendChild(splash);
+      splash.focus();
+      splash.addEventListener('click', () => {
+        // Unlock inside the tap so the title can open with music and an active menu.
+        HF.Audio.unlock();
+        splash.remove();
+        this.start();
+      }, { once: true });
+    },
+
+    start() {
+      HF.Input.init(this.canvas);
+      this.canvas.focus();
+      this.go(new HF.TitleScene(), false);
       const tick = (ts) => {
         this.frame(ts);
         requestAnimationFrame(tick);

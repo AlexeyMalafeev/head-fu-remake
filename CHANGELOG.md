@@ -7,7 +7,13 @@ codename shared by all of its releases.
 
 ## [Unreleased]
 
+## [v1.2.0 "Head Start"] — 2026-11-19
+
 ### Added
+
+- **Android startup artwork.** Nori, Sumi and Poko take center stage in a
+  lantern-lit courtyard. Tap the artwork to open the main menu and start
+  the music.
 
 - **Poko the Bell Ringer.** Play Poko in versus or meet him at the palace
   gate before the Emperor's fight. Press Special in midair and touch either
@@ -21,14 +27,14 @@ codename shared by all of its releases.
   or in the air and lets her return within two seconds if the spot is clear.
   Sumi starts with 94 health, a movement speed of 340 pixels per second,
   a jump speed of 945 pixels per second and 12 base stomp damage. She
-  scored 53% across 700 normal bot fights against the other regular fighters.
+  scored 54% across 800 normal bot fights against the other regular fighters.
 
 - **Nori the Hat Smuggler.** Play Nori in versus or meet him at the Lantern
   Market in Kenji's story. His Pop-Up Hat briefly launches rivals and stuns
   them when they land, setting up a stomp without dealing damage itself.
   Nori starts with 110 health, 340 pixels per second of movement speed,
   a jump speed of 880 pixels per second and 11 base stomp damage. He won
-  50% of 600 normal bot fights against the other six regular fighters.
+  47% of 800 normal bot fights against the other regular fighters.
 
 ### Changed
 
