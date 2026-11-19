@@ -10,7 +10,7 @@
   // decree (show as a royal scroll), shake, sfx (sound on reveal).
   const STORY = (HF.STORY = {
     intro: {
-      bg: 'dojo',
+      bg: HF.FIGHTER.kenji.stage,
       left: 'kenji',
       lines: [
         { who: 'narrator', text: 'In the Valley of Noggins, everyone is just a head. Nobody knows why. It is considered rude to ask.' },
@@ -25,7 +25,6 @@
     chapters: [
       {
         opp: 'momo',
-        stage: 'dojo',
         rank: 0,
         pre: [
           { who: 'momo', face: 'happy', text: "Halt! I'm Momo, the Emperor's fastest messenger!" },
@@ -40,7 +39,6 @@
       },
       {
         opp: 'bao',
-        stage: 'market',
         rank: 1,
         pre: [
           { who: 'bao', face: 'happy', text: "Welcome to the Lantern Market! I'm Bao. The Emperor's favorite snack." },
@@ -57,7 +55,6 @@
       },
       {
         opp: 'nori',
-        stage: 'market',
         rank: 1.5,
         pre: [
           { who: 'kenji', face: 'think', text: 'Bao sent me. Do you have anything in my soup size?' },
@@ -76,7 +73,6 @@
       },
       {
         opp: 'sensei',
-        stage: 'bamboo',
         rank: 2,
         pre: [
           { who: 'sensei', face: 'calm', text: 'Kenji. My foolish student.' },
@@ -93,7 +89,6 @@
       },
       {
         opp: 'yuki',
-        stage: 'snow',
         rank: 3,
         pre: [
           { who: 'yuki', face: 'focus', text: 'The palace lies beyond this pass. You will not reach it.' },
@@ -109,9 +104,7 @@
       },
       {
         opp: 'sumi',
-        stage: 'gate',
         rank: 3.5,
-        portrait: true,
         pre: [
           { who: 'kenji', face: 'think', text: 'Since when does the Emperor wear a sunhat in his official portrait?' },
           { who: 'sumi', face: 'wink', text: 'Since I ran out of room in the margins. Hi, I’m Sumi!' },
@@ -130,7 +123,6 @@
       },
       {
         opp: 'gonta',
-        stage: 'gate',
         rank: 4,
         pre: [
           { who: 'gonta', face: 'focus', text: 'GONTA GUARD GATE.' },
@@ -147,7 +139,6 @@
       },
       {
         opp: 'poko',
-        stage: 'gate',
         rank: 4,
         pre: [
           { who: 'poko', face: 'happy', text: 'Good morning! I’m Poko, the palace bell ringer.' },
@@ -165,7 +156,6 @@
       },
       {
         opp: 'emperor',
-        stage: 'throne',
         boss: true,
         pre: [
           { who: 'emperor', face: 'smug', text: 'So. The little hothead has come to my throne room.' },
@@ -180,7 +170,7 @@
       },
     ],
     ending: {
-      bg: 'throne',
+      bg: HF.FIGHTER.emperor.stage,
       left: 'kenji',
       right: 'emperor',
       music: 'story',
@@ -218,7 +208,7 @@
     },
     chapter() {
       const c = STORY.chapters[this.ch];
-      HF.Game.go(new CardScene(c, this.ch, () => HF.Game.go(new DialogScene({ bg: c.stage, left: 'kenji', right: c.opp, lines: c.pre, portrait: c.portrait }, () => this.fight()))));
+      HF.Game.go(new CardScene(c, this.ch, () => HF.Game.go(new DialogScene({ bg: HF.FIGHTER[c.opp].stage, left: 'kenji', right: c.opp, lines: c.pre }, () => this.fight()))));
     },
     fight() {
       const c = STORY.chapters[this.ch];
@@ -233,13 +223,12 @@
             { id: 'kenji', ctrl: 'human' },
             { id: c.opp, ctrl: 'ai', skill },
           ],
-          stage: c.stage,
+          stage: HF.FIGHTER[c.opp].stage,
           rounds: c.boss ? 1 : HF.settings.rounds,
           time: c.boss ? 99 : HF.settings.time,
           boss: !!c.boss,
           hp: c.boss ? [100, 130] : [],
           armor: c.boss ? [null, 1] : [],
-          music: c.boss ? 'boss' : undefined,
           title: c.boss ? 'FINAL BATTLE' : undefined,
           onEnd: (res) => (res.winner === 0 ? this.won() : this.lost()),
           onQuit: () => HF.Game.go(new HF.TitleScene()),
@@ -253,7 +242,7 @@
         if (this.ch >= STORY.chapters.length) this.ending();
         else this.chapter();
       };
-      if (c.post.length) HF.Game.go(new DialogScene({ bg: c.stage, left: 'kenji', right: c.opp, lines: c.post, portrait: c.portrait }, next));
+      if (c.post.length) HF.Game.go(new DialogScene({ bg: HF.FIGHTER[c.opp].stage, left: 'kenji', right: c.opp, lines: c.post }, next));
       else next();
     },
     lost() {
@@ -393,7 +382,6 @@
         ctx.fillStyle = 'rgba(15,8,30,0.35)';
         ctx.fillRect(-10, -10, W + 20, H + 20);
       } else HF.UI.backdrop(ctx, this.t, '#2a2050', '#33285e');
-      if (this.script.portrait) this.drawPortrait(ctx);
       if (this.done) {
         ctx.restore();
         return;
@@ -459,20 +447,6 @@
       ctx.restore();
       U.text(ctx, 'ENTER next · ESC skip', W - 16, 16, { size: 13, display: false, weight: 600, align: 'right', lw: 3, color: '#e8e2ff' });
     }
-
-    drawPortrait(ctx) {
-      ctx.save();
-      ctx.translate(W / 2, 196);
-      ctx.rotate(-0.06);
-      HF.UI.panel(ctx, -77, -86, 154, 172, { fill: '#ac7251', r: 7, lw: 4 });
-      HF.UI.panel(ctx, -67, -76, 134, 152, { fill: '#f5e2b6', r: 3, lw: 2 });
-      HF.drawHead(ctx, 'emperor', { x: 0, y: 6, r: 41, facing: 1, expr: 'proud', hat: 'straw' });
-      ctx.translate(50, 59);
-      ctx.rotate(0.14);
-      ctx.fillStyle = '#c35b6c';
-      ctx.fillRect(-5, -5, 10, 10);
-      ctx.restore();
-    }
   }
 
   // ----------------------------- stage card -----------------------------
@@ -482,7 +456,7 @@
       this.i = i;
       this.onDone = onDone;
       this.t = 0;
-      this.stage = new HF.Stage(c.stage);
+      this.stage = new HF.Stage(HF.FIGHTER[c.opp].stage);
       this.done = false;
     }
     enter() {

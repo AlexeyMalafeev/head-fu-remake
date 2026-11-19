@@ -47,27 +47,30 @@ Gamepads work too (first pad is player 1). Esc or P pauses. Menus also work with
 
 ## Modes
 
-- **Story mode**: Kenji's quest to overturn the Emperor's ban on hats. Nine fights with cutscenes between them, including Nori's hat stall, Sumi's palace portraits, and Poko's wake-up call at the palace gate. The final boss, Emperor Megadome, has a spiked helmet you must not stomp and a rage mode at half health. Beating the story unlocks the Emperor for versus play.
+- **Story mode**: Kenji's quest to overturn the Emperor's ban on hats. Face nine opponents in their home arenas, with cutscenes between fights. The final boss, Emperor Megadome, has a spiked helmet you must not stomp and a rage mode at half health. Beating the story unlocks the Emperor for versus play.
 - **VS CPU**: pick both fighters, a stage and a difficulty (easy, normal, hard).
 - **VS Player 2**: two players on one keyboard, one touchscreen (split on-screen buttons) or two gamepads.
 - **Options**: language (English or Русский), music and sound volume, round time (30–99 s), single round or best of 3/5, fullscreen.
 
 Choose **Options → Language / Язык → Русский** for the full Russian translation: menus, controls, fighters and their moves, story dialogue, battle messages and credits. The language changes immediately and is saved with your settings. English is the default; existing settings and fighter unlocks are preserved.
 
+Both versus modes let you choose any of the ten arenas or select Random. Each
+arena has its own battle theme.
+
 ## Fighters
 
-| Fighter | Style | Special |
-|---|---|---|
-| Kenji | Balanced | **Sky Step**: a second jump in mid-air, refreshed on every stomp |
-| Momo | Small, fastest, fragile | **Zoom Dash**: invulnerable side dash that bonks anyone in the way |
-| Gonta | Big and heavy, takes reduced stomp damage | **Quake Pound**: slam down; the shockwave dizzies grounded foes |
-| Sensei Fuzz | Floaty | **Brow-copter**: hold special in the air to hover on flapping eyebrows |
-| Yuki | Fast | **Frost Breath**: snowflake that freezes the foe; stomp the ice for bonus damage |
-| Bao | Bouncy | **Spring Bun**: hold to charge a mega jump; stomps bounce off him while charging |
-| Nori | Quick on the ground, modest jump, light stomps | **Pop-Up Hat**: plant a spring hat that gives a rival a short hop and stuns them for one second after landing. The hat deals no damage. Jump clear or wait for it to expire. |
-| Sumi | Small and fragile, with precise air control | **Ink Recall**: tap Special to mark your position on the ground or in the air. Tap again within two seconds to return. A rival covering the mark blocks the return. |
-| Poko | Sturdy, with a low jump and heavy stomps | **Wall Chime**: tap Special in midair, then touch either wall to bounce up and back into the arena. Works once before landing and has a short cooldown. |
-| Emperor Megadome | Biggest head, unlockable | **Royal Rage**: fireball on the ground, ground pound in the air |
+| Fighter | Home arena | Style | Special |
+|---|---|---|---|
+| Kenji | Dojo Courtyard | Balanced | **Sky Step**: a second jump in mid-air, refreshed on every stomp |
+| Momo | Courier Bridge | Small, fastest, fragile | **Zoom Dash**: invulnerable side dash that bonks anyone in the way |
+| Gonta | Palace Gate | Big and heavy, takes reduced stomp damage | **Quake Pound**: slam down; the shockwave dizzies grounded foes |
+| Sensei Fuzz | Bamboo Grove | Floaty | **Brow-copter**: hold special in the air to hover on flapping eyebrows |
+| Yuki | Frosty Pass | Fast | **Frost Breath**: snowflake that freezes the foe; stomp the ice for bonus damage |
+| Bao | Lantern Market | Bouncy | **Spring Bun**: hold to charge a mega jump; stomps bounce off him while charging |
+| Nori | Hidden Hat Shop | Quick on the ground, modest jump, light stomps | **Pop-Up Hat**: plant a spring hat that gives a rival a short hop and stuns them for one second after landing. The hat deals no damage. Jump clear or wait for it to expire. |
+| Sumi | Portrait Hall | Small and fragile, with precise air control | **Ink Recall**: tap Special to mark your position on the ground or in the air. Tap again within two seconds to return. A rival covering the mark blocks the return. |
+| Poko | Palace Belfry | Sturdy, with a low jump and heavy stomps | **Wall Chime**: tap Special in midair, then touch either wall to bounce up and back into the arena. Works once before landing and has a short cooldown. |
+| Emperor Megadome | Throne Room | Biggest head, unlockable | **Royal Rage**: fireball on the ground, ground pound in the air |
 
 The original six regular fighters have been tuned for closer matchups: Momo and Yuki
 have less health and stomp damage; Sensei Fuzz has more health, movement

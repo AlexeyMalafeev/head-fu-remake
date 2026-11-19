@@ -11,7 +11,7 @@
 
   class MatchScene {
     // cfg: { mode: 'cpu' | '2p' | 'story' | 'demo', players: [{ id, ctrl: 'human' | 'ai', skill }],
-    //        stage, rounds, time, boss, hp: [], armor: [], music, title, onEnd(result), onQuit() }
+    //        stage, rounds, time, boss, hp: [], armor: [], title, onEnd(result), onQuit() }
     constructor(cfg) {
       this.cfg = cfg;
       this.demo = cfg.mode === 'demo';
@@ -45,7 +45,7 @@
     }
 
     enter() {
-      if (!this.demo) HF.Music.play(this.cfg.music || this.stage.def.music);
+      if (!this.demo) HF.Music.play(this.stage.def.music);
     }
 
     // The app went to the background: pause so the fight doesn't carry on when it returns.
@@ -62,7 +62,7 @@
       this.ended = false;
       this.startRound();
       HF.Music.stop(0.05);
-      HF.Music.play(this.cfg.music || this.stage.def.music);
+      HF.Music.play(this.stage.def.music);
     }
 
     quit() {

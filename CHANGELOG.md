@@ -7,6 +7,13 @@ codename shared by all of its releases.
 
 ## [Unreleased]
 
+### Added
+
+- **A home arena and theme for every fighter.** Meet Momo on Courier Bridge,
+  Nori in the Hidden Hat Shop, Sumi in Portrait Hall and Poko in the Palace
+  Belfry. Six new chiptunes give all ten arenas their own music. Story opponents
+  fight in their home arenas, and all ten arenas are available in versus.
+
 ## [v1.2.0 "Head Start"] — 2026-11-19
 
 ### Added

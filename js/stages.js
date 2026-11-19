@@ -313,7 +313,7 @@
     {
       id: 'bamboo',
       name: 'Bamboo Grove',
-      music: 'battle2',
+      music: 'bamboo',
       ambient: 'leaves',
       draw(ctx) {
         sky(ctx, ['#dff7d0', '#a8dca0', '#6fae72']);
@@ -395,7 +395,7 @@
     {
       id: 'gate',
       name: 'Palace Gate',
-      music: 'battle1',
+      music: 'gate',
       ambient: 'leavesOrange',
       draw(ctx) {
         sky(ctx, ['#b8406b', '#ff7f50', '#ffcf7a']);
@@ -556,6 +556,200 @@
             ctx.fill();
           }
         }
+      },
+    },
+    {
+      id: 'bridge',
+      name: 'Courier Bridge',
+      music: 'bridge',
+      ambient: 'petals',
+      draw(ctx) {
+        sky(ctx, ['#59b9cd', '#b7e6dc', '#ffe2a1']);
+        sun(ctx, 230, 164, 40, '#fff4b9', 'rgba(255,235,160,0.6)');
+        cloud(ctx, 355, 140, 1.15);
+        cloud(ctx, 635, 178, 0.8);
+        cloud(ctx, 805, 100, 1.1);
+        mountains(ctx, 383, [[0, 283], [110, 229], [260, 329], [410, 273], [560, 335], [702, 232], [855, 298], [960, 254]], '#78aeb0');
+        mountains(ctx, 395, [[0, 308], [165, 335], [295, 356], [490, 312], [630, 321], [820, 298], [960, 339]], '#4d8e89');
+        ctx.fillStyle = grad(ctx, 365, G, ['#90d2ba', '#367b91']);
+        ctx.fillRect(0, 365, W, G - 365);
+        for (let i = 0; i < 34; i++) {
+          ctx.fillStyle = i % 3 ? 'rgba(226,255,228,0.27)' : 'rgba(38,100,120,0.32)';
+          ctx.fillRect((i * 137) % W, 370 + (i * 31) % 80, 18 + (i * 13) % 68, 2);
+        }
+        // Courier pennants strung above the red bridge.
+        ctx.strokeStyle = '#365c61';
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.moveTo(72, 145);
+        ctx.quadraticCurveTo(480, 305, 888, 145);
+        ctx.stroke();
+        for (let x = 116; x <= 844; x += 56) {
+          const y = 225 - 80 * ((x - 480) / 408) ** 2;
+          ctx.fillStyle = ['#f78855', '#ffe49a', '#ec79a3'][(x - 116) / 56 % 3];
+          ctx.beginPath();
+          ctx.moveTo(x - 17, y - 1);
+          ctx.lineTo(x + 16, y + 1);
+          ctx.lineTo(x - 6, y + 31);
+          ctx.fill();
+        }
+        ctx.fillStyle = '#843e48';
+        ctx.fillRect(0, 424, W, 12);
+        ctx.fillRect(0, 458, W, 12);
+        for (let x = 24; x < W; x += 65) {
+          ctx.fillStyle = '#b05750';
+          ctx.fillRect(x, 417, 12, 53);
+          ctx.fillStyle = '#efb16b';
+          ctx.fillRect(x - 3, 413, 18, 7);
+        }
+        for (const x of [72, 888]) {
+          ctx.fillStyle = '#713845';
+          ctx.fillRect(x - 9, 137, 18, 333);
+          ctx.fillStyle = '#f5bc71';
+          ctx.beginPath();
+          ctx.arc(x, 132, 12, 0, TAU);
+          ctx.fill();
+        }
+        floorPlanks(ctx, '#ba6955', '#743c40', '#8d4b45');
+      },
+    },
+    {
+      id: 'hatshop',
+      name: 'Hidden Hat Shop',
+      music: 'hatshop',
+      ambient: 'glow',
+      draw(ctx) {
+        sky(ctx, ['#221936', '#403453', '#654960']);
+        ctx.fillStyle = '#221a31';
+        ctx.fillRect(28, 112, 904, 358);
+        for (const x of [50, 338, 626]) {
+          ctx.fillStyle = grad(ctx, 124, 438, ['#44354f', '#2d243d']);
+          ctx.fillRect(x, 124, 282, 314);
+          for (const y of [241, 364]) {
+            ctx.fillStyle = '#795052';
+            ctx.fillRect(x, y, 282, 13);
+            ctx.fillStyle = '#ae7965';
+            ctx.fillRect(x, y, 282, 3);
+            for (let i = 0; i < 3; i++) {
+              const hx = x + 50 + i * 91;
+              const [crown, band] = [['#477b81', '#ffcf77'], ['#a85576', '#ffa475'], ['#6a5e99', '#c0c9a5']][((x + y) % 5 + i) % 3];
+              ctx.fillStyle = crown;
+              ctx.beginPath();
+              ctx.ellipse(hx, y - 5, 38, 7, i * 0.06 - 0.06, 0, TAU);
+              ctx.fill();
+              U.roundRect(ctx, hx - 22, y - 48 + i * 5, 44, 44 - i * 5, 12);
+              ctx.fill();
+              ctx.fillStyle = band;
+              ctx.fillRect(hx - 22, y - 19, 44, 6);
+              ctx.fillStyle = '#ffe2ae';
+              ctx.fillRect(hx + 7, y - 21, 9, 10);
+            }
+          }
+        }
+        for (const x of [26, 324, 622, 920]) {
+          ctx.fillStyle = '#503244';
+          ctx.fillRect(x, 106, 16, 364);
+        }
+        for (const x of [156, 480, 804]) {
+          ctx.fillStyle = '#2c2037';
+          ctx.fillRect(x - 2, 0, 4, 111);
+          lantern(ctx, x, 135, 1.25, '#d98562');
+        }
+        floorPlanks(ctx, '#866058', '#513948', '#674650');
+      },
+    },
+    {
+      id: 'gallery',
+      name: 'Portrait Hall',
+      music: 'gallery',
+      ambient: 'glow',
+      draw(ctx) {
+        sky(ctx, ['#575074', '#a2899b', '#c4a69e']);
+        ctx.fillStyle = '#705a76';
+        ctx.fillRect(0, 380, W, G - 380);
+        for (let x = 0; x < W; x += 120) {
+          ctx.fillStyle = '#b393a0';
+          ctx.fillRect(x, 386, 114, 78);
+          ctx.fillStyle = '#9b7d91';
+          ctx.fillRect(x + 5, 391, 104, 68);
+        }
+        for (const [x, y, w, h, id, hat] of [
+          [70, 156, 111, 133, 'gonta', 'beanie'],
+          [240, 124, 126, 150, 'momo', 'straw'],
+          [398, 96, 164, 190, 'emperor', 'straw'],
+          [596, 135, 130, 152, 'yuki', 'beanie'],
+          [772, 171, 112, 132, 'sensei', 'straw'],
+        ]) {
+          ctx.fillStyle = '#655169';
+          ctx.fillRect(x + 4, y + 6, w, h);
+          ctx.fillStyle = '#b68152';
+          ctx.fillRect(x, y, w, h);
+          ctx.strokeStyle = '#f6cb80';
+          ctx.lineWidth = 3;
+          ctx.strokeRect(x + 3, y + 3, w - 6, h - 6);
+          ctx.fillStyle = '#ecdbb1';
+          ctx.fillRect(x + 10, y + 10, w - 20, h - 20);
+          HF.drawHead(ctx, id, { x: x + w / 2, y: y + h * 0.55, r: w * 0.235, facing: 1, expr: 'proud', hat, t: 0 });
+          ctx.fillStyle = '#b94c63';
+          ctx.fillRect(x + w - 26, y + h - 26, 9, 9);
+        }
+        ctx.fillStyle = '#e2b486';
+        ctx.fillRect(0, 374, W, 6);
+        stoneTiles(ctx, '#7a708d', '#4b425f', '#554764', 95);
+      },
+    },
+    {
+      id: 'belfry',
+      name: 'Palace Belfry',
+      music: 'belfry',
+      ambient: 'embers',
+      draw(ctx) {
+        sky(ctx, ['#34335d', '#bd656d', '#ffd18c']);
+        sun(ctx, 735, 321, 52, '#ffe2a4', 'rgba(255,195,114,0.55)');
+        mountains(ctx, G, [[0, 315], [135, 262], [280, 364], [400, 295], [585, 403], [774, 352], [960, 310]], '#715675');
+        for (const [x, y, w] of [[-40, 342, 220], [160, 384, 180], [596, 392, 154], [800, 353, 200]]) {
+          ctx.fillStyle = '#5d425e';
+          ctx.fillRect(x, y + 18, w, G - y);
+          roof(ctx, x, y, w, 39, '#473750');
+        }
+        for (const x of [225, 704]) {
+          ctx.fillStyle = '#663d50';
+          ctx.fillRect(x, 114, 33, G - 114);
+          ctx.fillStyle = '#a76562';
+          ctx.fillRect(x + 4, 115, 8, G - 115);
+        }
+        roof(ctx, 197, 54, 566, 76, '#392e4a', '#f0a568');
+        ctx.fillStyle = '#663b48';
+        ctx.fillRect(216, 124, 528, 18);
+        ctx.fillStyle = '#382b40';
+        ctx.fillRect(469, 140, 22, 24);
+        ctx.fillStyle = grad(ctx, 167, 341, ['#f9ce82', '#bf8149', '#73504a']);
+        ctx.beginPath();
+        ctx.moveTo(452, 163);
+        ctx.quadraticCurveTo(481, 147, 508, 163);
+        ctx.bezierCurveTo(567, 173, 549, 278, 594, 327);
+        ctx.quadraticCurveTo(481, 353, 366, 327);
+        ctx.bezierCurveTo(411, 278, 393, 173, 452, 163);
+        ctx.fill();
+        ctx.strokeStyle = '#f5c682';
+        ctx.lineWidth = 5;
+        ctx.beginPath();
+        ctx.moveTo(384, 304);
+        ctx.quadraticCurveTo(480, 326, 576, 304);
+        ctx.stroke();
+        ctx.fillStyle = '#553c43';
+        ctx.beginPath();
+        ctx.ellipse(480, 332, 111, 15, 0, 0, TAU);
+        ctx.fill();
+        ctx.fillStyle = '#d89755';
+        ctx.beginPath();
+        ctx.ellipse(480, 344, 15, 19, 0, 0, TAU);
+        ctx.fill();
+        ctx.fillStyle = '#624254';
+        ctx.fillRect(0, 424, W, 9);
+        ctx.fillRect(0, 460, W, 10);
+        for (let x = 25; x < W; x += 58) ctx.fillRect(x, 420, 9, 50);
+        floorPlanks(ctx, '#8a605f', '#513649', '#704553');
       },
     },
   ];

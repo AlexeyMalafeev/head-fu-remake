@@ -316,6 +316,208 @@
       ],
     },
 
+    // "Bamboo Bounce" — E minor pentatonic with a lilting flute-like lead.
+    bamboo: {
+      bpm: 132,
+      order: ['A'],
+      ch: [
+        { wave: 'triangle', vol: 0.20, env: 'organ', vib: 0.018, parts: {
+          A: `E5:3 G5 A5:4 B5:3 A5 G5:4 |
+              D5:3 E5 G5:2 E5:2 D5:6 .:2 |
+              E5:2 G5:2 A5:3 B5 D6:4 B5:4 |
+              A5:3 G5 E5:4 G5:3 D5 E5:4 |
+              B5:6 D6:2 E6:4 D6:2 B5:2 |
+              A5:4 G5:2 A5:2 B5:6 .:2 |
+              G5:3 A5 B5:4 A5:3 G5 D5:4 |
+              E5:8 .:2 D5:2 B4:2 D5:2`,
+        } },
+        { wave: 'pulse12', vol: 0.065, env: 'pluck', parts: {
+          A: `.:4 E4/G4/B4:4 .:4 E4/G4/B4:4 | .:4 D4/F#4/A4:4 .:4 D4/F#4/A4:4 |
+              .:4 C4/E4/G4:4 .:4 C4/E4/G4:4 | .:4 D4/F#4/A4:4 .:4 E4/G4/B4:4 |
+              .:4 G4/B4/D5:4 .:4 G4/B4/D5:4 | .:4 A4/C5/E5:4 .:4 A4/C5/E5:4 |
+              .:4 C4/E4/G4:4 .:4 D4/F#4/A4:4 | .:4 E4/G4/B4:4 .:4 E4/G4/B4:4`,
+        } },
+        { wave: 'triangle', vol: 0.24, env: 'pluck', parts: {
+          A: `E3:6 B3:2 E3:6 G3:2 | D3:6 A3:2 D4:4 A3:4 |
+              C3:6 G3:2 C4:6 G3:2 | D3:6 A3:2 E3:8 |
+              G3:6 D4:2 G3:6 B3:2 | A3:6 E4:2 A3:6 G3:2 |
+              C3:6 G3:2 D3:6 A3:2 | E3:8 B3:6 D4:2`,
+        } },
+        { drums: true, vol: 0.48, parts: {
+          A: 'k.hh t.h. k.hh l.h. | k.hh t.h. k.hh l.hh | k.hh t.h. k.hh l.h. | k.hh t.h. k.h. t.ll | k.hh t.h. k.hh l.h. | k.hh t.h. k.hh l.hh | k.hh t.h. k.hh l.h. | k.h. t.h. k.h. t.ll',
+        } },
+      ],
+    },
+
+    // "Hold the Gate" — a heavy C minor march with brass-like stabs.
+    gate: {
+      bpm: 124,
+      order: ['A'],
+      ch: [
+        { wave: 'pulse50', vol: 0.12, env: 'organ', gate: 0.75, parts: {
+          A: `C4:3 C4 Eb4:4 G4:6 .:2 |
+              Ab4:3 G4 F4:4 Eb4:4 D4:4 |
+              C4:3 C4 Eb4:4 C5:6 .:2 |
+              Bb4:3 Ab4 G4:4 F4:3 Eb4 D4:4 |
+              G4:2 G4:2 Bb4:4 C5:8 |
+              Eb5:3 D5 C5:4 Ab4:4 F4:4 |
+              Ab4:3 G4 F4:4 Eb4:3 F4 D4:4 |
+              C4:6 .:2 G3:2 G3:2 Bb3:2 B3:2`,
+        } },
+        { wave: 'pulse25', vol: 0.075, env: 'organ', parts: {
+          A: `.:4 C4/Eb4/G4:4 .:4 C4/Eb4/G4:4 | Ab3/C4/Eb4:4 .:4 Bb3/D4/F4:4 .:4 |
+              .:4 C4/Eb4/G4:4 .:4 C4/Eb4/G4:4 | Bb3/D4/F4:4 .:4 G3/B3/D4:4 .:4 |
+              .:4 G3/Bb3/D4:4 C4/Eb4/G4:4 .:4 | .:4 Ab3/C4/Eb4:4 F3/Ab3/C4:4 .:4 |
+              .:4 F3/Ab3/C4:4 G3/B3/D4:4 .:4 | C4/Eb4/G4:6 .:10`,
+        } },
+        { wave: 'triangle', vol: 0.31, env: 'pluck', parts: {
+          A: `C3:4 C3:2 C3:2 G2:4 C3:4 | Ab2:4 Eb3:4 Bb2:4 F3:4 |
+              C3:4 C3:2 C3:2 G2:4 C3:4 | Bb2:4 F3:4 G2:4 D3:4 |
+              G2:4 D3:4 C3:4 G2:4 | Ab2:4 Eb3:4 F2:4 C3:4 |
+              F2:4 C3:4 G2:4 G2:4 | C3:6 .:2 C3:2 C3:2 G2:4`,
+        } },
+        { drums: true, vol: 0.72, parts: {
+          A: 'k.h. s.s. k.h. s.ll | k.h. s.ss k.h. s.ll | k.h. s.s. k.h. s.ll | k.h. s.ss k.l. s.ss | k.h. s.s. k.h. s.ll | k.h. s.ss k.h. s.ll | k.h. s.s. k.h. s.ll | k... t... k.ss ssss',
+        } },
+      ],
+    },
+
+    // "Special Delivery" — bright D major with a skipping, syncopated lead.
+    bridge: {
+      bpm: 174,
+      order: ['A'],
+      ch: [
+        { wave: 'pulse25', vol: 0.14, env: 'pluck', parts: {
+          A: `.:2 A4:2 D5:3 F#5 A5:2 F#5:2 E5:2 F#5:2 |
+              G5:3 E5 .:2 D5:2 E5:2 B4:2 A4:4 |
+              .:2 A4:2 D5:3 E5 F#5:2 A5:2 B5:4 |
+              A5:3 F#5 .:2 D5:2 E5:2 A4:2 D5:4 |
+              B5:2 A5:2 F#5:2 D5:2 B4:3 D5 E5:4 |
+              G5:2 F#5:2 E5:2 B4:2 G4:3 B4 D5:4 |
+              A4:2 C#5:2 E5:2 G5:2 F#5:2 E5:2 C#5:4 |
+              D5:4 .:2 F#5:2 A5:2 F#5:2 E5:2 C#5:2`,
+        } },
+        { wave: 'pulse12', vol: 0.075, env: 'pluck', parts: {
+          A: `D4/F#4/A4:2 .:4 D4/F#4/A4:2 .:4 A3/D4/F#4:2 .:2 |
+              G3/B3/D4:2 .:4 G3/B3/D4:2 A3/C#4/E4:2 .:6 |
+              D4/F#4/A4:2 .:4 D4/F#4/A4:2 .:4 A3/D4/F#4:2 .:2 |
+              A3/C#4/E4:2 .:4 A3/C#4/E4:2 D4/F#4/A4:2 .:6 |
+              B3/D4/F#4:2 .:4 B3/D4/F#4:2 .:4 B3/D4/F#4:2 .:2 |
+              G3/B3/D4:2 .:4 G3/B3/D4:2 .:4 G3/B3/D4:2 .:2 |
+              A3/C#4/E4:2 .:4 A3/C#4/G4:2 .:4 A3/C#4/E4:2 .:2 |
+              D4/F#4/A4:4 .:4 D4/F#4/A4:2 .:6`,
+        } },
+        { wave: 'triangle', vol: 0.28, env: 'pluck', parts: {
+          A: `D3:3 A3 D4:2 A3:2 F#3:3 A3 D4:4 | G3:3 D4 G3:4 A3:3 E4 A3:4 |
+              D3:3 A3 D4:2 A3:2 F#3:3 A3 D4:4 | A3:3 E4 A3:4 D3:3 A3 D4:4 |
+              B2:3 F#3 B3:2 F#3:2 D3:3 F#3 B3:4 | G3:3 D4 G4:2 D4:2 B3:3 D4 G3:4 |
+              A3:3 E4 A4:2 E4:2 G3:3 E4 A3:4 | D3:4 .:2 A3:2 D4:2 A3:2 F#3:2 E3:2`,
+        } },
+        { drums: true, vol: 0.69, parts: {
+          A: 'kh.h s.hk hh.k s.hh | kh.h s.hk kh.h s.ho | kh.h s.hk hh.k s.hh | kh.h s.hk kh.h s.tt | kh.h s.hk hh.k s.hh | kh.h s.hk kh.h s.ho | kh.h s.hk hh.k s.hh | k.h. s.h. k.hh stts',
+        } },
+      ],
+    },
+
+    // "Under the Brim" — a sneaky, offbeat G minor tune.
+    hatshop: {
+      bpm: 145,
+      order: ['A'],
+      ch: [
+        { wave: 'pulse12', vol: 0.16, env: 'pluck', parts: {
+          A: `G4:2 .:2 Bb4:3 A4 .:2 G4:2 D5:3 . |
+              Db5:3 D5 .:4 F5:2 Eb5:2 D5:3 . |
+              G4:2 .:2 Bb4:3 C5 .:2 Db5:2 D5:3 . |
+              Eb5:3 C5 .:4 A4:2 C5:2 Bb4:3 . |
+              F5:3 Eb5 D5:3 Bb4 .:2 D5:2 F5:4 |
+              Eb5:3 D5 C5:3 G4 .:2 C5:2 Eb5:4 |
+              D5:3 C5 A4:3 Gb4 G4:2 Bb4:2 A4:4 |
+              G4:3 . G4:2 .:2 D4:3 . F4:2 Gb4:2`,
+        } },
+        { wave: 'pulse25', vol: 0.075, env: 'pluck', parts: {
+          A: `.:3 G3/Bb3/D4:2 .:6 G3/Bb3/D4:2 .:3 | .:3 G3/Bb3/D4:2 .:6 G3/Bb3/D4:2 .:3 |
+              .:3 G3/Bb3/D4:2 .:6 G3/Bb3/D4:2 .:3 | .:3 C4/Eb4/G4:2 .:6 D4/Gb4/A4:2 .:3 |
+              .:3 Bb3/D4/F4:2 .:6 Bb3/D4/F4:2 .:3 | .:3 C4/Eb4/G4:2 .:6 C4/Eb4/G4:2 .:3 |
+              .:3 D4/Gb4/C5:2 .:6 D4/Gb4/A4:2 .:3 | G3/Bb3/D4:3 .:6 G3/Bb3/D4:2 .:5`,
+        } },
+        { wave: 'triangle', vol: 0.30, env: 'pluck', parts: {
+          A: `G2:3 . D3:3 . F3:3 . D3:3 . | G2:3 . Bb2:3 . C3:3 . Db3:3 . |
+              G2:3 . D3:3 . F3:3 . G3:3 . | C3:3 . G3:3 . D3:3 . A3:3 . |
+              Bb2:3 . F3:3 . Bb3:3 . F3:3 . | C3:3 . G3:3 . Bb3:3 . G3:3 . |
+              D3:3 . A3:3 . C4:3 . Gb3:3 . | G2:3 . G3:3 . D3:3 . Db3:3 .`,
+        } },
+        { drums: true, vol: 0.52, parts: {
+          A: 'k..h .s.h k.h. .s.h | k.h. .s.h ..kh .s.h | k..h .s.h k.h. .s.h | k.h. .s.h ..kh .ssl | k..h .s.h k.h. .s.h | k.h. .s.h ..kh .s.h | k..h .s.h k.h. .s.h | k..h ..sh k... .stl',
+        } },
+      ],
+    },
+
+    // "Wet Ink" — a light F major melody over a three-three-two accent pattern.
+    gallery: {
+      bpm: 156,
+      order: ['A'],
+      ch: [
+        { wave: 'pulse12', vol: 0.14, env: 'organ', gate: 0.72, parts: {
+          A: `F5:3 A5:3 C6:2 A5:3 G5:3 E5:2 |
+              D5:3 F5:3 A5:2 G5:3 F5:3 D5:2 |
+              Bb4:3 D5:3 F5:2 Bb5:3 A5:3 F5:2 |
+              E5:3 G5:3 C6:2 B5:3 G5:3 E5:2 |
+              A5:3 C6:3 D6:2 C6:3 A5:3 F5:2 |
+              G5:3 Bb5:3 C6:2 Bb5:3 G5:3 E5:2 |
+              D5:3 F5:3 Bb5:2 G5:3 E5:3 C5:2 |
+              F5:6 A5:2 F5:3 D5:3 E5:2`,
+        } },
+        { wave: 'triangle', vol: 0.13, env: 'pluck', parts: {
+          A: `F4/A4/C5:6 .:2 C4/E4/G4:6 .:2 | D4/F4/A4:6 .:2 D4/F4/A4:6 .:2 |
+              Bb3/D4/F4:6 .:2 Bb3/D4/F4:6 .:2 | C4/E4/G4:6 .:2 C4/E4/G4:6 .:2 |
+              F4/A4/C5:6 .:2 F4/A4/C5:6 .:2 | C4/E4/Bb4:6 .:2 C4/E4/Bb4:6 .:2 |
+              Bb3/D4/F4:6 .:2 C4/E4/G4:6 .:2 | F4/A4/C5:6 .:2 F4/A4/C5:6 .:2`,
+        } },
+        { wave: 'triangle', vol: 0.26, env: 'organ', gate: 0.7, parts: {
+          A: `F3:3 C4:3 A3:2 C3:3 G3:3 E3:2 | D3:3 A3:3 F3:2 D3:3 A3:3 F3:2 |
+              Bb2:3 F3:3 D3:2 Bb2:3 F3:3 D3:2 | C3:3 G3:3 E3:2 C3:3 G3:3 E3:2 |
+              F3:3 C4:3 A3:2 F3:3 C4:3 A3:2 | C3:3 G3:3 Bb3:2 C3:3 G3:3 Bb3:2 |
+              Bb2:3 F3:3 D3:2 C3:3 G3:3 E3:2 | F3:3 C4:3 A3:2 F3:3 D3:3 E3:2`,
+        } },
+        { drums: true, vol: 0.56, parts: {
+          A: 'k.ht .ht. k.hs .ht. | k.ht .ht. k.hs .hth | k.ht .ht. k.hs .ht. | k.ht .ht. k.hs .hsl | k.ht .ht. k.hs .ht. | k.ht .ht. k.hs .hth | k.ht .ht. k.hs .ht. | k.ht .ht. k.hs .tls',
+        } },
+      ],
+    },
+
+    // "Dawn Chimes" — open fifths and a sine echo over a B minor half-time beat.
+    belfry: {
+      bpm: 138,
+      order: ['A'],
+      ch: [
+        { wave: 'triangle', vol: 0.21, env: 'pluck', parts: {
+          A: `B4:6 F#5:2 D5:4 B4:4 |
+              A4:6 E5:2 C#5:4 A4:4 |
+              G4:6 D5:2 B4:4 G4:4 |
+              F#4:6 C#5:2 A#4:4 C#5:4 |
+              D5:4 F#5:2 A5:2 B5:6 A5:2 |
+              F#5:4 E5:2 D5:2 G5:6 F#5:2 |
+              E5:4 B4:2 G4:2 A#4:4 C#5:4 |
+              B4:8 F#5:4 D5:2 A#4:2`,
+        } },
+        { wave: 'sine', vol: 0.09, env: 'pluck', parts: {
+          A: `.:2 F#6:6 .:2 A5:6 | .:2 E6:6 .:2 G5:6 |
+              .:2 D6:6 .:2 F#5:6 | .:2 C#6:6 .:2 E5:6 |
+              .:2 A6:6 .:2 D6:6 | .:2 F#6:6 .:2 B5:6 |
+              .:2 B5:6 .:2 C#6:6 | F#6:6 .:2 F#6:4 .:4`,
+        } },
+        { wave: 'triangle', vol: 0.30, env: 'organ', gate: 0.78, parts: {
+          A: `B2:8 F#3:4 B2:4 | A2:8 E3:4 A2:4 |
+              G2:8 D3:4 G2:4 | F#2:8 C#3:4 F#2:4 |
+              D3:8 B2:4 F#3:4 | G2:8 D3:4 G2:4 |
+              E3:8 F#2:4 C#3:4 | B2:8 F#3:4 B2:4`,
+        } },
+        { drums: true, vol: 0.61, parts: {
+          A: 'k..h ..h. l..h k.h. | k..h ..h. s..h k.h. | k..h ..h. l..h k.h. | k..h ..h. t..h l.hs | k..h k.h. s..h k.h. | k..h k.h. l..h k.h. | k..h ..h. s..h k.h. | k..h ..h. l..h t.ll',
+        } },
+      ],
+    },
+
     // "Tea Time Tales" — story cutscenes. Gentle and a little goofy.
     story: {
       bpm: 96,

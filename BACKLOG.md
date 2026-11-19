@@ -50,6 +50,5 @@ No open items.
 
 Unprioritised; each needs a design decision before work starts.
 
-- More stages.
 - Online two-player (same-device two-player on touchscreens works since
   the split on-screen buttons).

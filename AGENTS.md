@@ -27,7 +27,8 @@ and the roster.
 shell that ships with macOS (nothing to install). Run it
 after every change to game code:
 
-1. **Music**: every song has whole bars and channels of matching length.
+1. **Music**: every song has whole bars and channels of matching length, and
+   every roster fighter has a unique home arena with a distinct looping theme.
 2. **Input**: multi-touch, pointer cancellation, pause, mouse, keyboard and
    the audio unlock (`tests/input-check.js` with a fake DOM in
    `tests/input-prelude.js`).
@@ -126,11 +127,11 @@ js/util.js        HF namespace, constants, math and drawing helpers, HF.store, s
 js/i18n.js        Russian translation catalog, language selection and message formatting
 js/input.js       keyboard, gamepad, pointer and multi-touch controls
 js/audio.js       Web Audio synth voices and all sound effects
-js/music.js       the soundtrack (9 tracks in a text notation) and its sequencer
+js/music.js       the soundtrack (15 tracks in a text notation) and its sequencer
 js/fighters.js    roster: stats, abilities, quotes
 js/faces.js       head drawing for every character, facial expressions
 js/fx.js          particles, comic hit words, screen shake
-js/stages.js      six stage backgrounds and their ambient particles
+js/stages.js      ten stage backgrounds and their ambient particles
 js/fighter.js     one fighter's physics, abilities and mood
 js/battle.js      a fight's simulation: collisions, stomps, clashes, projectiles
 js/ai.js          computer opponent (reaction delay and skill by difficulty)
