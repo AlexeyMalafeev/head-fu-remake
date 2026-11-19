@@ -87,7 +87,7 @@
   }
 
   // ======================= FIGHTER SELECT =======================
-  const COLS = 5;
+  const COLS = 4;
   const CARD = 54;
 
   function cardPos(k) {
@@ -416,11 +416,12 @@
       const f = this.roster[showing];
       const picked = this.picked[p] === f.id;
       const k = Math.min(1, this.sideT[p] * 5);
-      const r = 74 * Math.sqrt(f.stats.radius / 46) * (0.85 + 0.15 * U.easeOutBack(k));
+      const tallHat = f.id === 'poko';
+      const r = (tallHat ? 63 : 74) * Math.sqrt(f.stats.radius / 46) * (0.85 + 0.15 * U.easeOutBack(k));
       const expr = picked ? (this.sideT[p] < 1.2 ? 'gloat' : 'smug') : this.sideT[p] < 0.4 ? 'jump' : 'idle';
       HF.drawHead(ctx, f.id, {
         x: cx,
-        y: 212 + Math.sin(this.t * 3 + p) * 4,
+        y: (tallHat ? 228 : 212) + Math.sin(this.t * 3 + p) * 4,
         r,
         facing: L ? 1 : -1,
         expr,
@@ -684,12 +685,13 @@
       HF.UI.panel(ctx, 20, 346, 920, 160);
       U.text(ctx, 'SPECIAL MOVES', W / 2, 368, { size: 22, color: '#7bdff2' });
       const list = HF.FIGHTERS.filter(HF.fighterUnlocked);
+      const crowded = list.length > 9;
       list.forEach((f, i) => {
         const col = i % 3, row = Math.floor(i / 3);
-        const x = 60 + col * 300, y = 404 + row * 40;
-        HF.drawHead(ctx, f.id, { x, y, r: 15, facing: 1, expr: 'happy', t: this.t + i });
+        const x = 60 + col * 300, y = crowded ? 395 + row * 31 : 404 + row * 40;
+        HF.drawHead(ctx, f.id, { x, y, r: crowded ? 12 : 15, facing: 1, expr: 'happy', t: this.t + i });
         U.text(ctx, HF.t(f.name).split(' ')[0] + ': ' + HF.t(f.abilityName), x + 24, y - 6, { maxWidth: 256, size: 15, display: false, weight: 700, align: 'left', lw: 4, color: f.color });
-        const short = { airjump: 'jump again in the air', dash: 'untouchable side dash', pound: 'ground pound + shockwave', glide: 'hold to hover', frost: 'freezing snowflake', spring: 'hold & release: mega jump', hat: 'plant a hat that stuns on landing', recall: 'tap to mark, tap again to return', royal: 'fireball / ground pound' }[f.ability];
+        const short = { airjump: 'jump again in the air', dash: 'untouchable side dash', pound: 'ground pound + shockwave', glide: 'hold to hover', frost: 'freezing snowflake', spring: 'hold & release: mega jump', hat: 'plant a hat that stuns on landing', recall: 'tap to mark, tap again to return', chime: 'tap in midair, then touch a wall', royal: 'fireball / ground pound' }[f.ability];
         U.text(ctx, short, x + 24, y + 11, { maxWidth: 256, size: 13, display: false, weight: 600, align: 'left', lw: 3 });
       });
       U.text(ctx, HF.Input.touch.enabled ? 'tap anywhere to go back' : 'press any key to go back', W / 2, 524, { size: 15, display: false, color: '#cfc6ea', lw: 4 });

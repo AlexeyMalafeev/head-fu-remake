@@ -9,6 +9,13 @@ codename shared by all of its releases.
 
 ### Added
 
+- **Poko the Bell Ringer.** Play Poko in versus or meet him at the palace
+  gate before the Emperor's fight. Press Special in midair and touch either
+  wall to ring his bell and rebound upward into the arena. Poko starts with
+  142 health, 322 pixels per second of movement speed, a jump speed of 910
+  pixels per second and 15 base stomp damage. He scored 52% across 800
+  normal bot fights against the other regular fighters.
+
 - **Sumi the Runaway Doodle.** Play Sumi in versus or meet her by the
   palace portraits in Kenji's story. Ink Recall marks a spot on the ground
   or in the air and lets her return within two seconds if the spot is clear.

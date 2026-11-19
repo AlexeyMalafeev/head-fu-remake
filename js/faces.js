@@ -213,6 +213,76 @@
       },
     },
 
+    poko: {
+      skin: '#f2c095', shade: '#d5916b', iris: '#854524', brow: '#623a31',
+      shape: 'wide', cheeks: true, mouthY: 0.5,
+      moods: { idle: HF.EXPR.happy },
+      front(ctx, r, o, f) {
+        poly(ctx, [[-0.98, -0.47], [-0.63, -0.47], [-0.76, -0.1], [-0.9, -0.19], [-0.94, -0.08]], r, f);
+        fillStroke(ctx, '#623a31', r * 0.057);
+        ctx.save();
+        ctx.scale(r, r);
+        ctx.lineJoin = ctx.lineCap = 'round';
+        ctx.translate(0, -0.56);
+        ctx.rotate(o.chimeTilt || 0);
+        ctx.translate(0, 0.56);
+        ctx.beginPath();
+        ctx.ellipse(0, -1.43, 0.2, 0.14, 0, 0, TAU);
+        fillStroke(ctx, '#a65a35', 0.061);
+        ctx.beginPath();
+        ctx.ellipse(0, -1.45, 0.084, 0.049, 0, 0, TAU);
+        ctx.fillStyle = OL;
+        ctx.fill();
+        ctx.beginPath();
+        ctx.moveTo(-1.09, -0.53);
+        ctx.quadraticCurveTo(-0.92, -0.65, -0.89, -0.86);
+        ctx.bezierCurveTo(-0.83, -1.53, 0.8, -1.63, 0.9, -0.91);
+        ctx.quadraticCurveTo(0.94, -0.68, 1.14, -0.59);
+        ctx.quadraticCurveTo(0, -0.32, -1.09, -0.53);
+        ctx.closePath();
+        fillStroke(ctx, '#f3a958', 0.072);
+        ctx.beginPath();
+        ctx.moveTo(-0.74, -0.83);
+        ctx.quadraticCurveTo(-0.63, -1.16, -0.23, -1.24);
+        ctx.strokeStyle = '#ffe0a2';
+        ctx.lineWidth = 0.068;
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(-1.09, -0.6);
+        ctx.quadraticCurveTo(-0.05, -0.46, 1.12, -0.68);
+        ctx.quadraticCurveTo(1.27, -0.65, 1.19, -0.48);
+        ctx.quadraticCurveTo(0.06, -0.27, -1.11, -0.43);
+        ctx.quadraticCurveTo(-1.24, -0.50, -1.09, -0.6);
+        ctx.closePath();
+        fillStroke(ctx, '#c67640', 0.055);
+        ctx.beginPath();
+        ctx.moveTo(-0.96, -0.51);
+        ctx.quadraticCurveTo(-0.41, -0.43, 0.02, -0.48);
+        ctx.strokeStyle = '#ffe3a7';
+        ctx.lineWidth = 0.034;
+        ctx.stroke();
+        ctx.restore();
+      },
+      over(ctx, r, o, f) {
+        ctx.save();
+        ctx.scale(r * f, r);
+        ctx.lineCap = 'round';
+        ctx.beginPath();
+        ctx.moveTo(-0.9, -0.41 - (o.chimeTilt || 0) * f * 0.85);
+        ctx.quadraticCurveTo(-0.89, -0.1, -0.75, 0.11);
+        ctx.strokeStyle = OL;
+        ctx.lineWidth = 0.105;
+        ctx.stroke();
+        ctx.strokeStyle = '#7a4260';
+        ctx.lineWidth = 0.061;
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.ellipse(-0.75, 0.12, 0.088, 0.11, 0, 0, TAU);
+        fillStroke(ctx, '#ffd47e', 0.04);
+        ctx.restore();
+      },
+    },
+
     kenji: {
       skin: '#ffd7b0', shade: '#eeb085', hair: '#2a2638', iris: '#7a4a24', brow: '#2a2638',
       back(ctx, r, o, f, t) {

@@ -5,7 +5,7 @@
   const U = HF.U;
   const NONE = { left: false, right: false, jump: false, special: false };
 
-  const COOLDOWN = { dash: 1.0, pound: 1.8, frost: 2.0, hat: 4.2, recall: 2.8, royal: 2.2 };
+  const COOLDOWN = { dash: 1.0, pound: 1.8, frost: 2.0, hat: 4.2, recall: 2.8, chime: 1.4, royal: 2.2 };
   const INK_WINDOW = 2;
   const POUND_SPEED = 1650;
   const DASH_SPEED = 820;
@@ -41,6 +41,9 @@
       this.hatPopped = false;
       this.inkMark = null;
       this.inkRequest = false;
+      this.chimePrimed = false;
+      this.chimeUsed = false;
+      this.chimeWobble = 0;
       this.cool = 0;
       this.dashT = 0;
       this.dashDir = 1;
@@ -100,6 +103,9 @@
         case 'recall':
           if (this.inkMark) return this.inkMark.left / INK_WINDOW;
           break;
+        case 'chime':
+          if (this.chimeUsed) return 0;
+          break;
       }
       return 1 - U.clamp(this.cool / this.coolMax(), 0, 1);
     }
@@ -113,6 +119,7 @@
         if (this[k] > 0) this[k] = Math.max(0, this[k] - dt * (k === 'flash' ? 6 : 1));
       }
       if (this.emoteT <= 0) this.emote = null;
+      if (this.chimeWobble > 0) this.chimeWobble = Math.max(0, this.chimeWobble - dt);
 
       const raw = input || NONE;
       const jp = raw.jump && !this.prevJump;
@@ -143,6 +150,13 @@
         } else if (jp && this.ability === 'airjump' && this.airJumps > 0) {
           this.doAirJump(b);
           this.jumpBuf = 0;
+        }
+      }
+      if (this.ability === 'chime') {
+        if (!act || !b.active) this.chimePrimed = false;
+        else if (sp && !this.onGround && !this.chimePrimed && !this.chimeUsed && this.cool <= 0) {
+          this.chimePrimed = true;
+          b.emit('chimePrime', { f: this });
         }
       }
       // Letting go of jump early gives a short hop.
@@ -200,7 +214,11 @@
         this.coyote = 0.08;
       }
       const minX = HF.ARENA_L + this.r, maxX = HF.ARENA_R - this.r;
-      if (this.x < minX || this.x > maxX) {
+      if (this.chimePrimed && (this.x <= minX || this.x >= maxX)) {
+        const fromLeft = this.x <= minX;
+        this.x = fromLeft ? minX : maxX;
+        this.rebound(b, fromLeft ? 1 : -1);
+      } else if (this.x < minX || this.x > maxX) {
         this.x = U.clamp(this.x, minX, maxX);
         if (this.state === 'dash') {
           this.state = 'idle';
@@ -427,6 +445,18 @@
       this.setEmote('smug', 0.4);
     }
 
+    rebound(b, dir) {
+      this.chimePrimed = false;
+      this.chimeUsed = true;
+      this.chimeWobble = 0.5;
+      this.cool = COOLDOWN.chime;
+      this.vx = dir * 570;
+      this.vy = -1050;
+      this.jumpCut = true;
+      this.setEmote('attack', 0.26);
+      b.emit('wallChime', { f: this, x: this.x - dir * this.r, y: this.y, dir });
+    }
+
     land(b) {
       const impact = this.vy;
       if (this.ko && impact > 260) {
@@ -438,6 +468,7 @@
       }
       this.onGround = true;
       this.vy = 0;
+      this.chimePrimed = this.chimeUsed = false;
       this.airJumps = 1;
       this.fuel = 1;
       this.jumpCut = false;
@@ -461,6 +492,7 @@
     hit(dmg, o, b) {
       if (this.ko || this.result || this.invulnT > 0) return false;
       this.hatPopped = false;
+      this.chimePrimed = false;
       this.hp = Math.max(0, this.hp - dmg);
       this.hurtT = o.hurt != null ? o.hurt : 0.32;
       this.invulnT = o.invuln != null ? o.invuln : 0.85;

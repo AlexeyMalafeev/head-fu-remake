@@ -23,7 +23,7 @@ and the roster.
 
 ## Testing
 
-`./tests/run-tests.sh` runs seven headless checks with the JavaScriptCore
+`./tests/run-tests.sh` runs eight headless checks with the JavaScriptCore
 shell that ships with macOS (nothing to install). Run it
 after every change to game code:
 
@@ -40,7 +40,9 @@ after every change to game code:
    follow-up stomp and round reset for both player sides.
 6. **Ink Recall** (`tests/ink-check.js`): ground and air returns, occupied
    marks, expiration, round reset and simultaneous mirror recalls.
-7. **Simulations** (`tests/sim.js`): AI-vs-AI fights that print the
+7. **Wall Chime** (`tests/chime-check.js`): priming, rebounds from both
+   walls, landing, interruptions, cooldown and round reset.
+8. **Simulations** (`tests/sim.js`): AI-vs-AI fights that print the
    difficulty ladder, each fighter's win rate against the roster at normal,
    and how the story's final boss fares against computer Kenjis of different
    skill. They also throw on a NaN position or a head below the floor.

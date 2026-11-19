@@ -119,7 +119,7 @@
       } else if (this.idleT <= 0 && this.targetX != null) {
         const tx = U.clamp(this.targetX, HF.ARENA_L + me.r, HF.ARENA_R - me.r);
         const d = tx - me.x;
-        const dead = me.onGround ? 10 : 5;
+        const dead = me.chimePrimed ? 0 : me.onGround ? 10 : 5;
         out.left = d < -dead;
         out.right = d > dead;
       }
@@ -203,6 +203,7 @@
       const threat = this.threat(o);
 
       if (me.ability === 'recall' && this.recallAbility(o, threat)) return;
+      if (me.ability === 'chime' && this.chimeAbility(o, threat)) return;
 
       if (me.onGround) {
         if (me.state === 'charge') return; // keep charging
@@ -266,6 +267,25 @@
         this.targetX = o.x - dir * (me.r + o.r) * 1.6;
       }
       this.airAbility(o, t, dir, threat);
+    }
+
+    chimeAbility(o, threat) {
+      const me = this.me;
+      if (me.onGround || me.chimeUsed || me.cool > 0 || !me.canAct()) return false;
+      const dir = me.x < HF.W / 2 ? -1 : 1;
+      const wall = dir < 0 ? HF.ARENA_L + me.r : HF.ARENA_R - me.r;
+      if (!me.chimePrimed) {
+        const timeLeft = timeToY(me.y, me.vy, HF.GRAV * me.st.gravity, HF.GROUND - me.r);
+        const run = Math.abs(wall - me.x);
+        const intercept = Math.abs(o.x + o.vx * 0.2 * this.p.predict - wall);
+        if (timeLeft == null || run > 125 || run + 22 > me.st.speed * timeLeft ||
+            (!threat && (o.spikes || o.invuln || intercept < 65 || intercept > 380)) ||
+            !U.chance(this.p.special)) return false;
+        this.tapSpecial(dir);
+      }
+      this.idleT = 0;
+      this.targetX = wall;
+      return true;
     }
 
     recallAbility(o, threat) {

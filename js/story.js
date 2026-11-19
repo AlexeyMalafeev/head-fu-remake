@@ -7,7 +7,7 @@
 
   // ----------------------------- the script -----------------------------
   // Line fields: who, face, text, left/right (swap who stands on that side), hat {id: 'beanie'},
-  // decree (show as a royal scroll), shake.
+  // decree (show as a royal scroll), shake, sfx (sound on reveal).
   const STORY = (HF.STORY = {
     intro: {
       bg: 'dojo',
@@ -146,6 +146,24 @@
         ],
       },
       {
+        opp: 'poko',
+        stage: 'gate',
+        rank: 4,
+        pre: [
+          { who: 'poko', face: 'happy', text: 'Good morning! I’m Poko, the palace bell ringer.' },
+          { who: 'kenji', face: 'think', text: 'It’s almost sunset. And isn’t that bell a hat?' },
+          { who: 'poko', face: 'focus', text: 'It’s a musical instrument! I used to ring it at dawn. Then the Emperor had it taken down for waking him too early.' },
+          { who: 'kenji', face: 'smug', text: 'Let me guess. He banned mornings, too.' },
+          { who: 'poko', face: 'smug', text: 'Only before noon. The throne room is through here. First, a warm-up bout. Let’s see if you can ring my bell!' },
+          { who: 'narrator', text: 'Tip: When Poko tips his bell, he can bounce off either wall. Give him room and watch where he lands.' },
+        ],
+        post: [
+          { who: 'poko', face: 'stun', text: 'Well, I’m awake.' },
+          { who: 'kenji', face: 'happy', text: 'Keep the bell warm. I’ll see what I can do about the hats.' },
+          { who: 'poko', face: 'happy', text: 'Deal. One ring for hats, two if you need me. I’ll be right here.' },
+        ],
+      },
+      {
         opp: 'emperor',
         stage: 'throne',
         boss: true,
@@ -178,6 +196,7 @@
         { who: 'granny', face: 'wink', text: "I'll need a raise. And a pair of hands." },
         { who: 'sumi', left: 'sumi', face: 'wink', text: 'Hold that pose, Your Majesty. This one’s going in the official portrait!' },
         { who: 'kenji', left: 'kenji', face: 'win', text: 'Thanks, Grandma. Head-fu forever!' },
+        { who: 'narrator', shake: true, sfx: 'wallChime', text: 'From the courtyard came one enormous DONG. This time, the Emperor rang it himself.' },
         { who: 'narrator', text: 'And so, peace returned to the Valley of Noggins. Everyone wore hats again.' },
         { who: 'narrator', text: 'Except Gonta, who wore a rice ball.' },
         { who: 'narrator', text: 'THE END...?' },
@@ -330,6 +349,7 @@
       if (l.face) this.faces[l.who] = l.face;
       if (l.hat) Object.assign(this.hats, l.hat);
       if (l.hat) HF.Audio.play('unlock');
+      if (l.sfx) HF.Audio.play(l.sfx);
       if (l.shake) this.shake = 0.35;
       this.chars = 0;
       this.lineT = 0;
@@ -552,6 +572,7 @@
     ['Yuki  -  The Frost Ninja', 22],
     ['Sumi  -  The Runaway Doodle', 22],
     ['Gonta  -  The Mountain', 22],
+    ['Poko  -  The Bell Ringer', 22],
     ['Emperor Megadome  -  The Biggest Head', 22],
     ['and Granny as herself', 22],
     ['', 30],

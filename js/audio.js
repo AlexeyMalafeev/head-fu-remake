@@ -190,6 +190,14 @@
       T({ wave: 'sine', f: 320, f2: 890, dur: 0.11, vol: 0.19 });
       T({ wave: 'triangle', f: 760, f2: 360, dur: 0.12, vol: 0.16, at: 0.07 });
     },
+    chimePrime() {
+      T({ wave: 'sine', f: 880, dur: 0.13, vol: 0.18 });
+    },
+    wallChime() {
+      T({ wave: 'sine', f: 220, dur: 0.65, vol: 0.29 });
+      T({ wave: 'sine', f: 549, dur: 0.43, vol: 0.19 });
+      T({ wave: 'sine', f: 904, dur: 0.22, vol: 0.12 });
+    },
     hit() {
       T({ wave: 'square', f: 520, f2: 140, dur: 0.15, vol: 0.2 });
       N({ f: 2000, f2: 400, dur: 0.1, vol: 0.2 });

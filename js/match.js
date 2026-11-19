@@ -412,6 +412,16 @@
             fx.puff(e.x, e.y, 5, '#5c3178');
             A.play('bump');
             break;
+          case 'chimePrime':
+            fx.ring(e.f.x, e.f.y - e.f.r, e.f.def.color, 32, 0.65);
+            A.play('chimePrime');
+            break;
+          case 'wallChime':
+            fx.ring(e.x, e.y, e.f.def.color, 84, 1.25);
+            fx.stars(e.x + e.dir * 20, e.y, 7);
+            fx.word(e.x + e.dir * 158, Math.max(126, e.y - 55), 'DONG!', { color: e.f.def.color, size: 36 });
+            A.play('wallChime');
+            break;
           case 'glide':
             A.play('flap', null, 0.1);
             break;
@@ -574,6 +584,7 @@
         rage: f.rage ? 1 : 0,
         flap: f.gliding ? Math.sin(f.t * 40) : 0,
         charge: f.charge,
+        chimeTilt: f.chimePrimed ? (f.x < W / 2 ? -0.18 : 0.18) : f.chimeWobble * 0.45 * Math.sin(f.chimeWobble * 44),
       });
       if (f.frozenT > 0) {
         const r = f.r * 1.22;
@@ -752,7 +763,8 @@
         ctx.lineWidth = 2.5;
         ctx.strokeStyle = HF.OUTLINE;
         ctx.stroke();
-        U.text(ctx, marked ? 'RECALL NOW' : f.def.abilityName.toUpperCase(), L ? mx + mw + 8 : mx - 8, my + 5, { size: 13, display: false, weight: 700, align: L ? 'left' : 'right', lw: 3, color: marked || m >= 1 ? '#fff' : '#bdb5d6' });
+        const abilityLabel = marked ? 'RECALL NOW' : this.battle.active && f.chimePrimed ? 'HIT A WALL' : f.def.abilityName.toUpperCase();
+        U.text(ctx, abilityLabel, L ? mx + mw + 8 : mx - 8, my + 5, { size: 13, display: false, weight: 700, align: L ? 'left' : 'right', lw: 3, color: marked || m >= 1 ? '#fff' : '#bdb5d6' });
 
         // round wins
         for (let k = 0; k < this.need && this.need > 1; k++) {
