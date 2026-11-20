@@ -174,7 +174,7 @@ tests/            headless checks (see Testing)
 - **Commits:** conventional commits (`feat:`, `fix:`, `docs:`, `refactor:`,
   `chore:`, `test:`; `RELEASE:` for releases). Commit and push to `main`
   once the work is verified (tests pass, the browser checked for visible
-  changes); ask before releases and tags.
+  changes).
 
 ## Tracking work
 
@@ -205,7 +205,10 @@ The version must agree in the changelog heading, the git tag and
 in `js/util.js` holds the user-chosen major-version codename. Both appear
 on the title screen; the engineering check prevents release metadata drift.
 
-Release steps (ask first):
+Every version bump must include a published GitHub Release with the matching
+Android APK in the same task. A request to bump the version also authorizes
+creating and pushing its release tag and publishing the release. Ask before
+creating a tag or release outside a version bump or an explicit release request.
 
 1. Rename `## [Unreleased]` in `CHANGELOG.md` to
    `## [vX.Y.Z "Codename"] — YYYY-MM-DD` and add a fresh empty
@@ -215,11 +218,15 @@ Release steps (ask first):
    `versionName` and bump `versionCode` in `android/app/build.gradle`.
 3. Run the tests, check the game in the browser, and build the APK
    (`cd android && ./gradlew assembleDebug`).
-4. Commit `RELEASE: vX.Y.Z "Codename"`, tag `vX.Y.Z` (annotated), push with
-   tags.
-5. Publish a GitHub Release from the tag with the released changelog section
-   as notes, and attach the APK:
-   `gh release create vX.Y.Z --verify-tag --latest --title 'vX.Y.Z "Codename"' --notes-file <notes> android/app/build/outputs/apk/debug/app-debug.apk`.
+4. Commit `RELEASE: vX.Y.Z "Codename"` and create the annotated tag
+   `vX.Y.Z` on that commit. Push `main` and the release tag.
+5. Publish the GitHub Release from that tag. Use the matching changelog
+   section as the release notes and attach the APK built from the tagged
+   commit:
+   `gh release create vX.Y.Z --verify-tag --title 'vX.Y.Z "Codename"' --notes-file <notes> android/app/build/outputs/apk/debug/app-debug.apk`.
+   Use `--latest` for the newest release and `--latest=false` when
+   publishing an older version. Verify that the release is published and the APK
+   is available to download.
 
 ## Dev memory
 
