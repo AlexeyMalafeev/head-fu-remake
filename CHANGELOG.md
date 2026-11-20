@@ -7,6 +7,16 @@ codename shared by all of its releases.
 
 ## [Unreleased]
 
+### Changed
+
+- **Gonta’s Quake Pound shakes the whole floor.** A grounded rival anywhere in
+  the arena takes 10 damage (up from 4) and is stunned for 1.5 seconds (up from
+  1 second). Jump before impact to dodge it. Computer Gonta can use it from
+  across the arena. To balance the stronger wave, Gonta loses his 30% stomp
+  damage reduction and his base stomp power drops from 16 to 11. His win rate
+  against the other regular fighters went from 51% to 49% across the same
+  800 normal-difficulty bot fights. A second set of 1,600 fights gave him 51%.
+
 ## [v1.3.0 "Head Start"] — 2026-11-19
 
 ### Added

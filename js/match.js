@@ -337,8 +337,8 @@
             A.play('whistle');
             break;
           case 'shock':
-            fx.ring(e.x, e.y, '#fff', e.R, 0.18);
-            fx.ring(e.x, e.y, '#ffe14d', e.R * 0.7, 0.18);
+            fx.ring(e.x, e.y, '#fff', e.R, 40 / e.R);
+            fx.ring(e.x, e.y, '#ffe14d', e.R * 0.7, 40 / e.R);
             fx.dust(e.x, e.y, 14, 2);
             fx.addShake(12);
             A.play('boom');

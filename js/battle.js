@@ -49,6 +49,13 @@
       this.f[0].update(dt, inputs[0], this);
       this.f[1].update(dt, inputs[1], this);
       if (this.f[0].inkRequest || this.f[1].inkRequest) this.useInk();
+      // Check the floor after both fighters have moved so either side can jump at impact.
+      for (const f of this.f) {
+        if (f.quakeLanded) {
+          f.quakeLanded = false;
+          this.shockwave(f);
+        }
+      }
       this.updateProj(dt);
       this.collide();
       this.updateHats(dt);
@@ -307,12 +314,13 @@
     }
 
     shockwave(src) {
-      const R = src.id === 'emperor' ? 240 : 220;
+      const quake = src.id === 'gonta';
+      const R = quake ? HF.W : 240;
       this.emit('shock', { f: src, x: src.x, y: HF.GROUND, R });
       const o = this.other(src);
       if (o.onGround && !o.ko && Math.abs(o.x - src.x) < R + o.r) {
         const dir = U.sign(o.x - src.x);
-        if (o.hit(4, { hurt: 0, stun: 1.0, invuln: 0.45, ky: -380, kx: dir * 60, dir }, this)) this.emit('shockHit', { f: o, x: o.x, y: o.y });
+        if (o.hit(quake ? 10 : 4, { hurt: 0, stun: quake ? 1.5 : 1, invuln: 0.45, ky: -380, kx: dir * 60, dir }, this)) this.emit('shockHit', { f: o, x: o.x, y: o.y });
       }
     }
   }

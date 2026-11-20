@@ -63,7 +63,7 @@ arena has its own battle theme.
 |---|---|---|---|
 | Kenji | Dojo Courtyard | Balanced | **Sky Step**: a second jump in mid-air, refreshed on every stomp |
 | Momo | Courier Bridge | Small, fastest, fragile | **Zoom Dash**: invulnerable side dash that bonks anyone in the way |
-| Gonta | Palace Gate | Big and heavy, takes reduced stomp damage | **Quake Pound**: slam down; the shockwave dizzies grounded foes |
+| Gonta | Palace Gate | Slow and heavy, with 150 health | **Quake Pound**: slam into the floor to deal 10 damage and stun your opponent for 1.5 seconds anywhere in the arena if they are on the ground at impact |
 | Sensei Fuzz | Bamboo Grove | Floaty | **Brow-copter**: hold special in the air to hover on flapping eyebrows |
 | Yuki | Frosty Pass | Fast | **Frost Breath**: snowflake that freezes the foe; stomp the ice for bonus damage |
 | Bao | Lantern Market | Bouncy | **Spring Bun**: hold to charge a mega jump; stomps bounce off him while charging |
@@ -74,7 +74,6 @@ arena has its own battle theme.
 
 The original six regular fighters have been tuned for closer matchups: Momo and Yuki
 have less health and stomp damage; Sensei Fuzz has more health, movement
-speed and stomp damage; Bao has more health. Kenji and Gonta keep their
-stats. The Emperor keeps his stronger boss stats.
+speed and stomp damage; Bao has more health. Gonta trades stomp armor and power for a floor-wide Quake Pound. The Emperor keeps his stronger boss stats.
 
 For development, build and testing instructions, see [AGENTS.md](AGENTS.md).

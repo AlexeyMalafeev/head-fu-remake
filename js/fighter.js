@@ -59,6 +59,7 @@
       this.prevSpecial = false;
       this.gliding = false;
       this.queuedPound = false;
+      this.quakeLanded = false;
       this.sx = this.sy = 1;
       this.svx = this.svy = 0;
       this.rot = 0;
@@ -484,7 +485,8 @@
       this.sx = 1 + amt * 0.8;
       if (this.state === 'pound') {
         this.state = 'idle';
-        b.shockwave(this);
+        if (this.id === 'gonta') this.quakeLanded = true;
+        else b.shockwave(this);
       } else b.emit('land', { f: this, impact });
     }
 

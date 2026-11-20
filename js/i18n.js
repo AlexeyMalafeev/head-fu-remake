@@ -148,7 +148,7 @@
     'Royal Rage': 'Царский гнев',
     'Jump again in mid-air. Refreshes on every stomp!': 'Ещё один прыжок в воздухе. Обновляется после удара сверху!',
     'Blink sideways, untouchable. Bonks anyone in the way.': 'Неуязвимый рывок вбок. Сбивает всех на пути.',
-    'Slam straight down. The shockwave dizzies anyone on the ground. Thick skull: takes less stomp damage.': 'Удар вниз оглушает стоящих рядом. Крепкий череп снижает урон от ударов сверху.',
+    'Slam down. Grounded foes anywhere take 10 damage and a 1.5s stun.': 'Удар вниз по всему полу. Враг на земле теряет 10 здоровья и оглушён на 1,5 с.',
     'Hold special in the air to flap those eyebrows and hover.': 'Удерживай приём в воздухе: маши бровями и пари.',
     'Breathe a snowflake that freezes the foe solid. Stomp the ice to shatter it!': 'Снежинка замораживает врага. Прыгни сверху и разбей лёд!',
     'Hold special to squish down, release to launch sky high. Stomps bounce off a squished bun!': 'Зажми приём, чтобы сжаться, отпусти — взлети! Сжатая булочка отражает удары сверху.',

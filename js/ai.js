@@ -355,7 +355,7 @@
           }
           break;
         case 'pound':
-          if (!defensive && me.cool <= 0 && o.onGround && adx < 190 && U.chance(0.6)) {
+          if (!defensive && me.cool <= 0 && o.onGround && U.chance(0.6)) {
             this.tapSpecial();
             return true;
           }
