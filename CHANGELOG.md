@@ -7,6 +7,10 @@ codename shared by all of its releases.
 
 ## [Unreleased]
 
+### Fixed
+
+- **Story Mode fighter selection runs more smoothly.** The game now draws the grayed-out portraits once and reuses them while you choose a fighter.
+
 ## [v1.4.0 "Head Start"] — 2026-11-20
 
 ### Added

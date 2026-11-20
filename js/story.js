@@ -394,10 +394,25 @@
         const open = !!HF.STORIES[f.id];
         const selected = card === this.available[this.selected];
         HF.UI.panel(ctx, x, y, w, h, { fill: open ? '#422846' : '#3a3740', stroke: selected ? '#ffe14d' : HF.OUTLINE, lw: selected ? 5 : 3 });
-        ctx.save();
-        if (!open) ctx.filter = 'grayscale(1)';
-        HF.drawHead(ctx, f.id, { x: x + w / 2, y: y + 64, r: f.id === 'poko' ? 26 : 35, facing: 1, expr: selected ? 'happy' : 'idle', t: this.t, alpha: open ? 1 : 0.45 });
-        ctx.restore();
+        const r = f.id === 'poko' ? 26 : 35;
+        if (open) {
+          HF.drawHead(ctx, f.id, { x: x + w / 2, y: y + 64, r, facing: 1, expr: selected ? 'happy' : 'idle', t: this.t });
+        } else {
+          // Unavailable portraits have a fixed pose. Rasterize them once at the display scale.
+          const scale = HF.Game.scale;
+          const width = Math.ceil(w * scale), height = Math.ceil(h * scale);
+          if (!card.portrait || card.portrait.width !== width || card.portrait.height !== height) {
+            const portrait = document.createElement('canvas');
+            portrait.width = width;
+            portrait.height = height;
+            const art = portrait.getContext('2d');
+            art.scale(width / w, height / h);
+            art.filter = 'grayscale(1)';
+            HF.drawHead(art, f.id, { x: w / 2, y: 64, r, facing: 1, expr: 'idle', alpha: 0.45 });
+            card.portrait = portrait;
+          }
+          ctx.drawImage(card.portrait, x, y, w, h);
+        }
         U.text(ctx, f.name, x + w / 2, y + 112, { size: 18, maxWidth: w - 14, color: open ? '#fff' : '#b6b2bb' });
       }
       U.text(ctx, HF.Input.touch.enabled ? 'TAP A FIGHTER TO PICK' : 'ARROWS / WASD  +  ENTER', W / 2, 438, { size: 18, display: false, weight: 700, lw: 4 });

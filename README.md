@@ -47,7 +47,7 @@ Gamepads work too (first pad is player 1). Esc or P pauses. Menus also work with
 
 ## Modes
 
-- **Story mode.** Choose a fighter, then a difficulty. Fighters without a story are grayed out. Each story has its own fights, cutscenes and ending. Finish either story to unlock Emperor Megadome for versus play.
+- **Story mode.** Choose a fighter, then a difficulty. Kenji and Gonta have playable stories. The other portraits stay still and grayed out. Each story has its own fights, cutscenes and ending. Finish either story to unlock Emperor Megadome for versus play.
   - **Kenji and the Great Hat Ban.** Face nine opponents on Kenji's quest to overturn the Emperor's ban on hats. When the Emperor puts on his spiked helmet, wait it out or dodge his fireballs. He enters rage mode at half health.
   - **Gonta and the Great Palace Supper.** A snowstorm strands hungry travelers at the Palace Gate. Fight through four bouts as Gonta to put supper on the table.
 - **VS CPU**: pick both fighters, a stage and a difficulty (easy, normal, hard).
