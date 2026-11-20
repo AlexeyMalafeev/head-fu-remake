@@ -7,6 +7,8 @@ codename shared by all of its releases.
 
 ## [Unreleased]
 
+## [v1.5.0 "Head Start"] — 2026-11-21
+
 ### Changed
 
 - **Easy now plays like the former Normal.** Normal and Hard bots lead moving
