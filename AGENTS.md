@@ -23,7 +23,7 @@ and the roster.
 
 ## Testing
 
-`./tests/run-tests.sh` runs nine headless checks with the JavaScriptCore
+`./tests/run-tests.sh` runs ten headless checks with the JavaScriptCore
 shell that ships with macOS (nothing to install). Run it
 after every change to game code:
 
@@ -45,17 +45,24 @@ after every change to game code:
    walls, landing, interruptions, cooldown and round reset.
 8. **Quake Pound** (`tests/quake-check.js`): full-floor hits, damage, stun and
    jumps or landings on the impact frame for either player side.
-9. **Simulations** (`tests/sim.js`): AI-vs-AI fights that print the
-   difficulty ladder, each fighter's win rate against the roster at normal,
-   and how the story's final boss fares against computer Kenjis of different
-   skill. They also throw on a NaN position or a head below the floor.
+9. **Royal Rage** (`tests/royal-check.js`) checks straight ground fireballs,
+   arcing rage shots and diagonal airborne hits from either side.
+10. **Simulations** (`tests/sim.js`) report the difficulty ladder, regular roster
+    balance and story boss results. They also score each Normal and Hard bot
+    against the other nine fighters at its own tier and one tier below.
+    The simulations throw on a NaN position or a head below the floor.
 
 The simulation replaces `Math.random` with a test-only seeded generator;
 normal gameplay keeps its usual randomness. Each matchup has its own stream,
 so changing one fighter does not change the samples for unrelated fights.
 The default is seed `20261115`, with 100 fights per matchup and alternating
 sides. Compare the regular-roster table (boss excluded) when balancing the
-regular fighters. To use another seed or sample size, create a temporary
+regular fighters’ stats. For bot rules, use the table scoring each fighter
+against the other nine, including playable Emperor. Easy preserves the
+former Normal rules. Each Normal bot should score at least 60% against
+Easy, and each Hard bot 65–75% against Normal. Aim for 45–55% within each
+tier, with Emperor allowed a 5–10 percentage point advantage over even.
+Draws count half. To use another seed or sample size, create a temporary
 JavaScript file with `var SIM_SEED = 8675309; var SIM_N = 200;`, then pass its
 path to `./tests/run-tests.sh /path/to/config.js`. The seed and count appear
 in the output; identical code and settings give identical output.

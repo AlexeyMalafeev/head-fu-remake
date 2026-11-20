@@ -154,7 +154,7 @@
       rating: { power: 5, speed: 1, jump: 2, health: 5 },
       ability: 'royal',
       abilityName: 'Royal Rage',
-      abilityDesc: 'Spit a fireball on the ground. In the air, slam down like an empire.',
+      abilityDesc: 'Spit a fireball straight ahead on the ground or diagonally down in the air.',
       quotes: ['BOW BEFORE THE DOME.', 'My head is big. My win is bigger.', 'Kneel! ...Oh right, no knees.'],
     },
   ];

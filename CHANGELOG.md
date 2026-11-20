@@ -7,6 +7,19 @@ codename shared by all of its releases.
 
 ## [Unreleased]
 
+### Changed
+
+- **Easy now plays like the former Normal.** Normal and Hard bots lead moving
+  opponents when lining up a stomp and jump on openings against stunned or
+  frozen rivals. Each fighter has individually tuned reflexes and aim. In
+  the standard simulation, each new Normal bot scored 84–97% against the
+  other nine former Normal bots. Each Hard bot scored 66–72% against the
+  other nine new Normal bots. Draws count as half a win.
+- **Emperor Megadome fires diagonally downward in midair.** Tap special
+  during a jump to shoot ahead and below you while you keep moving.
+  Ground fireballs and the story boss’s alternating rage shots still work
+  as before.
+
 ## [v1.4.1 "Head Start"] — 2026-11-20
 
 ### Fixed

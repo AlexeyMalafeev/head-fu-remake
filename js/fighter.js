@@ -335,10 +335,10 @@
             if (onG) {
               this.cool = this.rage ? 1.3 : COOLDOWN.royal;
               const arc = this.rage && this.fireAlt++ % 2 === 1;
-              b.spawnProj(this, 'fire', arc);
+              b.spawnProj(this, 'fire', arc ? 'arc' : 'straight');
             } else {
               this.cool = COOLDOWN.royal;
-              this.startPound(b);
+              b.spawnProj(this, 'fire', 'down');
             }
           }
           break;

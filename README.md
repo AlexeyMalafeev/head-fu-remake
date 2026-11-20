@@ -50,7 +50,7 @@ Gamepads work too (first pad is player 1). Esc or P pauses. Menus also work with
 - **Story mode.** Choose a fighter, then a difficulty. Kenji and Gonta have playable stories. The other portraits stay still and grayed out. Each story has its own fights, cutscenes and ending. Finish either story to unlock Emperor Megadome for versus play.
   - **Kenji and the Great Hat Ban.** Face nine opponents on Kenji's quest to overturn the Emperor's ban on hats. When the Emperor puts on his spiked helmet, wait it out or dodge his fireballs. He enters rage mode at half health.
   - **Gonta and the Great Palace Supper.** A snowstorm strands hungry travelers at the Palace Gate. Fight through four bouts as Gonta to put supper on the table.
-- **VS CPU**: pick both fighters, a stage and a difficulty (easy, normal, hard).
+- **VS CPU**: pick both fighters, a stage and a difficulty. Easy uses the former Normal bots. On Normal and Hard, each fighter has its own reaction time and aim. Hard fighters react faster and aim more accurately.
 - **VS Player 2**: two players on one keyboard, one touchscreen (split on-screen buttons) or two gamepads.
 - **Options**: language (English or Русский), music and sound volume, round time (30–99 s), single round or best of 3/5, fullscreen.
 
@@ -72,7 +72,7 @@ arena has its own battle theme.
 | Nori | Hidden Hat Shop | Quick on the ground, modest jump, light stomps | **Pop-Up Hat**: plant a spring hat that gives a rival a short hop and stuns them for one second after landing. The hat deals no damage. Jump clear or wait for it to expire. |
 | Sumi | Portrait Hall | Small and fragile, with precise air control | **Ink Recall**: tap Special to mark your position on the ground or in the air. Tap again within two seconds to return. A rival covering the mark blocks the return. |
 | Poko | Palace Belfry | Sturdy, with a low jump and heavy stomps | **Wall Chime**: tap Special in midair, then touch either wall to bounce up and back into the arena. Works once before landing and has a short cooldown. |
-| Emperor Megadome | Throne Room | Biggest head, unlockable | **Royal Rage**: fireball on the ground, ground pound in the air |
+| Emperor Megadome | Throne Room | Biggest head, unlockable | **Royal Rage**: shoot a fireball straight ahead on the ground or diagonally down in the air |
 
 The original six regular fighters have been tuned for closer matchups: Momo and Yuki
 have less health and stomp damage; Sensei Fuzz has more health, movement

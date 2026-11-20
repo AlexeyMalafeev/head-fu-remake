@@ -55,7 +55,6 @@
     return { aWins: w[0], bWins: w[1], draws: w[2], kos, avgTime: time / n, stomps: tot.stomp / n, clashes: tot.clash / n };
   }
 
-  const L = HF.AI_LEVELS;
   const ids = HF.FIGHTERS.map((f) => f.id);
   const N = typeof SIM_N !== 'undefined' ? SIM_N : 100;
   const pct = (x) => Math.round(x * 100) + '%';
@@ -65,7 +64,7 @@
   for (const [hi, lo] of [['normal', 'easy'], ['hard', 'normal'], ['hard', 'easy']]) {
     let wins = 0, games = 0, kos = 0, time = 0, stomps = 0;
     for (const id of ids) {
-      const s = series(id, id, L[hi], L[lo], N);
+      const s = series(id, id, hi, lo, N);
       wins += s.aWins + s.draws * 0.5;
       games += N;
       kos += s.kos;
@@ -83,7 +82,7 @@
   for (const a of ids) rows[a] = { w: 0, g: 0 };
   for (let i = 0; i < ids.length; i++) {
     for (let j = i + 1; j < ids.length; j++) {
-      const s = series(ids[i], ids[j], L.normal, L.normal, N);
+      const s = series(ids[i], ids[j], 'normal', 'normal', N);
       if (regularRows[ids[i]] && regularRows[ids[j]]) {
         regularRows[ids[i]].w += s.aWins + s.draws * 0.5;
         regularRows[ids[j]].w += s.bWins + s.draws * 0.5;
@@ -101,8 +100,31 @@
   print('\n== Regular roster only (boss excluded) ==');
   for (const id of regular) print(`${id.padEnd(8)} ${pct(regularRows[id].w / regularRows[id].g)}`);
 
+  // Each opponent contributes equally. Cross-tier rows exclude mirror matches too.
+  const scores = {};
+  for (const id of ids) scores[id] = {};
+  for (const [level, opponent] of [['normal', 'easy'], ['hard', 'normal'], ['hard', 'hard']]) {
+    const points = Object.fromEntries(ids.map((id) => [id, 0]));
+    for (const [i, a] of ids.entries()) {
+      for (const [j, b] of ids.entries()) {
+        if (i === j || (level === opponent && i > j)) continue;
+        const s = series(a, b, level, opponent, N);
+        points[a] += s.aWins + s.draws / 2;
+        if (level === opponent) points[b] += s.bWins + s.draws / 2;
+      }
+    }
+    for (const id of ids) scores[id][level + '/' + opponent] = points[id] / ((ids.length - 1) * N);
+  }
+  print('\n== Each fighter vs the other nine (draws count half) ==');
+  print('fighter  Normal/baseline  Normal/Normal  Hard/Normal  Hard/Hard');
+  for (const id of ids) {
+    const score = scores[id];
+    const rates = [score['normal/easy'], rows[id].w / rows[id].g, score['hard/normal'], score['hard/hard']];
+    print(id.padEnd(8) + rates.map((rate) => (rate * 100).toFixed(2).padStart(12)).join(''));
+  }
+
   print('\n== Story final boss (story settings: 130 HP, spikes, rage) vs AI Kenji ==');
-  for (const [story, bossSkill] of [['easy', L.easy - 0.05], ['normal', L.normal - 0.05], ['hard', L.hard - 0.12]]) {
+  for (const [story, offset] of [['easy', 0], ['normal', -0.05], ['hard', -0.05]]) {
     const row = [];
     for (const kSkill of [0.5, 0.7, 0.9]) {
       let w = 0, spikes = 0;
@@ -110,7 +132,7 @@
         seedFight('story:' + story + ':' + kSkill, i);
         const b = new HF.Battle({ defs: [HF.FIGHTER.kenji, HF.FIGHTER.emperor], boss: [false, true], hp: [100, 130], armor: [null, 1] });
         b.active = true;
-        const ais = [new HF.AI(b.f[0], b, kSkill), new HF.AI(b.f[1], b, bossSkill)];
+        const ais = [new HF.AI(b.f[0], b, kSkill), new HF.AI(b.f[1], b, story, offset)];
         let t = 0;
         while (t < 99 && !b.f[0].ko && !b.f[1].ko) {
           b.step(DT, [ais[0].update(DT), ais[1].update(DT)]);

@@ -107,7 +107,7 @@
     }
 
     // ---------- projectiles ----------
-    spawnProj(owner, type, arc) {
+    spawnProj(owner, type, trajectory) {
       const dir = owner.facing;
       const p = {
         owner,
@@ -121,7 +121,10 @@
         life: 1.8,
         t: 0,
       };
-      if (arc) {
+      if (trajectory === 'down') {
+        p.vx = dir * 304;
+        p.vy = 304;
+      } else if (trajectory === 'arc') {
         p.vy = -620;
         p.g = 1300;
         p.vx = dir * 380;

@@ -22,7 +22,7 @@
         hp: cfg.hp || [],
         armor: cfg.armor || [],
       });
-      this.ai = cfg.players.map((p, i) => (p.ctrl === 'ai' ? new HF.AI(this.battle.f[i], this.battle, p.skill) : null));
+      this.ai = cfg.players.map((p, i) => (p.ctrl === 'ai' ? new HF.AI(this.battle.f[i], this.battle, p.difficulty || p.skill, p.skillOffset) : null));
       this.solo = cfg.players.filter((p) => p.ctrl === 'human').length === 1;
       this.labels = cfg.players.map((p, i) => (p.ctrl === 'ai' ? 'CPU' : this.solo ? 'YOU' : 'P' + (i + 1)));
       this.fx = new HF.FX();
@@ -647,17 +647,17 @@
         }
       } else {
         const fl = 1 + Math.sin(p.t * 40) * 0.08;
-        const dir = U.sign(p.vx);
+        ctx.rotate(Math.atan2(p.vy, p.vx));
         for (let k = 3; k >= 1; k--) {
           ctx.fillStyle = ['', '#ffe66d', '#ff9f1c', '#ff5e3a'][k];
           ctx.beginPath();
-          ctx.arc(-dir * k * 7, 0, p.r * (0.55 + 0.2 * (3 - k)) * fl * (k === 1 ? 1.1 : 1), 0, TAU);
+          ctx.arc(-k * 7, 0, p.r * (0.55 + 0.2 * (3 - k)) * fl * (k === 1 ? 1.1 : 1), 0, TAU);
           ctx.fill();
         }
         ctx.lineWidth = 3;
         ctx.strokeStyle = HF.OUTLINE;
         ctx.beginPath();
-        ctx.arc(-dir * 7, 0, p.r * 0.95 * fl, 0, TAU);
+        ctx.arc(-7, 0, p.r * 0.95 * fl, 0, TAU);
         ctx.stroke();
       }
       ctx.restore();

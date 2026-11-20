@@ -308,16 +308,15 @@
     }
     fight() {
       const c = this.route.chapters[this.ch];
-      const base = HF.AI_LEVELS[this.diff];
       // Later opponents are a little sharper than early ones. The boss already has spikes,
       // rage and a big health bar, so its reflexes are toned down.
-      const skill = c.boss ? base - (this.diff === 'hard' ? 0.12 : 0.05) : U.clamp(base + (c.rank - 2.5) * 0.04, 0.05, 0.97);
+      const skillOffset = c.boss ? -0.05 : (c.rank - 2.5) * 0.04;
       HF.Game.go(
         new HF.MatchScene({
           mode: 'story',
           players: [
             { id: this.id, ctrl: 'human' },
-            { id: c.opp, ctrl: 'ai', skill },
+            { id: c.opp, ctrl: 'ai', difficulty: this.diff, skillOffset: this.diff === 'easy' ? 0 : skillOffset },
           ],
           stage: HF.FIGHTER[c.opp].stage,
           rounds: c.boss ? 1 : HF.settings.rounds,

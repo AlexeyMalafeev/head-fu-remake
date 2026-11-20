@@ -6,7 +6,20 @@
   const U = HF.U;
 
   // Skill 0..1 behind each difficulty name.
-  HF.AI_LEVELS = { easy: 0.15, normal: 0.5, hard: 0.9 };
+  const baseline = 0.5;
+  const profiles = {
+    kenji:   { normal: 0.5915, hard: 0.6255 },
+    momo:    { normal: 0.6124, hard: 0.6525 },
+    gonta:   { normal: 0.6489, hard: 0.6947 },
+    sensei:  { normal: 0.6611, hard: 0.7067 },
+    yuki:    { normal: 0.6342, hard: 0.67 },
+    bao:     { normal: 0.6347, hard: 0.6728 },
+    nori:    { normal: 0.6151, hard: 0.6583 },
+    sumi:    { normal: 0.6127, hard: 0.6495 },
+    poko:    { normal: 0.613, hard: 0.655 },
+    emperor: { normal: 0.671, hard: 0.706 },
+  };
+  HF.botSkill = (id, difficulty) => difficulty === 'easy' ? baseline : profiles[id][difficulty];
 
   // Time until a falling body at y0 with velocity vy reaches yT, or null if it never does.
   function timeToY(y0, vy, g, yT) {
@@ -17,10 +30,11 @@
   }
 
   class AI {
-    constructor(me, battle, skill) {
+    constructor(me, battle, skill, offset = 0) {
       this.me = me;
+      this.anticipate = skill === 'normal' || skill === 'hard';
       this.b = battle;
-      this.setSkill(skill);
+      this.setSkill(typeof skill === 'string' ? U.clamp(HF.botSkill(me.id, skill) + offset, 0.05, 0.97) : skill);
       this.hist = [];
       this.now = 0;
       this.thinkT = 0;
@@ -236,7 +250,8 @@
           return;
         }
         const win = this.jumpWindow(o);
-        if (me.ability === 'hat' && (o.hatPopped || o.helpless) && win && adx < win.max && !o.invuln) {
+        const followUp = me.ability === 'hat' ? o.hatPopped || o.helpless : this.anticipate && o.helpless;
+        if (followUp && win && adx < win.max && !o.invuln) {
           this.jump(0.45);
           this.noise = U.rand(-p.aim * 0.5, p.aim * 0.5);
           this.targetX = o.x;
@@ -262,7 +277,9 @@
       if (threat) {
         this.targetX = me.x - U.sign(o.x - me.x) * 220;
       } else if (t != null && !o.spikes) {
-        this.targetX = o.x + o.vx * t * p.predict + this.noise;
+        // Lead the last observed position by its age as well as our remaining fall time.
+        const age = this.anticipate ? this.now - o.t : 0;
+        this.targetX = o.x + o.vx * (t + age) * p.predict + this.noise;
       } else {
         this.targetX = o.x - dir * (me.r + o.r) * 1.6;
       }
@@ -375,8 +392,16 @@
             if (!threat && (!reachable || me.y > oTop - me.r * 0.5) && Math.abs(o.x - me.x) < 320) this.jump(0.35);
           }
           break;
-        case 'pound':
         case 'royal':
+          if (this.anticipate) {
+            const drop = o.y - me.y - me.r * 0.25;
+            const target = o.x + o.vx * (this.now - o.t + drop / 304) * p.predict;
+            const ahead = (target - me.x) * me.facing - me.r * 0.9;
+            if (me.cool <= 0 && !o.invuln && drop > 0 && Math.abs(ahead - drop) < o.r + 20 && U.chance(p.special)) this.tapSpecial();
+            break;
+          }
+          // Easy retains the old Emperor's timing for his airborne special.
+        case 'pound':
           if (me.cool <= 0 && !o.spikes && me.y + me.r < oTop - 15 && Math.abs(o.x + o.vx * 0.12 - me.x) < o.r * 0.75 && U.chance(p.special)) {
             this.tapSpecial();
           }
