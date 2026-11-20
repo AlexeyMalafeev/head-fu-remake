@@ -6,8 +6,13 @@
   const source = [];
   for (const f of HF.FIGHTERS) source.push(f.name, f.title, f.abilityName, f.abilityDesc, ...f.quotes);
   for (const stage of HF.STAGES) source.push(stage.name);
-  const scripts = [HF.STORY.intro, HF.STORY.ending];
-  for (const c of HF.STORY.chapters) scripts.push({ lines: c.pre }, { lines: c.post });
+  const scripts = [];
+  for (const route of Object.values(HF.STORIES)) {
+    source.push(route.title, route.retry, route.epilogue);
+    scripts.push(route.intro, route.ending);
+    for (const c of route.chapters) scripts.push({ lines: c.pre }, { lines: c.post });
+  }
+  source.push('Choose a fighter and play their story.', 'Pick a fighter with a story', 'TAP TO ADVANCE');
   for (const script of scripts) {
     for (const line of script.lines) {
       source.push(line.text);

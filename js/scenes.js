@@ -13,7 +13,7 @@
       this.ready = !!HF.Audio.ctx;
       this.menu = new HF.UI.Menu(
         [
-          { label: 'STORY MODE', action: () => HF.Game.go(new HF.StoryScene()), hint: 'Help Kenji save the hats of the land!' },
+          { label: 'STORY MODE', action: () => HF.Game.go(new HF.StoryScene()), hint: 'Choose a fighter and play their story.' },
           { label: 'VS CPU', action: () => HF.Game.go(new SelectScene({ mode: 'cpu' })), hint: 'You against the computer: easy, normal or hard' },
           { label: 'VS PLAYER 2', action: () => HF.Game.go(new SelectScene({ mode: '2p' })), hint: HF.Input.touch.enabled ? 'Two players on one screen, or two gamepads' : 'Two players on one keyboard (or two gamepads)' },
           { label: 'HOW TO PLAY', action: () => HF.Game.go(new HowToScene()) },

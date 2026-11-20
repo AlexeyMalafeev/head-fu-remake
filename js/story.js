@@ -1,4 +1,4 @@
-// Story mode: Kenji's quest to un-ban hats. Script, cutscenes, stage cards, continue screen and credits.
+// Story routes, cutscenes, stage cards, continue screen and credits.
 (function () {
   'use strict';
   const HF = window.HF;
@@ -8,7 +8,10 @@
   // ----------------------------- the script -----------------------------
   // Line fields: who, face, text, left/right (swap who stands on that side), hat {id: 'beanie'},
   // decree (show as a royal scroll), shake, sfx (sound on reveal).
-  const STORY = (HF.STORY = {
+  const KENJI = {
+    title: 'Kenji and the Great Hat Ban',
+    retry: "Grandma's headband believes in you!",
+    epilogue: 'You saved the hats. Again!',
     intro: {
       bg: HF.FIGHTER.kenji.stage,
       left: 'kenji',
@@ -192,7 +195,93 @@
         { who: 'narrator', text: 'THE END...?' },
       ],
     },
-  });
+  };
+
+  const GONTA = {
+    title: 'Gonta and the Great Palace Supper',
+    retry: 'GONTA STILL HAVE SOUP TO MAKE.',
+    epilogue: 'There’s always room for one more.',
+    intro: {
+      bg: HF.FIGHTER.gonta.stage,
+      left: 'gonta',
+      right: 'emperor',
+      lines: [
+        { who: 'narrator', text: 'Snow closed the mountain road. The travelers at the Palace Gate had been waiting since breakfast.' },
+        { who: 'emperor', face: 'smug', text: 'Guard the pantry, Gonta. I want every sack of rice accounted for.' },
+        { who: 'gonta', face: 'think', text: 'GONTA CAN COUNT SACKS. GONTA CAN ALSO COUNT HUNGRY HEADS.' },
+        { who: 'gonta', face: 'focus', text: 'NEED BIG POT. NEED BIGGER TABLE.' },
+      ],
+    },
+    chapters: [
+      {
+        opp: 'bao',
+        rank: 0,
+        pre: [
+          { who: 'gonta', face: 'focus', text: 'BAO HAVE BIG POT?' },
+          { who: 'bao', face: 'worried', text: 'I do. Last time I lent it out, someone tried to steam me in it.' },
+          { who: 'gonta', face: 'worried', text: 'GONTA MAKING RICE SOUP. BAO IS NOT INGREDIENT.' },
+          { who: 'bao', face: 'smug', text: 'Show me your Quake Pound. If my pot survives the shaking, you can borrow it.' },
+          { who: 'narrator', text: 'Tip: Quake Pound hits grounded rivals anywhere in the arena. Wait for Bao to land.' },
+        ],
+        post: [
+          { who: 'bao', face: 'stun', text: 'The pot held up better than I did. Take it. I’ll bring the ladle.' },
+        ],
+      },
+      {
+        opp: 'momo',
+        rank: 1.5,
+        pre: [
+          { who: 'gonta', face: 'focus', text: 'MOMO TELL EVERYONE. SUPPER AT GATE.' },
+          { who: 'momo', face: 'smug', text: 'Royal couriers only carry urgent news. Beat me in a bout and I’ll put yours first.' },
+          { who: 'gonta', face: 'angry', shake: true, text: 'HUNGRY IS URGENT.' },
+        ],
+        post: [
+          { who: 'momo', face: 'happy', text: 'All right, urgent supper. I’ll tell the travelers to bring their bowls!' },
+        ],
+      },
+      {
+        opp: 'poko',
+        rank: 2.5,
+        pre: [
+          { who: 'gonta', face: 'focus', text: 'POKO RING BELL WHEN SOUP READY?' },
+          { who: 'poko', face: 'worried', text: 'The snow packed my bell full. It just goes thunk now.' },
+          { who: 'gonta', face: 'smug', text: 'GONTA KNOW THUNK. LET’S SHAKE IT LOOSE.' },
+        ],
+        post: [
+          { who: 'poko', face: 'happy', sfx: 'wallChime', text: 'Hear that? Clear as a bell. Now go ask Kenji for his long table!' },
+        ],
+      },
+      {
+        opp: 'kenji',
+        rank: 4,
+        pre: [
+          { who: 'kenji', face: 'focus', text: 'You want the dojo’s table? We use it for the champions’ feast. The house rule says you have to win it.' },
+          { who: 'gonta', face: 'think', text: 'HOW MANY CHAMPIONS FIT AT TABLE?' },
+          { who: 'kenji', face: 'smug', text: 'Usually just me. I like to stretch out.' },
+          { who: 'gonta', face: 'angry', text: 'TODAY TABLE FIT EVERYBODY.' },
+        ],
+        post: [],
+      },
+    ],
+    ending: {
+      bg: HF.FIGHTER.gonta.stage,
+      left: 'gonta',
+      right: 'kenji',
+      lines: [
+        { who: 'narrator', sfx: 'wallChime', text: 'At the first ring of Poko’s bell, bowls clattered all the way to the Palace Gate.' },
+        { who: 'kenji', face: 'happy', text: 'Table’s out. Where do you want the champion to sit?' },
+        { who: 'gonta', face: 'smug', text: 'CHAMPION ON LADLE DUTY. KENJI CAN POUR TEA.' },
+        { who: 'emperor', right: 'emperor', face: 'angry', text: 'My pantry! I told you to account for every sack!' },
+        { who: 'gonta', face: 'proud', text: 'THREE SACKS. SIXTY BOWLS. SECONDS FOR LITTLE HEADS.' },
+        { who: 'emperor', face: 'think', text: 'And how do you account for the biggest head in the valley?' },
+        { who: 'gonta', face: 'happy', text: 'GONTA GET YOU BIGGER BOWL. SIT WITH EVERYBODY.' },
+        { who: 'narrator', text: 'The next morning, the road reopened. The table stayed.' },
+        { who: 'narrator', text: 'From then on, when the supper bell rang, nobody needed a palace invitation.' },
+      ],
+    },
+  };
+
+  HF.STORIES = { kenji: KENJI, gonta: GONTA };
 
   function speakerInfo(id) {
     if (HF.FIGHTER[id]) return HF.FIGHTER[id];
@@ -200,18 +289,25 @@
   }
 
   // ----------------------------- story flow -----------------------------
-  HF.Story = {
-    begin(diff) {
+  class StoryRun {
+    constructor(id, diff) {
+      this.id = id;
+      this.route = HF.STORIES[id];
       this.diff = diff;
       this.ch = 0;
-      HF.Game.go(new DialogScene(STORY.intro, () => this.chapter()));
-    },
+    }
+    begin() {
+      HF.Game.go(new DialogScene(this.route.intro, () => this.chapter()));
+    }
     chapter() {
-      const c = STORY.chapters[this.ch];
-      HF.Game.go(new CardScene(c, this.ch, () => HF.Game.go(new DialogScene({ bg: HF.FIGHTER[c.opp].stage, left: 'kenji', right: c.opp, lines: c.pre }, () => this.fight()))));
-    },
+      const c = this.route.chapters[this.ch];
+      HF.Game.go(new CardScene(this.id, c, this.ch, this.route.chapters.length, () => this.dialog(c, c.pre, () => this.fight())));
+    }
+    dialog(c, lines, onDone) {
+      HF.Game.go(new DialogScene({ bg: HF.FIGHTER[c.opp].stage, left: this.id, right: c.opp, lines }, onDone));
+    }
     fight() {
-      const c = STORY.chapters[this.ch];
+      const c = this.route.chapters[this.ch];
       const base = HF.AI_LEVELS[this.diff];
       // Later opponents are a little sharper than early ones. The boss already has spikes,
       // rage and a big health bar, so its reflexes are toned down.
@@ -220,46 +316,112 @@
         new HF.MatchScene({
           mode: 'story',
           players: [
-            { id: 'kenji', ctrl: 'human' },
+            { id: this.id, ctrl: 'human' },
             { id: c.opp, ctrl: 'ai', skill },
           ],
           stage: HF.FIGHTER[c.opp].stage,
           rounds: c.boss ? 1 : HF.settings.rounds,
           time: c.boss ? 99 : HF.settings.time,
           boss: !!c.boss,
-          hp: c.boss ? [100, 130] : [],
+          hp: c.boss ? [null, 130] : [],
           armor: c.boss ? [null, 1] : [],
-          title: c.boss ? 'FINAL BATTLE' : undefined,
+          title: this.ch === this.route.chapters.length - 1 ? 'FINAL BATTLE' : undefined,
           onEnd: (res) => (res.winner === 0 ? this.won() : this.lost()),
           onQuit: () => HF.Game.go(new HF.TitleScene()),
         })
       );
-    },
+    }
     won() {
-      const c = STORY.chapters[this.ch];
+      const c = this.route.chapters[this.ch];
       const next = () => {
         this.ch++;
-        if (this.ch >= STORY.chapters.length) this.ending();
-        else this.chapter();
+        if (this.ch < this.route.chapters.length) this.chapter();
+        else HF.Game.go(new DialogScene(this.route.ending, () => HF.Game.go(new CreditsScene(this.route))));
       };
-      if (c.post.length) HF.Game.go(new DialogScene({ bg: HF.FIGHTER[c.opp].stage, left: 'kenji', right: c.opp, lines: c.post }, next));
+      if (c.post.length) this.dialog(c, c.post, next);
       else next();
-    },
+    }
     lost() {
-      HF.Game.go(new ContinueScene(() => this.fight(), () => HF.Game.go(new HF.TitleScene())));
-    },
-    ending() {
-      HF.Game.go(new DialogScene(STORY.ending, () => HF.Game.go(new CreditsScene())));
-    },
-  };
+      HF.Game.go(new ContinueScene(this.id, this.route.retry, () => this.fight(), () => HF.Game.go(new HF.TitleScene())));
+    }
+  }
+
+  // ----------------------------- story fighter pick -----------------------------
+  const STORY_BACK = { x: 405, y: 475, w: 150, h: 46 };
+
+  class StoryScene {
+    constructor(id) {
+      this.t = 0;
+      this.cards = HF.FIGHTERS.map((f, i) => ({
+        f, x: 72 + (i % 5) * 166, y: 124 + Math.floor(i / 5) * 148, w: 152, h: 134,
+      }));
+      this.available = this.cards.filter(({ f }) => HF.STORIES[f.id]);
+      this.selected = Math.max(0, this.available.findIndex(({ f }) => f.id === id));
+    }
+    enter() {
+      HF.Music.play('story');
+    }
+    update(dt) {
+      this.t += dt;
+      const inp = HF.Input.menu();
+      const m = HF.Input.mouse;
+      if (inp.back || (m.clicked && HF.UI.inRect(m, STORY_BACK))) {
+        HF.Audio.play('back');
+        HF.Game.go(new HF.TitleScene());
+        return;
+      }
+
+      let next = this.selected;
+      const step = inp.left || inp.up ? -1 : inp.right || inp.down ? 1 : 0;
+      if (step) next = (next + step + this.available.length) % this.available.length;
+      const pointed = m.moved || m.clicked ? this.available.findIndex((card) => HF.UI.inRect(m, card)) : -1;
+      if (pointed >= 0) next = pointed;
+      if (next !== this.selected) {
+        HF.Audio.play('move');
+        this.selected = next;
+      }
+      if (inp.ok || (m.clicked && pointed >= 0)) {
+        HF.Audio.play('select');
+        HF.Game.go(new StoryDifficultyScene(this.available[this.selected].f.id));
+      }
+    }
+    draw(ctx) {
+      HF.UI.backdrop(ctx, this.t, '#5a2a4a', '#6a3358');
+      U.text(ctx, 'STORY MODE', W / 2, 49, { size: 46, color: '#ffe14d' });
+      U.text(ctx, 'Pick a fighter with a story', W / 2, 91, { size: 22, display: false, weight: 700, lw: 5 });
+      for (const card of this.cards) {
+        const { f, x, y, w, h } = card;
+        const open = !!HF.STORIES[f.id];
+        const selected = card === this.available[this.selected];
+        HF.UI.panel(ctx, x, y, w, h, { fill: open ? '#422846' : '#3a3740', stroke: selected ? '#ffe14d' : HF.OUTLINE, lw: selected ? 5 : 3 });
+        ctx.save();
+        if (!open) ctx.filter = 'grayscale(1)';
+        HF.drawHead(ctx, f.id, { x: x + w / 2, y: y + 64, r: f.id === 'poko' ? 26 : 35, facing: 1, expr: selected ? 'happy' : 'idle', t: this.t, alpha: open ? 1 : 0.45 });
+        ctx.restore();
+        U.text(ctx, f.name, x + w / 2, y + 112, { size: 18, maxWidth: w - 14, color: open ? '#fff' : '#b6b2bb' });
+      }
+      U.text(ctx, HF.Input.touch.enabled ? 'TAP A FIGHTER TO PICK' : 'ARROWS / WASD  +  ENTER', W / 2, 438, { size: 18, display: false, weight: 700, lw: 4 });
+      drawStoryBack(ctx);
+    }
+  }
+
+  function drawStoryBack(ctx) {
+    const { x, y, w, h } = STORY_BACK;
+    HF.UI.panel(ctx, x, y, w, h, { fill: '#372044', r: 12 });
+    U.text(ctx, 'BACK', x + w / 2, y + h / 2, { size: 20 });
+  }
 
   // ----------------------------- difficulty pick -----------------------------
-  class StoryScene {
-    constructor() {
+  class StoryDifficultyScene {
+    constructor(id) {
+      this.id = id;
+      this.route = HF.STORIES[id];
+      this.rival = this.route.chapters[this.route.chapters.length - 1].opp;
       this.t = 0;
+      this.back = () => HF.Game.go(new StoryScene(id));
       const pick = (d) => () => {
         HF.store.set('difficulty', d);
-        HF.Story.begin(d);
+        new StoryRun(id, d).begin();
       };
       this.menu = new HF.UI.Menu(
         [
@@ -267,7 +429,7 @@
           { label: 'NORMAL', action: pick('normal'), hint: 'A fair fight all the way.' },
           { label: 'HARD', action: pick('hard'), hint: 'For true masters of the noggin.' },
         ],
-        { y: 300, gap: 52, size: 34, onBack: () => HF.Game.go(new HF.TitleScene()) }
+        { y: 292, gap: 52, size: 34, hintY: 447, cursor: id, onBack: this.back }
       );
       const d = HF.store.get('difficulty', 'normal');
       this.menu.i = Math.max(0, ['easy', 'normal', 'hard'].indexOf(d));
@@ -277,17 +439,22 @@
     }
     update(dt) {
       this.t += dt;
+      if (HF.Input.mouse.clicked && HF.UI.inRect(HF.Input.mouse, STORY_BACK)) {
+        HF.Audio.play('back');
+        this.back();
+        return;
+      }
       this.menu.update(dt);
     }
     draw(ctx) {
       HF.UI.backdrop(ctx, this.t, '#5a2a4a', '#6a3358');
       U.text(ctx, 'STORY MODE', W / 2, 70, { size: 60, color: '#ffe14d' });
-      U.text(ctx, 'Kenji and the Great Hat Ban', W / 2, 122, { size: 22, display: false, weight: 700, lw: 5 });
-      HF.drawHead(ctx, 'kenji', { x: 170, y: 330, r: 80, facing: 1, expr: 'focus', t: this.t, look: { x: 1, y: 0 } });
-      HF.drawHead(ctx, 'emperor', { x: 790, y: 320, r: 96, facing: -1, expr: 'smug', t: this.t, look: { x: -1, y: 0 } });
+      U.text(ctx, this.route.title, W / 2, 122, { size: 22, display: false, weight: 700, lw: 5 });
+      HF.drawHead(ctx, this.id, { x: 170, y: 330, r: 80, facing: 1, expr: 'focus', t: this.t, look: { x: 1, y: 0 } });
+      HF.drawHead(ctx, this.rival, { x: 790, y: 320, r: this.rival === 'emperor' ? 96 : 80, facing: -1, expr: 'smug', t: this.t, look: { x: -1, y: 0 } });
       U.text(ctx, 'CHOOSE DIFFICULTY', W / 2, 230, { size: 26 });
       this.menu.draw(ctx);
-      U.text(ctx, 'ESC to go back', W / 2, 505, { size: 15, display: false, color: '#e0cfe0', lw: 4 });
+      drawStoryBack(ctx);
     }
   }
 
@@ -331,7 +498,7 @@
       }
       // a speaker who isn't on stage yet walks in on their own side
       if (l.who !== 'narrator' && this.slots.left !== l.who && this.slots.right !== l.who) {
-        const side = l.who === 'kenji' || l.who === 'granny' ? 'left' : 'right';
+        const side = l.who === this.script.left ? 'left' : 'right';
         this.slots[side] = l.who;
         this.slotT[side] = 0;
       }
@@ -445,15 +612,17 @@
       lines.forEach((s, i) => U.text(ctx, s, 66, 436 + i * 31, { size: 22, display: false, weight: 600, align: 'left', color: narr ? '#ffe9a8' : HF.OUTLINE, stroke: false }));
       if (!talking && Math.floor(this.t * 3) % 2 === 0) U.text(ctx, '▼', 890, 505, { size: 20, color: '#ff4d6d', stroke: false });
       ctx.restore();
-      U.text(ctx, 'ENTER next · ESC skip', W - 16, 16, { size: 13, display: false, weight: 600, align: 'right', lw: 3, color: '#e8e2ff' });
+      U.text(ctx, HF.Input.touch.enabled ? 'TAP TO ADVANCE' : 'ENTER next · ESC skip', W - 16, 16, { size: 13, display: false, weight: 600, align: 'right', lw: 3, color: '#e8e2ff' });
     }
   }
 
   // ----------------------------- stage card -----------------------------
   class CardScene {
-    constructor(c, i, onDone) {
+    constructor(id, c, i, total, onDone) {
+      this.id = id;
       this.c = c;
       this.i = i;
+      this.total = total;
       this.onDone = onDone;
       this.t = 0;
       this.stage = new HF.Stage(HF.FIGHTER[c.opp].stage);
@@ -478,22 +647,26 @@
       ctx.fillRect(0, 0, W, H);
       const opp = HF.FIGHTER[this.c.opp];
       const k = U.easeOutBack(Math.min(1, this.t * 2.5));
-      const label = this.c.boss ? 'FINAL STAGE' : HF.t('STAGE {n} / {total}', { n: this.i + 1, total: STORY.chapters.length - 1 });
-      U.text(ctx, label, W / 2, 90, { size: 54 * k, color: this.c.boss ? '#ff4d4d' : '#ffe14d' });
-      HF.drawHead(ctx, 'kenji', { x: 260 - (1 - k) * 300, y: 270, r: 84, facing: 1, expr: 'focus', t: this.t, look: { x: 1, y: 0 } });
+      const final = this.i === this.total - 1;
+      const hero = HF.FIGHTER[this.id];
+      const label = final ? 'FINAL STAGE' : HF.t('STAGE {n} / {total}', { n: this.i + 1, total: this.total - 1 });
+      U.text(ctx, label, W / 2, 90, { size: 54 * k, color: final ? '#ff4d4d' : '#ffe14d' });
+      HF.drawHead(ctx, hero.id, { x: 260 - (1 - k) * 300, y: 270, r: 84 * Math.sqrt(hero.stats.radius / 46), facing: 1, expr: 'focus', t: this.t, look: { x: 1, y: 0 } });
       const or = 84 * Math.sqrt(opp.stats.radius / 46);
       HF.drawHead(ctx, opp.id, { x: 700 + (1 - k) * 300, y: 270, r: or, facing: -1, expr: this.c.boss ? 'furious' : 'smug', t: this.t, look: { x: -1, y: 0 } });
       U.text(ctx, 'VS', W / 2, 270, { size: 80 * k, color: '#ff4d6d' });
       U.text(ctx, opp.name, 700, 400, { maxWidth: 430, size: 30, color: opp.color });
       U.text(ctx, opp.title, 700, 430, { size: 18, display: false, weight: 700, lw: 4 });
-      U.text(ctx, 'KENJI', 260, 400, { size: 30, color: '#e63946' });
+      U.text(ctx, hero.name, 260, 400, { maxWidth: 430, size: 30, color: hero.color });
       U.text(ctx, this.stage.def.name.toUpperCase(), W / 2, 490, { size: 24, color: '#fff' });
     }
   }
 
   // ----------------------------- continue? -----------------------------
   class ContinueScene {
-    constructor(retry, quit) {
+    constructor(id, message, retry, quit) {
+      this.id = id;
+      this.message = message;
       this.t = 0;
       this.count = 9.99;
       this.quit = quit;
@@ -525,9 +698,9 @@
     draw(ctx) {
       HF.UI.backdrop(ctx, this.t, '#22203a', '#2b2846');
       U.text(ctx, 'CONTINUE?', W / 2, 80, { size: 64, color: '#ffe14d' });
-      HF.drawHead(ctx, 'kenji', { x: W / 2, y: 240, r: 90, facing: 1, expr: 'cry', t: this.t });
+      HF.drawHead(ctx, this.id, { x: W / 2, y: 240, r: 90, facing: 1, expr: 'cry', t: this.t });
       U.text(ctx, String(Math.ceil(this.count)), W / 2 + 190, 240, { size: 90, color: '#ff4d6d' });
-      U.text(ctx, "Grandma's headband believes in you!", W / 2, 360, { size: 19, display: false, weight: 700, lw: 5 });
+      U.text(ctx, this.message, W / 2, 360, { size: 19, display: false, weight: 700, lw: 5 });
       this.menu.draw(ctx);
     }
   }
@@ -559,10 +732,12 @@
     ['', 40],
     ['THANK YOU FOR PLAYING!', 40, '#ffe14d'],
   ];
-  const CREDIT_HEADS = ['kenji', ...STORY.chapters.map((c) => c.opp), 'granny'];
+  const CREDIT_HEADS = [...HF.FIGHTERS.map((f) => f.id), 'granny'];
 
   class CreditsScene {
-    constructor() {
+    constructor(route) {
+      this.epilogue = route.epilogue;
+      this.emperorHat = route === KENJI ? 'beanie' : null;
       this.t = 0;
       this.unlocked = !HF.unlocks.emperor;
       this.scroll = 0;
@@ -607,7 +782,7 @@
       CREDIT_HEADS.forEach((id, i) => {
         const x = ((i * (W + 200) / CREDIT_HEADS.length + this.t * 60) % (W + 200)) - 100;
         const hop = Math.abs(Math.sin(this.t * 4 + i)) * 20;
-        HF.drawHead(ctx, id, { x, y: 495 - hop, r: id === 'emperor' ? 34 : 26, facing: 1, expr: i % 2 ? 'happy' : 'win', t: this.t + i, hat: id === 'emperor' ? 'beanie' : null });
+        HF.drawHead(ctx, id, { x, y: 495 - hop, r: id === 'emperor' ? 34 : 26, facing: 1, expr: i % 2 ? 'happy' : 'win', t: this.t + i, hat: id === 'emperor' ? this.emperorHat : null });
       });
       if (this.doneT > 0) {
         const k = U.easeOutBack(Math.min(1, this.doneT * 2));
@@ -617,15 +792,15 @@
         HF.UI.panel(ctx, -300, -150, 600, 300, { fill: 'rgba(40,20,70,0.95)' });
         if (this.unlocked) {
           U.text(ctx, 'NEW FIGHTER UNLOCKED!', 0, -110, { size: 36, color: '#ffe14d' });
-          HF.drawHead(ctx, 'emperor', { x: 0, y: -10, r: 64, facing: 1, expr: 'sparkle', t: this.t, hat: 'beanie' });
+          HF.drawHead(ctx, 'emperor', { x: 0, y: -10, r: 64, facing: 1, expr: 'sparkle', t: this.t, hat: this.emperorHat });
           U.text(ctx, 'EMPEROR MEGADOME', 0, 90, { size: 30, color: '#c9a7ff' });
           U.text(ctx, 'now playable in Versus modes', 0, 122, { size: 17, display: false, weight: 700, lw: 4 });
         } else {
           U.text(ctx, 'THE END', 0, -40, { size: 60, color: '#ffe14d' });
-          U.text(ctx, 'You saved the hats. Again!', 0, 30, { size: 20, display: false, weight: 700, lw: 4 });
+          U.text(ctx, this.epilogue, 0, 30, { size: 20, display: false, weight: 700, lw: 4 });
         }
         ctx.restore();
-        if (this.doneT > 1) U.text(ctx, 'press ENTER', W / 2, 410, { size: 18, display: false, weight: 700, lw: 4 });
+        if (this.doneT > 1) U.text(ctx, HF.Input.touch.enabled ? 'TAP TO ADVANCE' : 'press ENTER', W / 2, 410, { size: 18, display: false, weight: 700, lw: 4 });
       }
       this.fx.draw(ctx);
     }

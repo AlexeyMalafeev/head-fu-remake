@@ -7,6 +7,15 @@ codename shared by all of its releases.
 
 ## [Unreleased]
 
+## [v1.4.0 "Head Start"] — 2026-11-20
+
+### Added
+
+- **Gonta has his own story.** In *Gonta and the Great Palace Supper*, fight
+  four bouts to feed travelers stranded by a snowstorm, then see Gonta’s own
+  ending. Pick Kenji or Gonta when opening Story Mode. Fighters without a story
+  are grayed out.
+
 ### Changed
 
 - **Gonta’s Quake Pound shakes the whole floor.** A grounded rival anywhere in
