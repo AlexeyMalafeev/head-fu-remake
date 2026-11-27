@@ -7,7 +7,9 @@
   for (const f of HF.FIGHTERS) source.push(f.name, f.title, f.abilityName, f.abilityDesc, ...f.quotes);
   for (const stage of HF.STAGES) source.push(stage.name);
   const scripts = [];
-  for (const route of Object.values(HF.STORIES)) {
+  for (const fighter of HF.FIGHTERS) {
+    const route = HF.STORIES[fighter.id];
+    check(route && route.chapters.length >= 4, fighter.name + ' needs a story with at least four fights');
     source.push(route.title, route.retry, route.epilogue);
     scripts.push(route.intro, route.ending);
     for (const c of route.chapters) scripts.push({ lines: c.pre }, { lines: c.post });

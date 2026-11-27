@@ -7,7 +7,7 @@ codename shared by all of its releases.
 
 ## [Unreleased]
 
-- **All ten fighters have a story.** Eight new adventures range from Momo’s two-fight postal mystery to the Emperor’s four-fight quest for a quiet cup of tea.
+- **All ten fighters have a story.** Every route has at least four fights. Follow five clues with Momo, rehearse a five-bout circus act with Bao, or help Yuki guide a fox cub home across four arenas.
 - **Collect ten ending illustrations.** Finish a fighter’s story on any difficulty to reveal their artwork and keep it in the title-screen Gallery.
 
 ## [v1.5.0 "Head Start"] — 2026-11-21

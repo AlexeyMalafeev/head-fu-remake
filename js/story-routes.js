@@ -17,14 +17,48 @@
     },
     chapters: [
       {
-        opp: 'bao',
+        opp: 'sumi',
         rank: 0,
+        pre: [
+          { who: 'momo', face: 'worried', text: 'There’s ink under the mud. Can you make it legible?' },
+          { who: 'sumi', face: 'focus', text: 'If I wet the paper, the last letters will run. Bounce me some dust off that frame. Dry brushes only.' },
+        ],
+        post: [
+          { who: 'momo', face: 'think', text: 'Three little teeth in the seal. I know a bun who tastes his own glue.' },
+        ],
+      },
+      {
+        opp: 'bao',
+        rank: 1,
         pre: [
           { who: 'bao', face: 'worried', text: 'That bite? We used to seal letters with rice paste. Everybody nibbled a corner.' },
           { who: 'momo', face: 'focus', text: 'Race you for the last jar. I need to see if the paste matches!' },
         ],
         post: [
-          { who: 'bao', face: 'happy', text: 'Same paste! The old postmaster bought the lot when he moved to the bamboo grove.' },
+          { who: 'bao', face: 'happy', text: 'Same paste! That seal belonged to the old postmaster. Nori used to forward his mail.' },
+        ],
+      },
+      {
+        opp: 'nori',
+        rank: 2,
+        pre: [
+          { who: 'momo', face: 'think', text: 'Bao knew the sender. I still need the address. What does a leaf in a circle mean?' },
+          { who: 'nori', face: 'worried', text: 'That’s my old forwarding stamp! I kept the slips in a hat. Then I stacked thirty hats on top.' },
+          { who: 'momo', face: 'focus', text: 'Pop them up one at a time. I’ll read the slips as they fall.' },
+        ],
+        post: [
+          { who: 'nori', face: 'happy', text: 'Box seven, palace gate. Look at that. I used to file things.' },
+        ],
+      },
+      {
+        opp: 'gonta',
+        rank: 3,
+        pre: [
+          { who: 'gonta', face: 'worried', text: 'BOX SEVEN STUCK. GONTA SHAKE. MOMO CATCH MAIL BEFORE PUDDLE.' },
+          { who: 'momo', face: 'focus', text: 'All of it? Even the seed catalogues?' },
+        ],
+        post: [
+          { who: 'gonta', face: 'proud', text: 'ESPECIALLY SEEDS. LOOK. POSTMASTER LEFT NEW ADDRESS INSIDE LID.' },
         ],
       },
       {
@@ -85,6 +119,17 @@
         ],
       },
       {
+        opp: 'momo',
+        rank: 3,
+        pre: [
+          { who: 'momo', face: 'happy', text: 'The wind on this bridge changes every time I dash. Want a lift?' },
+          { who: 'sensei', face: 'think', text: 'Last time somebody offered me a lift I landed in a shrub. Pass on my left first.' },
+        ],
+        post: [
+          { who: 'momo', face: 'happy', text: 'You turned! You can stop gripping that leaf with your teeth now.' },
+        ],
+      },
+      {
         opp: 'yuki',
         rank: 4,
         pre: [
@@ -126,6 +171,29 @@
         ],
         post: [
           { who: 'momo', face: 'happy', text: 'Look past my tracks. His mother went toward the gate!' },
+        ],
+      },
+      {
+        opp: 'nori',
+        rank: 1,
+        pre: [
+          { who: 'nori', face: 'worried', text: 'Something red just shot under my hat racks. Now every spring is ticking.' },
+          { who: 'yuki', face: 'focus', text: 'Keep the hats popping. I’ll draw them away from the cub.' },
+        ],
+        post: [
+          { who: 'nori', face: 'think', text: 'See that red thread? His mum brushed past here. My best tassel went with her.' },
+        ],
+      },
+      {
+        opp: 'sensei',
+        rank: 3,
+        pre: [
+          { who: 'sensei', face: 'calm', text: 'Shut your eyes. Can you hear her over the bamboo?' },
+          { who: 'yuki', face: 'worried', text: 'All I hear is your beard rustling.' },
+          { who: 'sensei', face: 'happy', text: 'Then catch me by sound. My beard is quite good for beginners.' },
+        ],
+        post: [
+          { who: 'yuki', face: 'focus', text: 'Two short barks. Downhill, beyond the gate. Little one, I hear her too.' },
         ],
       },
       {
@@ -173,6 +241,17 @@
         ],
       },
       {
+        opp: 'sumi',
+        rank: 1,
+        pre: [
+          { who: 'sumi', face: 'think', text: 'From the cheap seats your hoop looks like a noodle. Can I put gold on it?' },
+          { who: 'bao', face: 'happy', text: 'I’ll spin it as we bounce. All you need is one good brushstroke.' },
+        ],
+        post: [
+          { who: 'sumi', face: 'proud', text: 'There. Even the fellow selling noodles can tell the difference.' },
+        ],
+      },
+      {
         opp: 'sensei',
         rank: 2,
         pre: [
@@ -181,6 +260,17 @@
         ],
         post: [
           { who: 'sensei', face: 'smug', text: 'Then you discover why I grew a beard.' },
+        ],
+      },
+      {
+        opp: 'poko',
+        rank: 3,
+        pre: [
+          { who: 'bao', face: 'worried', text: 'The audience can see the hoop now. Trouble is, once I tuck my chin in, I can’t.' },
+          { who: 'poko', face: 'focus', text: 'Take off on the chime. Open your eyes on the echo. Let’s rehearse at full bounce.' },
+        ],
+        post: [
+          { who: 'bao', face: 'happy', text: 'Right on the echo! Ring that from the cheap seats tonight, will you?' },
         ],
       },
       {
@@ -239,6 +329,17 @@
         ],
       },
       {
+        opp: 'gonta',
+        rank: 3,
+        pre: [
+          { who: 'gonta', face: 'worried', text: 'GONTA COUNT THIRTY-NINE. WHERE LEAF HAT?' },
+          { who: 'nori', face: 'shock', text: 'Snagged under the sluice! Shake the gate while I bounce it free.' },
+        ],
+        post: [
+          { who: 'gonta', face: 'happy', text: 'FORTY. LITTLE LEAF IN LAST PLACE. GONTA CHEER FOR LEAF.' },
+        ],
+      },
+      {
         opp: 'momo',
         rank: 4,
         pre: [
@@ -280,6 +381,17 @@
         ],
         post: [
           { who: 'momo', face: 'shock', text: 'My dash looks like a feather!' },
+        ],
+      },
+      {
+        opp: 'kenji',
+        rank: 1,
+        pre: [
+          { who: 'kenji', face: 'think', text: 'That feather on your cheek looks familiar. Barn swallows nest under our dojo roof.' },
+          { who: 'sumi', face: 'sparkle', text: 'Oh! Can you jump high enough for me to see into the eaves? I’ll bounce off you.' },
+        ],
+        post: [
+          { who: 'sumi', face: 'happy', text: 'Forked tails! I’ve been giving them all sparrow bottoms. Pass the ink.' },
         ],
       },
       {
@@ -335,6 +447,17 @@
         ],
         post: [
           { who: 'bao', face: 'happy', text: 'A whole cartload! Hang them where the road bends.' },
+        ],
+      },
+      {
+        opp: 'sumi',
+        rank: 1,
+        pre: [
+          { who: 'poko', face: 'worried', text: 'I set two lanterns side by side. In the fog they look like one fat moon.' },
+          { who: 'sumi', face: 'think', text: 'I’ll ink a shutter black. Bounce it past the light and tell me when the moon winks.' },
+        ],
+        post: [
+          { who: 'poko', face: 'happy', text: 'There! Long blink, short blink. Even from the floor I can tell them apart.' },
         ],
       },
       {

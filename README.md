@@ -47,7 +47,7 @@ Gamepads work too (first pad is player 1). Esc or P pauses. Menus also work with
 
 ## Modes
 
-- **Story mode.** Choose a fighter, then a difficulty. All ten fighters have their own story. Routes range from two fights to nine. Finish any story to unlock Emperor Megadome for Story and Versus.
+- **Story mode.** Choose a fighter, then a difficulty. All ten fighters have their own story. Routes range from four fights to nine. Finish any story to unlock Emperor Megadome for Story and Versus.
   - **Kenji and the Great Hat Ban.** Face nine opponents on Kenji's quest to overturn the Emperor's ban on hats. When the Emperor puts on his spiked helmet, wait it out or dodge his fireballs. He enters rage mode at half health.
   - **Gonta and the Great Palace Supper.** A snowstorm strands hungry travelers at the Palace Gate. Fight through four bouts as Gonta to put supper on the table.
 - **Gallery.** Finish a story on any difficulty to reveal its ending illustration. Open Gallery from the title screen to view the illustrations you have collected on this device.
