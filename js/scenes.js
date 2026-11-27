@@ -16,10 +16,11 @@
           { label: 'STORY MODE', action: () => HF.Game.go(new HF.StoryScene()), hint: 'Choose a fighter and play their story.' },
           { label: 'VS CPU', action: () => HF.Game.go(new SelectScene({ mode: 'cpu' })), hint: 'You against the computer: easy, normal or hard' },
           { label: 'VS PLAYER 2', action: () => HF.Game.go(new SelectScene({ mode: '2p' })), hint: HF.Input.touch.enabled ? 'Two players on one screen, or two gamepads' : 'Two players on one keyboard (or two gamepads)' },
+          { label: 'GALLERY', action: () => HF.Game.go(new HF.GalleryScene()), hint: 'Ending illustrations from completed stories.' },
           { label: 'HOW TO PLAY', action: () => HF.Game.go(new HowToScene()) },
           { label: 'OPTIONS', action: () => HF.Game.go(new OptionsScene()) },
         ],
-        { y: 290, gap: 42, size: 30, hintY: 492 }
+        { y: 280, gap: 38, size: 28, hintY: 502 }
       );
       this.newDemo();
     }

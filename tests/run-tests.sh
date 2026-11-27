@@ -14,7 +14,7 @@ cd "$(dirname "$0")/.." || exit 1
 JSC=/System/Library/Frameworks/JavaScriptCore.framework/Versions/Current/Helpers/jsc
 "$JSC" tests/prelude.js js/util.js js/music.js js/fighters.js js/stages.js tests/music-check.js || exit 1
 "$JSC" tests/prelude.js tests/input-prelude.js js/input.js tests/input-check.js || exit 1
-"$JSC" tests/prelude.js tests/i18n-prelude.js js/util.js js/i18n.js js/fighters.js js/stages.js js/story.js tests/i18n-check.js || exit 1
+"$JSC" tests/prelude.js tests/i18n-prelude.js js/util.js js/i18n.js js/fighters.js js/stages.js js/story.js js/story-routes.js tests/i18n-check.js || exit 1
 "$JSC" tests/prelude.js js/util.js tests/sim-random.js tests/engineering-check.js || exit 1
 "$JSC" tests/prelude.js js/util.js js/fighters.js js/fighter.js js/battle.js tests/hat-check.js || exit 1
 "$JSC" tests/prelude.js js/util.js js/fighters.js js/fighter.js js/battle.js tests/ink-check.js || exit 1

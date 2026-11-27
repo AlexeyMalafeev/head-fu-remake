@@ -132,6 +132,6 @@
   };
   HF.settings = Object.assign({ music: 0.6, sfx: 0.8, time: 60, rounds: 3, language: 'en' }, HF.store.get('settings', {}));
   HF.saveSettings = () => HF.store.set('settings', HF.settings);
-  HF.unlocks = Object.assign({ emperor: false }, HF.store.get('unlocks', {}));
+  HF.unlocks = Object.assign({ emperor: false, artwork: {} }, HF.store.get('unlocks', {}));
   HF.saveUnlocks = () => HF.store.set('unlocks', HF.unlocks);
 })();

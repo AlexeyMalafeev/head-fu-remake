@@ -7,6 +7,9 @@ codename shared by all of its releases.
 
 ## [Unreleased]
 
+- **All ten fighters have a story.** Eight new adventures range from Momo’s two-fight postal mystery to the Emperor’s four-fight quest for a quiet cup of tea.
+- **Collect ten ending illustrations.** Finish a fighter’s story on any difficulty to reveal their artwork and keep it in the title-screen Gallery.
+
 ## [v1.5.0 "Head Start"] — 2026-11-21
 
 ### Changed

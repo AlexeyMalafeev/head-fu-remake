@@ -41,6 +41,7 @@ tasks.register('syncWebAssets', Sync) {
         include 'index.html'
         include 'js/**'
         include 'assets/android-splash.webp'
+        include 'assets/endings/*.webp'
     }
     into("$buildDir/generated/webAssets")
 }

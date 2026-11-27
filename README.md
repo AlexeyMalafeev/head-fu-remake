@@ -47,9 +47,10 @@ Gamepads work too (first pad is player 1). Esc or P pauses. Menus also work with
 
 ## Modes
 
-- **Story mode.** Choose a fighter, then a difficulty. Kenji and Gonta have playable stories. The other portraits stay still and grayed out. Each story has its own fights, cutscenes and ending. Finish either story to unlock Emperor Megadome for versus play.
+- **Story mode.** Choose a fighter, then a difficulty. All ten fighters have their own story. Routes range from two fights to nine. Finish any story to unlock Emperor Megadome for Story and Versus.
   - **Kenji and the Great Hat Ban.** Face nine opponents on Kenji's quest to overturn the Emperor's ban on hats. When the Emperor puts on his spiked helmet, wait it out or dodge his fireballs. He enters rage mode at half health.
   - **Gonta and the Great Palace Supper.** A snowstorm strands hungry travelers at the Palace Gate. Fight through four bouts as Gonta to put supper on the table.
+- **Gallery.** Finish a story on any difficulty to reveal its ending illustration. Open Gallery from the title screen to view the illustrations you have collected on this device.
 - **VS CPU**: pick both fighters, a stage and a difficulty. Easy uses the former Normal bots. On Normal and Hard, each fighter has its own reaction time and aim. Hard fighters react faster and aim more accurately.
 - **VS Player 2**: two players on one keyboard, one touchscreen (split on-screen buttons) or two gamepads.
 - **Options**: language (English or Русский), music and sound volume, round time (30–99 s), single round or best of 3/5, fullscreen.

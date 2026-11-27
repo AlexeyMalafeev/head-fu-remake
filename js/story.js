@@ -335,10 +335,19 @@
       const next = () => {
         this.ch++;
         if (this.ch < this.route.chapters.length) this.chapter();
-        else HF.Game.go(new DialogScene(this.route.ending, () => HF.Game.go(new CreditsScene(this.route))));
+        else HF.Game.go(new DialogScene(this.route.ending, () => this.finish()));
       };
       if (c.post.length) this.dialog(c, c.post, next);
       else next();
+    }
+    finish() {
+      const newArtwork = !HF.unlocks.artwork[this.id];
+      const newEmperor = !HF.unlocks.emperor;
+      HF.unlocks.artwork[this.id] = true;
+      HF.unlocks.emperor = true;
+      HF.saveUnlocks();
+      HF.Game.go(new ArtworkScene(this.id, 'View credits',
+        () => HF.Game.go(new CreditsScene(this.route, newEmperor)), newArtwork));
     }
     lost() {
       HF.Game.go(new ContinueScene(this.id, this.route.retry, () => this.fight(), () => HF.Game.go(new HF.TitleScene())));
@@ -348,14 +357,13 @@
   // ----------------------------- story fighter pick -----------------------------
   const STORY_BACK = { x: 405, y: 475, w: 150, h: 46 };
 
-  class StoryScene {
+  class FighterGrid {
     constructor(id) {
       this.t = 0;
       this.cards = HF.FIGHTERS.map((f, i) => ({
         f, x: 72 + (i % 5) * 166, y: 124 + Math.floor(i / 5) * 148, w: 152, h: 134,
       }));
-      this.available = this.cards.filter(({ f }) => HF.STORIES[f.id]);
-      this.selected = Math.max(0, this.available.findIndex(({ f }) => f.id === id));
+      this.selected = Math.max(0, this.cards.findIndex(({ f }) => f.id === id));
     }
     enter() {
       HF.Music.play('story');
@@ -369,53 +377,124 @@
         HF.Game.go(new HF.TitleScene());
         return;
       }
-
-      let next = this.selected;
-      const step = inp.left || inp.up ? -1 : inp.right || inp.down ? 1 : 0;
-      if (step) next = (next + step + this.available.length) % this.available.length;
-      const pointed = m.moved || m.clicked ? this.available.findIndex((card) => HF.UI.inRect(m, card)) : -1;
-      if (pointed >= 0) next = pointed;
-      if (next !== this.selected) {
-        HF.Audio.play('move');
-        this.selected = next;
-      }
-      if (inp.ok || (m.clicked && pointed >= 0)) {
+      const step = inp.up || inp.down ? 5 : inp.left ? -1 : inp.right ? 1 : 0;
+      const pointed = m.moved || m.clicked ? this.cards.findIndex((card) => HF.UI.inRect(m, card)) : -1;
+      const next = pointed >= 0 ? pointed : (this.selected + step + this.cards.length) % this.cards.length;
+      if (next !== this.selected) HF.Audio.play('move');
+      this.selected = next;
+      const f = this.cards[next].f;
+      if ((inp.ok || (m.clicked && pointed >= 0)) && this.isOpen(f)) {
         HF.Audio.play('select');
-        HF.Game.go(new StoryDifficultyScene(this.available[this.selected].f.id));
+        this.pick(f.id);
       }
+    }
+    drawCards(ctx) {
+      this.cards.forEach((card, index) => {
+        const { f, x, y, w, h } = card;
+        const open = this.isOpen(f);
+        HF.UI.panel(ctx, x, y, w, h, {
+          fill: open ? '#422846' : '#363041', stroke: index === this.selected ? '#ffe14d' : HF.OUTLINE,
+          lw: index === this.selected ? 5 : 3,
+        });
+        this.portrait(ctx, card, open);
+        U.text(ctx, f.name, x + w / 2, y + 112, { size: 18, maxWidth: w - 14, color: open ? '#fff' : '#b6b2bb' });
+      });
+      drawStoryBack(ctx);
+    }
+  }
+
+  class StoryScene extends FighterGrid {
+    isOpen(f) { return HF.fighterUnlocked(f); }
+    pick(id) { HF.Game.go(new StoryDifficultyScene(id)); }
+    portrait(ctx, { f, x, y, w }, open) {
+      ctx.save();
+      ctx.globalAlpha = open ? 1 : 0.4;
+      HF.drawHead(ctx, f.id, { x: x + w / 2, y: y + 64, r: f.id === 'poko' ? 26 : 35,
+        facing: 1, expr: this.cards[this.selected].f === f ? 'happy' : 'idle', t: this.t });
+      ctx.restore();
     }
     draw(ctx) {
       HF.UI.backdrop(ctx, this.t, '#5a2a4a', '#6a3358');
       U.text(ctx, 'STORY MODE', W / 2, 49, { size: 46, color: '#ffe14d' });
-      U.text(ctx, 'Pick a fighter with a story', W / 2, 91, { size: 22, display: false, weight: 700, lw: 5 });
+      U.text(ctx, 'Pick a fighter with a story', W / 2, 91, { size: 22, display: false });
+      this.drawCards(ctx);
+      const f = this.cards[this.selected].f;
+      const route = HF.STORIES[f.id];
+      const hint = this.isOpen(f) ? HF.t('{title} · {n} fights', { title: HF.t(route.title), n: route.chapters.length })
+        : 'Finish any story to unlock the Emperor.';
+      U.text(ctx, hint, W / 2, 441, { size: 21, display: false });
+    }
+  }
+
+  function loadArtwork(id, thumbnail = false) {
+    const img = new Image();
+    img.src = 'assets/endings/' + id + (thumbnail ? '-thumb' : '') + '.webp';
+    return img;
+  }
+
+  class GalleryScene extends FighterGrid {
+    constructor(id) {
+      super(id);
+      this.count = 0;
       for (const card of this.cards) {
-        const { f, x, y, w, h } = card;
-        const open = !!HF.STORIES[f.id];
-        const selected = card === this.available[this.selected];
-        HF.UI.panel(ctx, x, y, w, h, { fill: open ? '#422846' : '#3a3740', stroke: selected ? '#ffe14d' : HF.OUTLINE, lw: selected ? 5 : 3 });
-        const r = f.id === 'poko' ? 26 : 35;
-        if (open) {
-          HF.drawHead(ctx, f.id, { x: x + w / 2, y: y + 64, r, facing: 1, expr: selected ? 'happy' : 'idle', t: this.t });
-        } else {
-          // Unavailable portraits have a fixed pose. Rasterize them once at the display scale.
-          const scale = HF.Game.scale;
-          const width = Math.ceil(w * scale), height = Math.ceil(h * scale);
-          if (!card.portrait || card.portrait.width !== width || card.portrait.height !== height) {
-            const portrait = document.createElement('canvas');
-            portrait.width = width;
-            portrait.height = height;
-            const art = portrait.getContext('2d');
-            art.scale(width / w, height / h);
-            art.filter = 'grayscale(1)';
-            HF.drawHead(art, f.id, { x: w / 2, y: 64, r, facing: 1, expr: 'idle', alpha: 0.45 });
-            card.portrait = portrait;
-          }
-          ctx.drawImage(card.portrait, x, y, w, h);
+        if (this.isOpen(card.f)) {
+          card.image = loadArtwork(card.f.id, true);
+          this.count++;
         }
-        U.text(ctx, f.name, x + w / 2, y + 112, { size: 18, maxWidth: w - 14, color: open ? '#fff' : '#b6b2bb' });
       }
-      U.text(ctx, HF.Input.touch.enabled ? 'TAP A FIGHTER TO PICK' : 'ARROWS / WASD  +  ENTER', W / 2, 438, { size: 18, display: false, weight: 700, lw: 4 });
-      drawStoryBack(ctx);
+    }
+    isOpen(f) { return !!HF.unlocks.artwork[f.id]; }
+    pick(id) {
+      HF.Game.go(new ArtworkScene(id, 'BACK', () => HF.Game.go(new GalleryScene(id))));
+    }
+    portrait(ctx, { image, x, y, w }) {
+      if (image && image.complete && image.naturalWidth) {
+        ctx.drawImage(image, x + 5, y + 9, w - 10, 80);
+      } else {
+        U.text(ctx, '?', x + w / 2, y + 54, { size: 50, color: '#91879e' });
+      }
+    }
+    draw(ctx) {
+      HF.UI.backdrop(ctx, this.t, '#302347', '#473256');
+      U.text(ctx, 'GALLERY', W / 2, 49, { size: 46, color: '#ffe14d' });
+      U.text(ctx, HF.t('{n} of {total} illustrations', { n: this.count, total: this.cards.length }), W / 2, 91, { size: 22, display: false });
+      this.drawCards(ctx);
+      const f = this.cards[this.selected].f;
+      const hint = this.isOpen(f) ? HF.STORIES[f.id].title : 'Finish this fighter’s story to unlock the illustration.';
+      U.text(ctx, hint, W / 2, 441, { size: 21, display: false });
+    }
+  }
+
+  class ArtworkScene {
+    constructor(id, button, onDone, newArtwork = false) {
+      this.id = id;
+      this.image = loadArtwork(id);
+      this.button = button;
+      this.onDone = onDone;
+      this.newArtwork = newArtwork;
+    }
+    update() {
+      const inp = HF.Input.menu();
+      if (inp.ok || inp.back || HF.Input.mouse.clicked) {
+        HF.Audio.play('select');
+        this.onDone();
+      }
+    }
+    draw(ctx) {
+      ctx.fillStyle = '#201829';
+      ctx.fillRect(0, 0, W, H);
+      const h = H - 60;
+      if (this.image.complete && this.image.naturalWidth) {
+        const scale = Math.min(W / this.image.naturalWidth, h / this.image.naturalHeight);
+        const w = this.image.naturalWidth * scale, height = this.image.naturalHeight * scale;
+        ctx.drawImage(this.image, (W - w) / 2, (h - height) / 2, w, height);
+      } else {
+        U.text(ctx, 'Loading illustration…', W / 2, h / 2, { size: 22 });
+      }
+      if (this.newArtwork) U.text(ctx, 'Added to gallery', 26, h + 15, { align: 'left', size: 16, color: '#ffe14d', display: false });
+      U.text(ctx, HF.STORIES[this.id].title, 26, h + (this.newArtwork ? 38 : 30), { align: 'left', maxWidth: 680, size: 24 });
+      HF.UI.panel(ctx, W - 198, h + 7, 180, 46, { fill: '#503155', r: 10 });
+      U.text(ctx, this.button, W - 108, h + 30, { size: 21, maxWidth: 162 });
     }
   }
 
@@ -749,18 +828,14 @@
   const CREDIT_HEADS = [...HF.FIGHTERS.map((f) => f.id), 'granny'];
 
   class CreditsScene {
-    constructor(route) {
+    constructor(route, newEmperor) {
       this.epilogue = route.epilogue;
       this.emperorHat = route === KENJI ? 'beanie' : null;
       this.t = 0;
-      this.unlocked = !HF.unlocks.emperor;
+      this.unlocked = newEmperor;
       this.scroll = 0;
       this.doneT = 0;
       this.fx = new HF.FX();
-      if (this.unlocked) {
-        HF.unlocks.emperor = true;
-        HF.saveUnlocks();
-      }
     }
     enter() {
       HF.Music.stop(0.1);
@@ -808,7 +883,7 @@
           U.text(ctx, 'NEW FIGHTER UNLOCKED!', 0, -110, { size: 36, color: '#ffe14d' });
           HF.drawHead(ctx, 'emperor', { x: 0, y: -10, r: 64, facing: 1, expr: 'sparkle', t: this.t, hat: this.emperorHat });
           U.text(ctx, 'EMPEROR MEGADOME', 0, 90, { size: 30, color: '#c9a7ff' });
-          U.text(ctx, 'now playable in Versus modes', 0, 122, { size: 17, display: false, weight: 700, lw: 4 });
+          U.text(ctx, 'Story and Versus modes unlocked', 0, 122, { size: 17, display: false, weight: 700, lw: 4 });
         } else {
           U.text(ctx, 'THE END', 0, -40, { size: 60, color: '#ffe14d' });
           U.text(ctx, this.epilogue, 0, 30, { size: 20, display: false, weight: 700, lw: 4 });
@@ -820,6 +895,7 @@
     }
   }
 
+  HF.GalleryScene = GalleryScene;
   HF.StoryScene = StoryScene;
   HF.DialogScene = DialogScene;
   HF.CreditsScene = CreditsScene;
